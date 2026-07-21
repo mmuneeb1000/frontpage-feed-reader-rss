@@ -33,46 +33,76 @@ export default function ArticleList({
         <div
           key={article.id || article.link}
           onClick={() => onSelectArticle(article)}
-          className={`w-full border-b px-6 py-5 text-left transition ${
+          className={`flex gap-5 border-b p-5 transition ${
             selectedArticle?.link === article.link
               ? "bg-green-50"
               : "hover:bg-gray-50"
           }`}
         >
-          <div className="mb-2 flex items-center justify-between">
-            <span className="text-sm text-gray-500">{article.feedTitle}</span>
-
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                // save article
-              }}
-              className="rounded p-1 hover:bg-gray-100"
-            >
-              <FiBookmark />
-            </button>
+          <div className="h-28 w-40 shrink-0 overflow-hidden rounded-lg bg-gray-100">
+            {article.image ? (
+              <img
+                src={article.image}
+                alt={article.title}
+                className="h-full w-full object-cover"
+              />
+            ) : (
+              <div className="flex h-full items-center justify-center text-sm text-gray-400">
+                No Image
+              </div>
+            )}
           </div>
 
-          <h3 className="line-clamp-2 text-lg font-medium">{article.title}</h3>
+          <div className="flex min-w-0 flex-1 flex-col">
+            <div className="mb-2 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                {!article.read && (
+                  <span>
+                    <img src={article.favicon} alt="" className="h-4 w-4" />
+                  </span>
+                )}
 
-          {article.description && (
+                <span className="text-sm font-medium text-gray-500">
+                  {article.feedTitle}
+                </span>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={(e) => e.stopPropagation()}
+                  className="rounded p-2 hover:bg-gray-100"
+                >
+                  <FiBookmark />
+                </button>
+
+                <a
+                  href={article.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  className="rounded p-2 hover:bg-gray-100"
+                >
+                  <FiExternalLink />
+                </a>
+              </div>
+            </div>
+
+            <h3 className="line-clamp-2 text-lg font-semibold">
+              {article.title}
+            </h3>
+
             <p className="mt-2 line-clamp-3 text-sm text-gray-600">
               {article.description}
             </p>
-          )}
 
-          <div className="mt-4 flex items-center justify-between">
-            <span className="text-xs text-gray-500">{article.pubDate}</span>
-
-            <a
-              href={article.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={(e) => e.stopPropagation()}
-              className="rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-black"
-            >
-              <FiExternalLink />
-            </a>
+            <div className="mt-auto flex items-center gap-3 pt-4 text-xs text-gray-500">
+              <span>
+                {new Date(article.published).toLocaleString([], {
+                  dateStyle: "medium",
+                  timeStyle: "short",
+                })}
+              </span>
+            </div>
           </div>
         </div>
       ))}
