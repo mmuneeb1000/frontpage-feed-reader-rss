@@ -55,25 +55,10 @@
       "name": "Design",
       "feeds": [
         {
-          "title": "Sidebar.io",
-          "feedUrl": "https://sidebar.io/feed.xml",
-          "siteUrl": "https://sidebar.io/",
-          "description": "The five best design links, every day.",
-          "format": "atom",
-          "notes": "High frequency — posts daily"
-        },
-        {
           "title": "Nielsen Norman Group",
           "feedUrl": "https://www.nngroup.com/feed/rss/",
           "siteUrl": "https://www.nngroup.com/",
           "description": "Evidence-based user experience research, training, and consulting.",
-          "format": "rss2"
-        },
-        {
-          "title": "Figma Blog",
-          "feedUrl": "https://www.figma.com/blog/feed/",
-          "siteUrl": "https://www.figma.com/blog/",
-          "description": "Stories about how products are designed at Figma and beyond.",
           "format": "rss2"
         },
         {
@@ -122,7 +107,7 @@
         },
         {
           "title": "Netlify Blog",
-          "feedUrl": "https://www.netlify.com/blog/index.xml",
+          "feedUrl": "https://www.netlify.com/feed.xml",
           "siteUrl": "https://www.netlify.com/blog/",
           "description": "News and posts from Netlify.",
           "format": "rss2"

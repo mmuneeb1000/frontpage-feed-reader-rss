@@ -1,6 +1,6 @@
 import { XMLParser } from "fast-xml-parser";
 
-export default function ImportOPML({ onImport }) {
+export default function ImportOPML({ onImport, onClose }) {
   const parser = new XMLParser({
     ignoreAttributes: false,
     attributeNamePrefix: "",
@@ -46,19 +46,31 @@ export default function ImportOPML({ onImport }) {
   }
 
   return (
-    <section className="rounded-xl border p-6">
-      <h2 className="text-xl font-semibold">Import OPML</h2>
+    <section className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+      <div className="rounded-xl border p-6 bg-white">
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl font-semibold">Import OPML</h2>
+          <button
+            type="button"
+            onClick={onClose}
+            className="rounded-lg p-2 text-gray-500 transition hover:bg-gray-100 hover:text-black"
+            aria-label="Close"
+          >
+            ✕
+          </button>
+        </div>
 
-      <p className="mt-2 text-sm text-gray-600">
-        Upload an OPML file exported from another RSS reader.
-      </p>
+        <p className="mt-2 text-sm text-gray-600">
+          Upload an OPML file exported from another RSS reader.
+        </p>
 
-      <input
-        type="file"
-        accept=".opml,.xml"
-        onChange={handleFile}
-        className="mt-4"
-      />
+        <input
+          type="file"
+          accept=".opml,.xml"
+          onChange={handleFile}
+          className="mt-4"
+        />
+      </div>
     </section>
   );
 }

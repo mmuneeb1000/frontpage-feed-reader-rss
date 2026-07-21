@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import Header from "../components/Header";
-import FeedForm from "../components/FeedForm";
+import FeedForm from "../components/Menu/FeedForm";
 import Sidebar from "../components/Sidebar";
-import FeedList from "../components/FeedList";
-import ImportOPML from "../components/ImportOPML";
-import ImportJSON from "../components/ImportJSON";
+import ImportOPML from "../components/Menu/ImportOPML";
+import ArticleList from "../components/ArticleList";
+import ImportJSON from "../components/Menu/ImportJSON";
 import { useAuth } from "../context/AuthContext";
-import { getFeeds, createFeed } from "../services/feedService";
+import { getArticles } from "../services/articleService";
+import { getFeeds, createFeed, clearFeeds } from "../services/feedService";
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -14,6 +15,25 @@ export default function Dashboard() {
   const [feeds, setFeeds] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedFeed, setSelectedFeed] = useState(null);
+
+  const [articles, setArticles] = useState([]);
+  const [loadingArticles, setLoadingArticles] = useState(false);
+  const [selectedArticle, setSelectedArticle] = useState(null);
+  const [activeModal, setActiveModal] = useState(null);
+  async function handleSelectFeed(feed) {
+    setSelectedFeed(feed);
+    setLoadingArticles(true);
+
+    const { data, error } = await getArticles(feed.link);
+
+    if (!error) {
+      setArticles(data);
+      setSelectedArticle(data[0] || null);
+    }
+
+    setLoadingArticles(false);
+  }
 
   const filteredFeeds = selectedCategory
     ? feeds.filter((feed) => feed.category === selectedCategory)
@@ -73,27 +93,65 @@ export default function Dashboard() {
 
     loadFeeds();
   }
+  async function handleClearFeeds() {
+    const confirmed = window.confirm("Delete all of your subscribed feeds?");
+
+    if (!confirmed) return;
+
+    const { error } = await clearFeeds(user.id);
+
+    if (!error) {
+      setFeeds([]);
+      setArticles([]);
+      setSelectedFeed(null);
+      setSelectedArticle(null);
+    }
+  }
 
   return (
     <>
-      <Header />
+      <Header
+        onCreateFeed={() => setActiveModal("feed")}
+        onImportOPML={() => setActiveModal("opml")}
+        onImportJSON={() => setActiveModal("json")}
+      />
 
       <main className="grid h-[calc(100vh-64px)] grid-cols-[18rem_1fr]">
         <Sidebar
-          feeds={feeds}
-          selectedCategory={selectedCategory}
-          onSelectCategory={setSelectedCategory}
+          feeds={filteredFeeds}
+          selectedFeed={selectedFeed}
+          onSelectFeed={handleSelectFeed}
+          handleClearFeeds={handleClearFeeds}
         />
 
-        <FeedList feeds={filteredFeeds} loading={loading} />
+        <ArticleList
+          articles={articles}
+          loading={loadingArticles}
+          selectedArticle={selectedArticle}
+          onSelectArticle={setSelectedArticle}
+        />
       </main>
 
-      {/* Temporary import/create tools
-      <div className="fixed bottom-6 right-6 flex flex-col gap-4">
-        <FeedForm onSubmit={handleCreate} />
-        <ImportOPML onImport={handleImport} />
-        <ImportJSON onImport={handleJsonImport} />
-      </div> */}
+      {activeModal === "feed" && (
+        <FeedForm
+          onSubmit={handleCreate}
+          onClose={() => setActiveModal(null)}
+        />
+      )}
+
+      {activeModal === "opml" && (
+        <ImportOPML
+          onImport={handleImport}
+          onClose={() => setActiveModal(null)}
+        />
+      )}
+
+      {activeModal === "json" && (
+        <ImportJSON
+          onImport={handleJsonImport}
+          onClose={() => setActiveModal(null)}
+        />
+      )}
     </>
   );
 }

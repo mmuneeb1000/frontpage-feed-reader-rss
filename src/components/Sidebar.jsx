@@ -3,9 +3,9 @@ import { FiHome, FiBookmark, FiRss, FiPlus } from "react-icons/fi";
 
 export default function Sidebar({
   feeds,
-  onAddFeed,
-  selectedCategory,
-  onSelectCategory,
+  selectedFeed,
+  onSelectFeed,
+  handleClearFeeds,
 }) {
   const categories = [
     ...new Set(feeds.map((feed) => feed.category).filter(Boolean)),
@@ -32,42 +32,35 @@ export default function Sidebar({
         </button>
       </nav>
 
-      <div className="px-4 pt-6">
+      <div className="px-4">
         <div className="mb-3 flex items-center justify-between">
           <h2 className="text-xs font-semibold uppercase tracking-wide text-gray-500">
             Categories
           </h2>
-
-          <button onClick={onAddFeed} className="rounded p-1 hover:bg-gray-100">
-            <FiPlus />
-          </button>
+          <div>
+            <button
+              onClick={handleClearFeeds}
+              className="rounded-lg border border-red-200 p-1 text-xs
+           text-red-600 transition hover:bg-red-50"
+            >
+              Clear Feeds
+            </button>
+          </div>
         </div>
 
         <div className="space-y-1">
-          {categories.map((category) => {
-            const count = feeds.filter(
-              (feed) => feed.category === category,
-            ).length;
-
-            return (
-              <button
-                key={category}
-                onClick={() => onSelectCategory(category)}
-                className={`flex w-full items-center justify-between rounded-lg px-3 py-2 text-left transition ${
-                  selectedCategory === category
-                    ? "bg-green-50 text-green-700"
-                    : "hover:bg-gray-100"
-                }`}
-              >
-                <span className="flex items-center gap-3">
-                  <FiRss className="text-sm" />
-                  {category}
-                </span>
-
-                <span className="text-sm text-gray-500">{count}</span>
-              </button>
-            );
-          })}
+          {feeds.map((feed) => (
+            <button
+              key={feed.id}
+              onClick={() => onSelectFeed(feed)}
+              className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-left hover:bg-gray-100"
+            >
+              <span className="flex items-center gap-3">
+                <FiRss className="text-sm" />
+                {feed.title}
+              </span>
+            </button>
+          ))}
         </div>
       </div>
 

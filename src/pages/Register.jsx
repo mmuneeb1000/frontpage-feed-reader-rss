@@ -7,6 +7,8 @@ export default function Register() {
   const { signUp } = useAuth();
 
   const [form, setForm] = useState({
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
   });
@@ -19,8 +21,14 @@ export default function Register() {
 
     setError("");
     setMessage("");
+    console.log(form);
 
-    const { error } = await signUp(form.email, form.password);
+    const { error } = await signUp(
+      form.firstName,
+      form.lastName,
+      form.email,
+      form.password,
+    );
 
     if (error) {
       setError(error.message);
@@ -48,7 +56,25 @@ export default function Register() {
           {message && (
             <p className="rounded bg-green-100 p-3 text-green-700">{message}</p>
           )}
+          <input
+            type="text"
+            name="firstName"
+            placeholder="First Name"
+            value={form.firstName}
+            onChange={(e) => setForm({ ...form, firstName: e.target.value })}
+            className="w-full rounded border p-3"
+            required
+          />
 
+          <input
+            type="text"
+            name="lastName"
+            placeholder="Last Name"
+            value={form.lastName}
+            onChange={(e) => setForm({ ...form, lastName: e.target.value })}
+            className="w-full rounded border p-3"
+            required
+          />
           <input
             type="email"
             placeholder="Email"
@@ -72,7 +98,7 @@ export default function Register() {
           </button>
 
           <p className="text-center text-sm">
-            Already have an account?{" "}
+            Already have an account?
             <Link to="/login" className="text-green-600">
               Login
             </Link>

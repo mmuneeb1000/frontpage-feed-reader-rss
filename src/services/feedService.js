@@ -21,6 +21,6 @@ export async function updateFeed(id, values) {
     .single();
 }
 
-export async function deleteFeed(id) {
-  return await supabase.from("feeds").delete().eq("id", id);
+export async function clearFeeds(userId) {
+  return await supabase.from("feeds").delete().eq("user_id", userId);
 }
