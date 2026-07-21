@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import Header from "../components/Header";
 import FeedForm from "../components/FeedForm";
+import Sidebar from "../components/Sidebar";
+import FeedList from "../components/FeedList";
 import ImportOPML from "../components/ImportOPML";
+import ImportJSON from "../components/ImportJSON";
 import { useAuth } from "../context/AuthContext";
 import { getFeeds, createFeed } from "../services/feedService";
 
@@ -10,6 +13,11 @@ export default function Dashboard() {
 
   const [feeds, setFeeds] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+
+  const filteredFeeds = selectedCategory
+    ? feeds.filter((feed) => feed.category === selectedCategory)
+    : feeds;
 
   async function loadFeeds() {
     if (!user) return;
@@ -48,61 +56,44 @@ export default function Dashboard() {
 
     loadFeeds();
   }
+  async function handleJsonImport(data) {
+    const feeds = data.categories.flatMap((category) =>
+      category.feeds.map((feed) => ({
+        user_id: user.id,
+        title: feed.title,
+        description: feed.description,
+        link: feed.feedUrl,
+        category: category.name,
+      })),
+    );
+
+    for (const feed of feeds) {
+      await createFeed(feed);
+    }
+
+    loadFeeds();
+  }
 
   return (
     <>
       <Header />
 
-      <main className="mx-auto max-w-7xl space-y-10 px-6 py-12">
-        <section>
-          <h1 className="text-4xl font-semibold">Dashboard</h1>
+      <main className="grid h-[calc(100vh-64px)] grid-cols-[18rem_1fr]">
+        <Sidebar
+          feeds={feeds}
+          selectedCategory={selectedCategory}
+          onSelectCategory={setSelectedCategory}
+        />
 
-          <p className="mt-2 text-gray-600">Welcome back, {user?.email}</p>
-        </section>
-
-        <section className="grid gap-6 lg:grid-cols-2">
-          <FeedForm onSubmit={handleCreate} />
-
-          <ImportOPML onImport={handleImport} />
-        </section>
-
-        <section>
-          <h2 className="mb-6 text-2xl font-semibold">Your Feeds</h2>
-
-          {loading ? (
-            <p>Loading...</p>
-          ) : feeds.length === 0 ? (
-            <p>No feeds yet.</p>
-          ) : (
-            <div className="grid gap-4">
-              {feeds.map((feed) => (
-                <article key={feed.id} className="rounded-xl border p-5">
-                  <h3 className="text-lg font-semibold">{feed.title}</h3>
-
-                  {feed.category && (
-                    <p className="mt-1 text-sm text-gray-500">
-                      {feed.category}
-                    </p>
-                  )}
-
-                  {feed.description && (
-                    <p className="mt-3 text-gray-600">{feed.description}</p>
-                  )}
-
-                  <a
-                    href={feed.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-4 inline-block text-green-600 hover:underline"
-                  >
-                    Visit Feed
-                  </a>
-                </article>
-              ))}
-            </div>
-          )}
-        </section>
+        <FeedList feeds={filteredFeeds} loading={loading} />
       </main>
+
+      {/* Temporary import/create tools
+      <div className="fixed bottom-6 right-6 flex flex-col gap-4">
+        <FeedForm onSubmit={handleCreate} />
+        <ImportOPML onImport={handleImport} />
+        <ImportJSON onImport={handleJsonImport} />
+      </div> */}
     </>
   );
 }

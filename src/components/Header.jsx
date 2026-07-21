@@ -11,7 +11,7 @@ export default function Header() {
           to={user ? "/dashboard" : "/login"}
           className="text-xl font-semibold"
         >
-          RSS Feed
+          <div className="border-b p-6">Frontpage</div>
         </Link>
 
         <nav>
