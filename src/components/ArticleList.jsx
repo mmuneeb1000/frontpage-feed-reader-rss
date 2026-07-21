@@ -24,7 +24,7 @@ export default function ArticleList({
 
   return (
     <section className="overflow-y-auto border-r">
-      <header className="sticky top-0 z-10 border-b bg-white px-6 py-4">
+      <header className="sticky flex gap-5 items-center top-0 z-10 border-b border-gray-300 bg-white px-6 py-4">
         <h2 className="text-xl font-semibold">Articles</h2>
         <p className="text-sm text-gray-500">{articles.length} articles</p>
       </header>
@@ -33,11 +33,7 @@ export default function ArticleList({
         <div
           key={article.id || article.link}
           onClick={() => onSelectArticle(article)}
-          className={`flex gap-5 border-b p-5 transition ${
-            selectedArticle?.link === article.link
-              ? "bg-green-50"
-              : "hover:bg-gray-50"
-          }`}
+          className="flex gap-5 border-b border-gray-300 p-5 transition bg-gray-50"
         >
           <div className="h-28 w-40 shrink-0 overflow-hidden rounded-lg bg-gray-100">
             {article.image ? (

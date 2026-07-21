@@ -7,7 +7,7 @@ export default function Header({ onCreateFeed, onImportOPML, onImportJSON }) {
   const { first_name, last_name, full_name } = user?.user_metadata ?? {};
 
   return (
-    <header className="border-b bg-white">
+    <header className="border-b border-gray-300 bg-white">
       <div className="flex items-center justify-between px-6 py-2">
         <Link
           to={user ? "/dashboard" : "/login"}

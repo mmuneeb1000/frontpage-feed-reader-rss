@@ -8,6 +8,15 @@ function extractImage(html = "") {
   return match ? match[1] : null;
 }
 
+function stripHtml(html = "") {
+  return html
+    .replace(/<[^>]*>/g, "")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&quot;/g, '"')
+    .trim();
+}
+
 export async function getFeedArticles(url) {
   const { data } = await axios.get(url);
 
@@ -21,7 +30,7 @@ export async function getFeedArticles(url) {
 
       title: item.title ?? "Untitled",
 
-      description: item.contentSnippet || item.summary || "",
+      description: stripHtml(item.contentSnippet || item.summary || html),
 
       content: html,
 
@@ -39,7 +48,8 @@ export async function getFeedArticles(url) {
         extractImage(html),
 
       feedTitle: feed.title,
-      favicon: `https://www.google.com/s2/favicons?sz=64&domain_url=${item.link}`,
+
+      favicon: `https://www.google.com/s2/favicons?sz=64&domain_url=${url}`,
 
       read: false,
     };
