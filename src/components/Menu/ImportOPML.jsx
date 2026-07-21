@@ -19,29 +19,34 @@ export default function ImportOPML({ onImport, onClose }) {
 
     const feeds = [];
 
-    function walk(items) {
+    function walk(items, category = "") {
       if (!items) return;
 
       const list = Array.isArray(items) ? items : [items];
 
       for (const item of list) {
+        const currentCategory = item.xmlUrl
+          ? category
+          : item.title || item.text || category;
+
         if (item.xmlUrl) {
           feeds.push({
             title: item.title || item.text,
             link: item.xmlUrl,
-            category: item.category || "",
-            description: "",
+            category: currentCategory,
+            description: item.description || "",
           });
         }
 
         if (item.outline) {
-          walk(item.outline);
+          walk(item.outline, currentCategory);
         }
       }
     }
 
     walk(outlines);
 
+    console.log(feeds);
     onImport(feeds);
   }
 
