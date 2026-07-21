@@ -104,7 +104,7 @@ export default function Sidebar({
                           className={`flex w-full items-center gap-3 rounded-lg px-3 
                           py-2 text-left text-sm transition ${
                             selectedFeed?.id === feed.id
-                              ? "bg-green-50 text-green-700"
+                              ? "bg-blue-50 text-blue-700"
                               : "hover:bg-gray-100"
                           }`}
                         >

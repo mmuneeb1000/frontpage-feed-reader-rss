@@ -78,7 +78,7 @@ export default function ArticleList({
               target="_blank"
               rel="noopener noreferrer"
               onClick={(e) => e.stopPropagation()}
-              className="rounded p-2 hover:bg-gray-100"
+              className="rounded hover:underline"
             >
               <h3 className="line-clamp-2 text-lg font-semibold">
                 {article.title}

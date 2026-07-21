@@ -11,8 +11,11 @@ export default function Header({ onCreateFeed, onImportOPML, onImportJSON }) {
       <div className="flex items-center justify-between px-6 py-2">
         <Link
           to={user ? "/dashboard" : "/login"}
-          className="text-xl font-semibold"
+          className="flex text-xl font-semibold"
         >
+          <span className="w-8 flex">
+            <img src="/favicon.svg" />
+          </span>
           <div className="p-2">Frontpage</div>
         </Link>
 
