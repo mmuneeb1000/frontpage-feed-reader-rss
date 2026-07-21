@@ -13,59 +13,69 @@ export default function Sidebar({
 
   return (
     <aside className="flex h-full w-72 flex-col border-r bg-white">
-      <nav className="space-y-1 p-4">
-        <NavLink
-          to="/"
-          className="flex items-center justify-between rounded-lg px-3 py-2 hover:bg-gray-100"
-        >
+      <nav className="mt-6 px-4">
+        <button className="flex w-full items-center justify-between rounded-lg bg-green-50 px-3 py-2 text-left text-green-700">
           <span className="flex items-center gap-3">
             <FiHome />
             All Items
           </span>
 
-          <span className="text-sm text-gray-500">{feeds.length}</span>
-        </NavLink>
+          <span className="text-sm">{feeds.length}</span>
+        </button>
 
-        <button className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left hover:bg-gray-100">
+        <button className="mt-2 flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left hover:bg-gray-100">
           <FiBookmark />
           Saved
         </button>
       </nav>
 
-      <div className="px-4">
-        <div className="mb-3 flex items-center justify-between">
+      <div className="mt-6 px-4">
+        <div className="mb-4 flex items-center justify-between">
           <h2 className="text-xs font-semibold uppercase tracking-wide text-gray-500">
             Categories
           </h2>
-          <div>
-            <button
-              onClick={handleClearFeeds}
-              className="rounded-lg border border-red-200 p-1 text-xs
-           text-red-600 transition hover:bg-red-50"
-            >
-              Clear Feeds
-            </button>
-          </div>
+
+          <button
+            onClick={handleClearFeeds}
+            className="rounded-md border border-red-200 px-2 py-1 text-xs text-red-600 hover:bg-red-50"
+          >
+            Clear
+          </button>
         </div>
 
-        <div className="space-y-1">
-          {feeds.map((feed) => (
-            <button
-              key={feed.id}
-              onClick={() => onSelectFeed(feed)}
-              className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-left hover:bg-gray-100"
-            >
-              <span className="flex items-center gap-3">
-                <FiRss className="text-sm" />
-                {feed.title}
-              </span>
-            </button>
+        <div className="space-y-4">
+          {categories.map((category) => (
+            <div key={category}>
+              <h3 className="mb-2 text-xs font-semibold uppercase text-gray-400">
+                {category}
+              </h3>
+
+              <div className="space-y-1">
+                {feeds
+                  .filter((feed) => feed.category === category)
+                  .map((feed) => (
+                    <button
+                      key={feed.id}
+                      onClick={() => onSelectFeed(feed)}
+                      className={`flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left transition ${
+                        selectedFeed?.id === feed.id
+                          ? "bg-green-50 text-green-700"
+                          : "hover:bg-gray-100"
+                      }`}
+                    >
+                      <img
+                        src={`https://www.google.com/s2/favicons?sz=32&domain_url=${feed.link}`}
+                        alt=""
+                        className="h-4 w-4 shrink-0"
+                      />
+
+                      <span className="truncate">{feed.title}</span>
+                    </button>
+                  ))}
+              </div>
+            </div>
           ))}
         </div>
-      </div>
-
-      <div className="mt-auto border-t p-4">
-        <p className="text-sm text-green-600">All feeds healthy</p>
       </div>
     </aside>
   );

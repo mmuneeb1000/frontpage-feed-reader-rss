@@ -74,22 +74,20 @@ export default function ArticleList({
                 >
                   <FiBookmark />
                 </button>
-
-                <a
-                  href={article.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={(e) => e.stopPropagation()}
-                  className="rounded p-2 hover:bg-gray-100"
-                >
-                  <FiExternalLink />
-                </a>
               </div>
             </div>
 
-            <h3 className="line-clamp-2 text-lg font-semibold">
-              {article.title}
-            </h3>
+            <a
+              href={article.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              className="rounded p-2 hover:bg-gray-100"
+            >
+              <h3 className="line-clamp-2 text-lg font-semibold">
+                {article.title}
+              </h3>
+            </a>
 
             <p className="mt-2 line-clamp-3 text-sm text-gray-600">
               {article.description}
