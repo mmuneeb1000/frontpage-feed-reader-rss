@@ -16,12 +16,16 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedFeed, setSelectedFeed] = useState(null);
+  const [view, setView] = useState("all");
 
   const [articles, setArticles] = useState([]);
   const [loadingArticles, setLoadingArticles] = useState(false);
   const [selectedArticle, setSelectedArticle] = useState(null);
   const [activeModal, setActiveModal] = useState(null);
+  const [allArticles, setAllArticles] = useState([]);
+  const [loadingHome, setLoadingHome] = useState(true);
   async function handleSelectFeed(feed) {
+    setView("feed");
     setSelectedFeed(feed);
     setLoadingArticles(true);
 
@@ -38,7 +42,22 @@ export default function Dashboard() {
   const filteredFeeds = selectedCategory
     ? feeds.filter((feed) => feed.category === selectedCategory)
     : feeds;
+  async function loadHomeFeed(feedList) {
+    setLoadingHome(true);
 
+    const selectedFeeds = feedList.slice(0, 5);
+
+    const results = await Promise.all(
+      selectedFeeds.map((feed) => getArticles(feed.link)),
+    );
+
+    const articles = results
+      .flatMap((result) => result.data || [])
+      .sort((a, b) => new Date(b.published) - new Date(a.published));
+
+    setAllArticles(articles);
+    setLoadingHome(false);
+  }
   async function loadFeeds() {
     if (!user) return;
 
@@ -46,6 +65,8 @@ export default function Dashboard() {
 
     if (!error) {
       setFeeds(data);
+
+      loadHomeFeed(data);
     }
 
     setLoading(false);
@@ -122,14 +143,23 @@ export default function Dashboard() {
           selectedFeed={selectedFeed}
           onSelectFeed={handleSelectFeed}
           handleClearFeeds={handleClearFeeds}
+          onShowAll={() => setView("all")}
         />
 
-        <ArticleList
-          articles={articles}
-          loading={loadingArticles}
-          selectedArticle={selectedArticle}
-          onSelectArticle={setSelectedArticle}
-        />
+        {view === "all" ? (
+          <AllItems
+            articles={allArticles}
+            loading={loadingHome}
+            onSelectArticle={setSelectedArticle}
+          />
+        ) : (
+          <ArticleList
+            articles={articles}
+            loading={loadingArticles}
+            selectedArticle={selectedArticle}
+            onSelectArticle={setSelectedArticle}
+          />
+        )}
       </main>
 
       {activeModal === "feed" && (
