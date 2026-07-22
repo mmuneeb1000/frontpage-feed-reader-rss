@@ -31,7 +31,10 @@ export default function FeedForm({ onSubmit, onClose, feed }) {
       }
     }
 
-    await onSubmit(form);
+    await onSubmit({
+      ...form,
+      category: form.category.trim() || "Feed",
+    });
 
     setForm({
       title: "",
