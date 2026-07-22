@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { DndContext, closestCenter } from "@dnd-kit/core";
 import SidebarCategory from "../SidebarCategory";
@@ -33,6 +33,17 @@ export default function Sidebar({
   const [openCategories, setOpenCategories] = useState(new Set());
 
   const [openMenu, setOpenMenu] = useState(null);
+  const feedsByCategory = useMemo(() => {
+    return feeds.reduce((acc, feed) => {
+      const key = feed.category || "Feed";
+
+      if (!acc[key]) acc[key] = [];
+
+      acc[key].push(feed);
+
+      return acc;
+    }, {});
+  }, [feeds]);
   function toggleCategory(category) {
     setOpenCategories((prev) => {
       const updated = new Set(prev);
@@ -102,9 +113,8 @@ export default function Sidebar({
                 strategy={verticalListSortingStrategy}
               >
                 {categories.map((category) => {
-                  const categoryFeeds = feeds.filter(
-                    (feed) => feed.category === category.category,
-                  );
+                  const categoryFeeds =
+                    feedsByCategory[category.category] ?? [];
 
                   return (
                     <SidebarCategory

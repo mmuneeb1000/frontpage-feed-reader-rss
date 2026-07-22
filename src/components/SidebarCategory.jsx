@@ -29,10 +29,7 @@ export default function SidebarCategory({
 
   return (
     <div ref={setNodeRef} style={style}>
-      <button
-        onClick={() => toggleCategory(category.category)}
-        className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-xs font-semibold uppercase text-neutral-900 hover:bg-gray-100"
-      >
+      <div className="flex w-full items-center gap-3 rounded-lg px-3 py-2 hover:bg-gray-100">
         <button
           {...attributes}
           {...listeners}
@@ -44,12 +41,17 @@ export default function SidebarCategory({
           <LuGripVertical className="h-4 w-4" />
         </button>
 
-        <span
-          className={`h-2.5 w-2.5 rounded-full ${getCategoryColor(category.category)}`}
-        />
+        <button
+          onClick={() => toggleCategory(category.category)}
+          className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-xs font-semibold uppercase text-neutral-900 hover:bg-gray-100"
+        >
+          <span
+            className={`h-2.5 w-2.5 rounded-full ${getCategoryColor(category.category)}`}
+          />
 
-        <span className="flex-1 text-left">{category.category}</span>
-      </button>
+          <span className="flex-1 text-left">{category.category}</span>
+        </button>
+      </div>
 
       {isOpen && (
         <div className="mt-1 space-y-1">

@@ -1,6 +1,7 @@
 import { FiBookmark, FiExternalLink } from "react-icons/fi";
 import Toolbar from "./Layout/Toolbar";
 import ArticleCard from "./Layout/ArticleCard";
+import useInfiniteScroll from "../hooks/useInfiniteScroll";
 
 export default function ArticleList({
   articles,
@@ -9,6 +10,7 @@ export default function ArticleList({
   selectedArticle,
   articleError,
 }) {
+  const { visibleItems, loaderRef, hasMore } = useInfiniteScroll(articles);
   if (loading) {
     return (
       <section className="flex flex-1 items-center justify-center">
@@ -27,7 +29,7 @@ export default function ArticleList({
   return (
     <section className="overflow-y-auto border-r">
       <Toolbar />
-      {articles.map((article) => (
+      {visibleItems.map((article) => (
         <ArticleCard
           key={article.id || article.link}
           article={article}
@@ -35,6 +37,11 @@ export default function ArticleList({
           onSelect={onSelectArticle}
         />
       ))}
+      {hasMore && (
+        <div ref={loaderRef} className="py-6 text-center text-sm text-gray-500">
+          Loading more...
+        </div>
+      )}
     </section>
   );
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import Header from "../components/Layout/Header";
 import FeedForm from "../components/Menu/FeedForm";
 import AllItems from "../components/AllItems";
@@ -58,22 +58,24 @@ export default function Dashboard() {
   const { categories, loadingCategories, setCategories, reorderCategories } =
     useCategories(user, feeds, loadingFeeds);
 
-  const filteredFeeds = selectedCategory
-    ? feeds.filter((feed) => feed.category === selectedCategory)
-    : feeds;
-  async function handleSelectFeed(feed) {
-    setView("feed");
-    selectFeed(feed);
-
-    await loadFeed(feed);
-  }
-
+  const filteredFeeds = useMemo(() => {
+    return selectedCategory
+      ? feeds.filter((feed) => feed.category === selectedCategory)
+      : feeds;
+  }, [feeds, selectedCategory]);
+  const handleSelectFeed = useCallback(
+    async (feed) => {
+      setView("feed");
+      selectFeed(feed);
+      await loadFeed(feed);
+    },
+    [selectFeed, loadFeed],
+  );
   useEffect(() => {
     if (feeds.length) {
       loadHome(feeds);
     }
   }, [feeds]);
-
   return (
     <>
       <Header
