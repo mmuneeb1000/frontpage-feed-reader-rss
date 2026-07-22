@@ -6,14 +6,21 @@ export async function getArticles(feedUrl) {
 
     const data = await response.json();
 
+    if (!response.ok) {
+      return {
+        data: [],
+        error: data.message,
+      };
+    }
+
     return {
       data,
       error: null,
     };
-  } catch (error) {
+  } catch {
     return {
       data: [],
-      error,
+      error: "Unable to connect to the server.",
     };
   }
 }

@@ -8,7 +8,12 @@ import ArticleList from "../components/ArticleList";
 import ImportJSON from "../components/Menu/ImportJSON";
 import { useAuth } from "../context/AuthContext";
 import { getArticles } from "../services/articleService";
-import { getFeeds, createFeed, clearFeeds } from "../services/feedService";
+import {
+  getFeeds,
+  createFeed,
+  clearFeeds,
+  deleteFeed,
+} from "../services/feedService";
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -18,6 +23,8 @@ export default function Dashboard() {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedFeed, setSelectedFeed] = useState(null);
   const [view, setView] = useState("all");
+  const [editingFeed, setEditingFeed] = useState(null);
+  const [showFeedModal, setShowFeedModal] = useState(false);
 
   const [articles, setArticles] = useState([]);
   const [loadingArticles, setLoadingArticles] = useState(false);
@@ -25,19 +32,27 @@ export default function Dashboard() {
   const [activeModal, setActiveModal] = useState(null);
   const [allArticles, setAllArticles] = useState([]);
   const [loadingHome, setLoadingHome] = useState(true);
+  const [articleError, setArticleError] = useState("");
   async function handleSelectFeed(feed) {
     setView("feed");
     setSelectedFeed(feed);
+    setEditingFeed(feed);
+    setShowFeedModal(true);
     setLoadingArticles(true);
+    setArticleError("");
 
-    const { data, error } = await getArticles(feed.link);
+    try {
+      const { data, error } = await getArticles(feed.link);
 
-    if (!error) {
       setArticles(data);
       setSelectedArticle(data[0] || null);
+    } catch (err) {
+      setArticles([]);
+      setSelectedArticle(null);
+      setArticleError(err.message);
+    } finally {
+      setLoadingArticles(false);
     }
-
-    setLoadingArticles(false);
   }
 
   const filteredFeeds = selectedCategory
@@ -87,6 +102,21 @@ export default function Dashboard() {
       loadFeeds();
     }
   }
+  async function handleUpdate(updatedFeed) {
+    const { data, error } = await updateFeed(editingFeed.id, updatedFeed);
+
+    if (error) {
+      console.error(error);
+      return;
+    }
+
+    setFeeds((prev) =>
+      prev.map((feed) => (feed.id === editingFeed.id ? data : feed)),
+    );
+
+    setEditingFeed(null);
+    setActiveModal(null);
+  }
 
   async function handleImport(importedFeeds) {
     for (const feed of importedFeeds) {
@@ -115,6 +145,10 @@ export default function Dashboard() {
 
     loadFeeds();
   }
+  function handleEditFeed(feed) {
+    setEditingFeed(feed);
+    setActiveModal("feed");
+  }
   async function handleClearFeeds() {
     const confirmed = window.confirm("Delete all of your subscribed feeds?");
 
@@ -127,6 +161,23 @@ export default function Dashboard() {
       setArticles([]);
       setSelectedFeed(null);
       setSelectedArticle(null);
+    }
+  }
+  async function handleDeleteFeed(id) {
+    const { error } = await deleteFeed(id);
+
+    if (error) {
+      console.error(error);
+      return;
+    }
+
+    setFeeds((prev) => prev.filter((feed) => feed.id !== id));
+
+    if (selectedFeed?.id === id) {
+      setSelectedFeed(null);
+      setArticles([]);
+      setSelectedArticle(null);
+      setView("all");
     }
   }
 
@@ -144,6 +195,8 @@ export default function Dashboard() {
           selectedFeed={selectedFeed}
           onSelectFeed={handleSelectFeed}
           handleClearFeeds={handleClearFeeds}
+          handleDeleteFeed={handleDeleteFeed}
+          handleEditFeed={handleEditFeed}
           onShowAll={() => setView("all")}
         />
 
@@ -159,14 +212,19 @@ export default function Dashboard() {
             loading={loadingArticles}
             selectedArticle={selectedArticle}
             onSelectArticle={setSelectedArticle}
+            articleError={articleError}
           />
         )}
       </main>
 
       {activeModal === "feed" && (
         <FeedForm
-          onSubmit={handleCreate}
-          onClose={() => setActiveModal(null)}
+          feed={editingFeed}
+          onSubmit={editingFeed ? handleUpdate : handleCreate}
+          onClose={() => {
+            setEditingFeed(null);
+            setActiveModal(null);
+          }}
         />
       )}
 

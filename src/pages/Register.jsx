@@ -45,7 +45,7 @@ export default function Register() {
       <main className="mx-auto flex min-h-[80vh] max-w-md items-center px-6">
         <form
           onSubmit={handleSubmit}
-          className="w-full space-y-5 rounded-xl border p-6"
+          className="w-full space-y-5 rounded-xl border border-gray-300 p-6"
         >
           <h1 className="text-3xl font-semibold">Register</h1>
 
@@ -62,7 +62,7 @@ export default function Register() {
             placeholder="First Name"
             value={form.firstName}
             onChange={(e) => setForm({ ...form, firstName: e.target.value })}
-            className="w-full rounded border p-3"
+            className="w-full rounded border border-gray-300 p-3"
             required
           />
 
@@ -72,7 +72,7 @@ export default function Register() {
             placeholder="Last Name"
             value={form.lastName}
             onChange={(e) => setForm({ ...form, lastName: e.target.value })}
-            className="w-full rounded border p-3"
+            className="w-full rounded border border-gray-300 p-3"
             required
           />
           <input
@@ -80,7 +80,7 @@ export default function Register() {
             placeholder="Email"
             value={form.email}
             onChange={(e) => setForm({ ...form, email: e.target.value })}
-            className="w-full rounded-md border p-3"
+            className="w-full rounded-md border border-gray-300 p-3"
             required
           />
 
@@ -89,7 +89,7 @@ export default function Register() {
             placeholder="Password"
             value={form.password}
             onChange={(e) => setForm({ ...form, password: e.target.value })}
-            className="w-full rounded-md border p-3"
+            className="w-full rounded-md border border-gray-300 p-3"
             required
           />
 
@@ -99,7 +99,7 @@ export default function Register() {
 
           <p className="text-center text-sm">
             Already have an account?
-            <Link to="/login" className="text-green-600">
+            <Link to="/login" className="ml-4 text-green-600">
               Login
             </Link>
           </p>

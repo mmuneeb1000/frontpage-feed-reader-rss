@@ -36,7 +36,7 @@ export default function Login() {
       <main className="mx-auto flex min-h-[80vh] max-w-md items-center px-6">
         <form
           onSubmit={handleSubmit}
-          className="w-full space-y-5 rounded-xl border p-6"
+          className="w-full space-y-5 rounded-xl border border-gray-300 p-6"
         >
           <h1 className="text-3xl font-semibold">Login</h1>
 
@@ -49,7 +49,7 @@ export default function Login() {
             placeholder="Email"
             value={form.email}
             onChange={(e) => setForm({ ...form, email: e.target.value })}
-            className="w-full rounded-md border p-3"
+            className="w-full rounded-md border border-gray-300 p-3"
             required
           />
 
@@ -58,7 +58,7 @@ export default function Login() {
             placeholder="Password"
             value={form.password}
             onChange={(e) => setForm({ ...form, password: e.target.value })}
-            className="w-full rounded-md border p-3"
+            className="w-full rounded-md border border-gray-300 p-3"
             required
           />
 
