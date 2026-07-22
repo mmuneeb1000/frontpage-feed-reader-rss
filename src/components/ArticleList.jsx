@@ -9,6 +9,7 @@ export default function ArticleList({
   onSelectArticle,
   selectedArticle,
   articleError,
+  selectedFeed,
 }) {
   const { visibleItems, loaderRef, hasMore } = useInfiniteScroll(articles);
   if (loading) {
@@ -28,7 +29,10 @@ export default function ArticleList({
 
   return (
     <section className="overflow-y-auto border-r">
-      <Toolbar />
+      <Toolbar
+        title={selectedFeed?.title || "Articles"}
+        count={articles.length}
+      />
       {visibleItems.map((article) => (
         <ArticleCard
           key={article.id || article.link}

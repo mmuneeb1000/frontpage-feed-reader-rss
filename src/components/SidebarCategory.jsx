@@ -29,7 +29,7 @@ export default function SidebarCategory({
 
   return (
     <div ref={setNodeRef} style={style}>
-      <div className="flex w-full items-center gap-3 rounded-lg px-3 py-2 hover:bg-gray-100">
+      <div className="flex w-full items-center rounded-lg px-3 py-2 hover:bg-gray-100">
         <button
           {...attributes}
           {...listeners}
@@ -54,9 +54,9 @@ export default function SidebarCategory({
       </div>
 
       {isOpen && (
-        <div className="mt-1 space-y-1">
+        <div className="mt-1 space-y-1 px-2">
           {feeds.map((feed) => (
-            <div key={feed.id} className="relative flex items-center gap-2">
+            <div key={feed.id} className="relative flex items-center">
               <button
                 onClick={() => onSelectFeed(feed)}
                 className={`flex flex-1 items-center gap-3 rounded-lg px-3 py-2 text-left text-sm transition ${
@@ -71,7 +71,9 @@ export default function SidebarCategory({
                   className="h-4 w-4 shrink-0"
                 />
 
-                <span className="truncate">{feed.title}</span>
+                <span className="text-[13px] font-semibold truncate">
+                  {feed.title}
+                </span>
               </button>
 
               <button

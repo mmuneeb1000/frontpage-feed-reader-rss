@@ -110,6 +110,7 @@ export default function Dashboard() {
             loading={loadingArticles}
             onSelectArticle={setSelectedArticle}
             selectedArticle={selectedArticle}
+            selectedFeed={selectedFeed}
             articleError={articleError}
           />
         )}

@@ -20,7 +20,7 @@ export default function AllItems({
 
   return (
     <section className="overflow-y-auto">
-      <Toolbar />
+      <Toolbar title="All Items" count={articles.length} />
 
       {visibleItems.map((article) => (
         <ArticleCard
