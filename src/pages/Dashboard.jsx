@@ -8,179 +8,67 @@ import ArticleList from "../components/ArticleList";
 import ImportJSON from "../components/Menu/ImportJSON";
 import { useAuth } from "../context/AuthContext";
 import { getArticles } from "../services/articleService";
-import {
-  getFeeds,
-  createFeed,
-  clearFeeds,
-  deleteFeed,
-} from "../services/feedService";
+import useFeeds from "../hooks/useFeed";
+import useArticles from "../hooks/useArticle";
 
 export default function Dashboard() {
   const { user } = useAuth();
 
-  const [feeds, setFeeds] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const [selectedFeed, setSelectedFeed] = useState(null);
   const [view, setView] = useState("all");
-  const [editingFeed, setEditingFeed] = useState(null);
-  const [showFeedModal, setShowFeedModal] = useState(false);
 
-  const [articles, setArticles] = useState([]);
-  const [loadingArticles, setLoadingArticles] = useState(false);
-  const [selectedArticle, setSelectedArticle] = useState(null);
-  const [activeModal, setActiveModal] = useState(null);
-  const [allArticles, setAllArticles] = useState([]);
-  const [loadingHome, setLoadingHome] = useState(true);
-  const [articleError, setArticleError] = useState("");
-  async function handleSelectFeed(feed) {
-    setView("feed");
-    setSelectedFeed(feed);
-    setEditingFeed(feed);
-    setShowFeedModal(true);
-    setLoadingArticles(true);
-    setArticleError("");
+  const {
+    feeds,
+    loadingFeeds,
+    selectedFeed,
+    editingFeed,
+    activeModal,
 
-    try {
-      const { data, error } = await getArticles(feed.link);
+    setEditingFeed,
+    setActiveModal,
+    handleCreate,
+    handleUpdate,
+    handleDelete,
+    handleClear,
 
-      setArticles(data);
-      setSelectedArticle(data[0] || null);
-    } catch (err) {
-      setArticles([]);
-      setSelectedArticle(null);
-      setArticleError(err.message);
-    } finally {
-      setLoadingArticles(false);
-    }
-  }
+    handleImport,
+    handleJsonImport,
 
+    handleEdit,
+    selectFeed,
+  } = useFeeds(user);
+  const {
+    articles,
+    allArticles,
+    selectedArticle,
+
+    loadingArticles,
+    loadingHome,
+
+    articleError,
+
+    setSelectedArticle,
+
+    loadFeed,
+    loadHome,
+    clearArticles,
+  } = useArticles();
   const filteredFeeds = selectedCategory
     ? feeds.filter((feed) => feed.category === selectedCategory)
     : feeds;
-  async function loadHomeFeed(feedList) {
-    setLoadingHome(true);
+  async function handleSelectFeed(feed) {
+    setView("feed");
+    selectFeed(feed);
 
-    const selectedFeeds = feedList.slice(0, 5);
-
-    const results = await Promise.all(
-      selectedFeeds.map((feed) => getArticles(feed.link)),
-    );
-
-    const articles = results
-      .flatMap((result) => result.data || [])
-      .sort((a, b) => new Date(b.published) - new Date(a.published));
-
-    setAllArticles(articles);
-    setLoadingHome(false);
-  }
-  async function loadFeeds() {
-    if (!user) return;
-
-    const { data, error } = await getFeeds(user.id);
-
-    if (!error) {
-      setFeeds(data);
-
-      loadHomeFeed(data);
-    }
-
-    setLoading(false);
+    await loadFeed(feed);
   }
 
   useEffect(() => {
-    loadFeeds();
-  }, [user]);
-
-  async function handleCreate(feed) {
-    const { error } = await createFeed({
-      ...feed,
-      user_id: user.id,
-    });
-
-    if (!error) {
-      loadFeeds();
+    if (feeds.length) {
+      loadHome(feeds);
     }
-  }
-  async function handleUpdate(updatedFeed) {
-    const { data, error } = await updateFeed(editingFeed.id, updatedFeed);
-
-    if (error) {
-      console.error(error);
-      return;
-    }
-
-    setFeeds((prev) =>
-      prev.map((feed) => (feed.id === editingFeed.id ? data : feed)),
-    );
-
-    setEditingFeed(null);
-    setActiveModal(null);
-  }
-
-  async function handleImport(importedFeeds) {
-    for (const feed of importedFeeds) {
-      await createFeed({
-        ...feed,
-        user_id: user.id,
-      });
-    }
-
-    loadFeeds();
-  }
-  async function handleJsonImport(data) {
-    const feeds = data.categories.flatMap((category) =>
-      category.feeds.map((feed) => ({
-        user_id: user.id,
-        title: feed.title,
-        description: feed.description,
-        link: feed.feedUrl,
-        category: category.name,
-      })),
-    );
-
-    for (const feed of feeds) {
-      await createFeed(feed);
-    }
-
-    loadFeeds();
-  }
-  function handleEditFeed(feed) {
-    setEditingFeed(feed);
-    setActiveModal("feed");
-  }
-  async function handleClearFeeds() {
-    const confirmed = window.confirm("Delete all of your subscribed feeds?");
-
-    if (!confirmed) return;
-
-    const { error } = await clearFeeds(user.id);
-
-    if (!error) {
-      setFeeds([]);
-      setArticles([]);
-      setSelectedFeed(null);
-      setSelectedArticle(null);
-    }
-  }
-  async function handleDeleteFeed(id) {
-    const { error } = await deleteFeed(id);
-
-    if (error) {
-      console.error(error);
-      return;
-    }
-
-    setFeeds((prev) => prev.filter((feed) => feed.id !== id));
-
-    if (selectedFeed?.id === id) {
-      setSelectedFeed(null);
-      setArticles([]);
-      setSelectedArticle(null);
-      setView("all");
-    }
-  }
-
+  }, [feeds]);
   return (
     <>
       <Header
@@ -194,9 +82,9 @@ export default function Dashboard() {
           feeds={filteredFeeds}
           selectedFeed={selectedFeed}
           onSelectFeed={handleSelectFeed}
-          handleClearFeeds={handleClearFeeds}
-          handleDeleteFeed={handleDeleteFeed}
-          handleEditFeed={handleEditFeed}
+          handleClearFeeds={handleClear}
+          handleDeleteFeed={handleDelete}
+          handleEditFeed={handleEdit}
           onShowAll={() => setView("all")}
         />
 
