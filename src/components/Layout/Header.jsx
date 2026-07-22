@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
-import { useAuth } from "../context/AuthContext";
-import AddFeedMenu from "./Menu/AddFeedMenu";
+import { useAuth } from "../../context/AuthContext";
+import AddFeedMenu from "../Menu/AddFeedMenu";
 
 export default function Header({ onCreateFeed, onImportOPML, onImportJSON }) {
   const { user, signOut } = useAuth();

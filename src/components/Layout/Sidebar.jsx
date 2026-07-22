@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { getCategoryColor } from "../lib/categoryColor";
+import { getCategoryColor } from "../../lib/categoryColor";
 import {
   FiHome,
   FiBookmark,

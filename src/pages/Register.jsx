@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import Header from "../components/Header";
+import Header from "../components/Layout/Header";
 import { useAuth } from "../context/AuthContext";
 
 export default function Register() {

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import Header from "../components/Header";
+import Header from "../components/Layout/Header";
 import FeedForm from "../components/Menu/FeedForm";
 import AllItems from "../components/AllItems";
-import Sidebar from "../components/Sidebar";
+import Sidebar from "../components/Layout/Sidebar";
 import ImportOPML from "../components/Menu/ImportOPML";
 import ArticleList from "../components/ArticleList";
 import ImportJSON from "../components/Menu/ImportJSON";
@@ -204,14 +204,15 @@ export default function Dashboard() {
           <AllItems
             articles={allArticles}
             loading={loadingHome}
+            selectedArticle={selectedArticle}
             onSelectArticle={setSelectedArticle}
           />
         ) : (
           <ArticleList
             articles={articles}
             loading={loadingArticles}
-            selectedArticle={selectedArticle}
             onSelectArticle={setSelectedArticle}
+            selectedArticle={selectedArticle}
             articleError={articleError}
           />
         )}
