@@ -10,6 +10,7 @@ import { useAuth } from "../context/AuthContext";
 import { getArticles } from "../services/articleService";
 import useFeeds from "../hooks/useFeed";
 import useArticles from "../hooks/useArticle";
+import useCategories from "../hooks/useCategory";
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -54,6 +55,9 @@ export default function Dashboard() {
     loadHome,
     clearArticles,
   } = useArticles();
+  const { categories, loadingCategories, setCategories, reorderCategories } =
+    useCategories(user, feeds, loadingFeeds);
+
   const filteredFeeds = selectedCategory
     ? feeds.filter((feed) => feed.category === selectedCategory)
     : feeds;
@@ -69,6 +73,7 @@ export default function Dashboard() {
       loadHome(feeds);
     }
   }, [feeds]);
+
   return (
     <>
       <Header
@@ -80,9 +85,11 @@ export default function Dashboard() {
       <main className="grid h-[calc(100vh-64px)] grid-cols-[18rem_1fr]">
         <Sidebar
           feeds={filteredFeeds}
+          categories={categories}
           selectedFeed={selectedFeed}
           onSelectFeed={handleSelectFeed}
           handleClearFeeds={handleClear}
+          onReorderCategories={reorderCategories}
           handleDeleteFeed={handleDelete}
           handleEditFeed={handleEdit}
           onShowAll={() => setView("all")}
