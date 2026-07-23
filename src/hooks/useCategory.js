@@ -26,6 +26,11 @@ export default function useCategories(user, feeds, loadingFeeds, demo) {
       return;
     }
     if (!user) return;
+    if (feeds.length === 0) {
+      setCategories([]);
+      setLoadingCategories(false);
+      return;
+    }
     setLoadingCategories(true);
 
     const feedCategories = [
@@ -62,11 +67,16 @@ export default function useCategories(user, feeds, loadingFeeds, demo) {
       }
     }
 
-    const { data: updated } = await getCategories(user.id);
+    const { data: updated, error: refreshError } = await getCategories(user.id);
 
-    updated.sort((a, b) => a.position - b.position);
+    if (refreshError) {
+      console.error(refreshError);
+      setLoadingCategories(false);
+      return;
+    }
 
-    setCategories(updated);
+    setCategories((updated || []).sort((a, b) => a.position - b.position));
+
     setLoadingCategories(false);
   }
 

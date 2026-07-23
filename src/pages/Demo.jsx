@@ -1,5 +1,5 @@
 import Dashboard from "./Dashboard";
 
 export default function Demo() {
-  return <Dashboard demo />;
+  return <Dashboard demo={true} />;
 }

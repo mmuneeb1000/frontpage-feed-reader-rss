@@ -29,13 +29,19 @@ export default function useFeeds(user, demo = false) {
     );
   }
   async function loadFeeds() {
+    console.log({
+      demo,
+      user: user?.id,
+    });
+
     if (demo) {
       setFeeds(getDemoFeeds());
       setLoadingFeeds(false);
       return;
     }
+
     if (!user) {
-      setFeeds(getDemoFeeds());
+      setFeeds([]);
       setLoadingFeeds(false);
       return;
     }
@@ -44,10 +50,13 @@ export default function useFeeds(user, demo = false) {
 
     const { data, error } = await getFeeds(user.id);
 
-    if (!error) {
-      setFeeds(data || []);
+    if (error) {
+      console.error(error);
+      setLoadingFeeds(false);
+      return;
     }
 
+    setFeeds(data || []);
     setLoadingFeeds(false);
   }
 
@@ -103,20 +112,17 @@ export default function useFeeds(user, demo = false) {
 
   async function handleClear() {
     if (demo) return;
+
     const { error } = await clearFeeds(user.id);
 
     if (error) {
       console.error(error);
-      return { error };
+      return;
     }
 
-    setFeeds([]);
-    setArticles([]);
-    setSelectedFeed(null);
-    setSelectedArticle(null);
-    setView("all");
+    await loadFeeds();
 
-    return { error: null };
+    setSelectedFeed(null);
   }
 
   async function handleImport(importedFeeds) {

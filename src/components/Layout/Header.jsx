@@ -6,9 +6,6 @@ export default function Header({
   children,
   demo = false,
   publicPage = false,
-  onCreateFeed,
-  onImportOPML,
-  onImportJSON,
   handleClearFeeds,
 }) {
   const { user, signOut } = useAuth();
@@ -126,12 +123,12 @@ export default function Header({
                       </button>
                       <button
                         onClick={() => {
-                          const confirmed = window.confirm(
-                            "Are you sure you want to clear all feeds? This cannot be undone.",
-                          );
-
-                          if (confirmed) {
-                            handleClearFeeds;
+                          if (
+                            window.confirm(
+                              "Are you sure you want to clear all feeds?",
+                            )
+                          ) {
+                            handleClearFeeds();
                             setOpen(false);
                           }
                         }}
