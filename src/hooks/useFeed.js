@@ -45,7 +45,7 @@ export default function useFeeds(user, demo = false) {
     const { data, error } = await getFeeds(user.id);
 
     if (!error) {
-      setFeeds(data);
+      setFeeds(data || []);
     }
 
     setLoadingFeeds(false);
@@ -106,11 +106,15 @@ export default function useFeeds(user, demo = false) {
     const { error } = await clearFeeds(user.id);
 
     if (error) {
+      console.error(error);
       return { error };
     }
 
     setFeeds([]);
+    setArticles([]);
     setSelectedFeed(null);
+    setSelectedArticle(null);
+    setView("all");
 
     return { error: null };
   }

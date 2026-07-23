@@ -9,6 +9,7 @@ export default function Header({
   onCreateFeed,
   onImportOPML,
   onImportJSON,
+  handleClearFeeds,
 }) {
   const { user, signOut } = useAuth();
   const { first_name, last_name, full_name } = user?.user_metadata ?? {};
@@ -122,6 +123,21 @@ export default function Header({
                         <span className="ml-auto rounded bg-gray-100 px-2 py-0.5 text-xs">
                           Soon
                         </span>
+                      </button>
+                      <button
+                        onClick={() => {
+                          const confirmed = window.confirm(
+                            "Are you sure you want to clear all feeds? This cannot be undone.",
+                          );
+
+                          if (confirmed) {
+                            handleClearFeeds;
+                            setOpen(false);
+                          }
+                        }}
+                        className="flex w-full px-4 py-3 text-sm text-red-600 hover:bg-red-50"
+                      >
+                        Clear All Feeds
                       </button>
 
                       <div className="border-t border-gray-100">

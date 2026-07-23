@@ -88,15 +88,18 @@ export default function Dashboard({ demo = false }) {
         onCreateFeed={() => setActiveModal("feed")}
         onImportOPML={() => setActiveModal("opml")}
         onImportJSON={() => setActiveModal("json")}
+        handleClearFeeds={handleClear}
       />
 
       <main className="grid h-[calc(100vh-64px)] grid-cols-[18rem_1fr]">
         <Sidebar
+          view={view}
+          allItemsCount={allArticles.length}
+          savedCount={savedArticles.length}
           feeds={filteredFeeds}
           categories={categories}
           selectedFeed={selectedFeed}
           onSelectFeed={handleSelectFeed}
-          handleClearFeeds={handleClear}
           onReorderCategories={reorderCategories}
           handleDeleteFeed={handleDelete}
           handleEditFeed={handleEdit}

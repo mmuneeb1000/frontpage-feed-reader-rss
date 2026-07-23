@@ -22,8 +22,14 @@ export default function FeedForm({ onSubmit, onClose, feed }) {
 
     setError("");
 
-    if (!feed || feed.link !== form.link) {
-      const { error } = await getArticles(form.link);
+    const feedData = {
+      ...form,
+
+      category: form.category.trim() || "Feed",
+    };
+
+    if (!feed || feed.link !== feedData.link) {
+      const { error } = await getArticles(feedData.link);
 
       if (error) {
         setError(error);
@@ -31,10 +37,7 @@ export default function FeedForm({ onSubmit, onClose, feed }) {
       }
     }
 
-    await onSubmit({
-      ...form,
-      category: form.category.trim() || "Feed",
-    });
+    await onSubmit(feedData);
 
     setForm({
       title: "",
@@ -96,7 +99,7 @@ export default function FeedForm({ onSubmit, onClose, feed }) {
           placeholder="RSS URL"
           value={form.link}
           onChange={handleChange}
-          className="w-full rounded border border-gray-500 p-3"
+          className="w-full font-mono rounded border border-gray-500 p-3"
           required
         />
         {error && <p className="mx-2 text-sm text-red-500">{error}</p>}

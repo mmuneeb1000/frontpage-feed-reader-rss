@@ -20,20 +20,29 @@ import {
 } from "@dnd-kit/sortable";
 
 export default function Sidebar({
+  view,
   feeds,
   categories,
   selectedFeed,
   onSelectFeed,
-  handleClearFeeds,
   handleDeleteFeed,
   handleEditFeed,
   onShowAll,
   onShowSaved,
   onReorderCategories,
+  savedCount,
+  allItemsCount,
 }) {
   const [openCategories, setOpenCategories] = useState(new Set());
 
   const [openMenu, setOpenMenu] = useState(null);
+  const navButton = (active) => `
+flex w-full items-center justify-between gap-3 rounded-lg px-3 py-2 text-left text-sm
+transition-colors duration-150 bg-blue-50
+${active ? "bg-blue-100 font-semibold text-blue-700" : "hover:bg-gray-100 text-gray-700"}
+focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1
+active:bg-gray-200
+`;
   const feedsByCategory = useMemo(() => {
     return feeds.reduce((acc, feed) => {
       const key = feed.category || "Feed";
@@ -67,27 +76,33 @@ export default function Sidebar({
   return (
     <aside className="flex justify-between h-full w-72 flex-col border-r border-gray-300 bg-gray-50">
       <div>
-        <nav className="py-6 mx-4 border-b border-b-gray-300">
-          <button
-            onClick={onShowAll}
-            className="flex w-full items-center justify-between rounded-lg bg-blue-50 
-        px-3 py-2 text-left font-semibold text-blue-700 hover:bg-blue-200"
-          >
+        <nav className="space-y-2 py-6 mx-4 border-b border-b-gray-300">
+          <button onClick={onShowAll} className={navButton(view === "all")}>
             <span className="flex text-sm items-center gap-3">
               <FiHome />
               All Items
             </span>
 
-            <span className="text-sm">{feeds.length}</span>
+            <span
+              className="flex h-5 w-5 items-center justify-center rounded-full 
+            bg-blue-600 text-xs font-medium text-white"
+            >
+              {allItemsCount}
+            </span>
           </button>
 
-          <button
-            onClick={onShowSaved}
-            className="mt-2 flex text-sm w-full items-center gap-3 
-        rounded-lg px-3 py-2 text-left hover:bg-gray-100"
-          >
-            <FiBookmark />
-            Saved
+          <button onClick={onShowSaved} className={navButton(view === "saved")}>
+            <span className="flex text-sm items-center gap-3">
+              <FiBookmark />
+              Saved
+            </span>
+
+            <span
+              className="flex h-5 w-5 items-center justify-center rounded-full 
+            bg-blue-600 text-xs font-medium text-white"
+            >
+              {savedCount}
+            </span>
           </button>
         </nav>
 
@@ -96,13 +111,6 @@ export default function Sidebar({
             <h2 className="text-xs font-semibold uppercase tracking-wide text-gray-500">
               Categories
             </h2>
-
-            <button
-              onClick={handleClearFeeds}
-              className="rounded-md border border-red-200 px-2 py-1 text-xs text-red-600 hover:bg-red-50"
-            >
-              Clear
-            </button>
           </div>
 
           <div className="space-y-2">

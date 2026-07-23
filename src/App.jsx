@@ -23,7 +23,7 @@ export default function App() {
             path="/dashboard"
             element={
               <ProtectedRoute>
-                <Dashboard />
+                <Dashboard demo={false} />
               </ProtectedRoute>
             }
           />

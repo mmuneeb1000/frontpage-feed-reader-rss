@@ -9,6 +9,7 @@ export default function DashboardHeader(props) {
         onCreateFeed={props.onCreateFeed}
         onImportOPML={props.onImportOPML}
         onImportJSON={props.onImportJSON}
+        handleClearFeeds={props.handleClearFeeds}
       />
     </Header>
   );
