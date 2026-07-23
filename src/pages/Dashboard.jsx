@@ -1,6 +1,7 @@
 import { useEffect, useState, useMemo, useCallback } from "react";
 import DashboardHeader from "../components/Layout/DashboardHeader";
 import FeedForm from "../components/Menu/FeedForm";
+import ArticleToolbar from "../components/Layout/ArticleToolbar";
 import AllItems from "../components/AllItems";
 import ArticleList from "../components/ArticleList";
 import ArticleSaved from "../components/ArticleSaved";
@@ -13,6 +14,7 @@ import useFeeds from "../hooks/useFeed";
 import useArticles from "../hooks/useArticle";
 import useCategories from "../hooks/useCategory";
 import useSavedArticles from "../hooks/useSavedArticles";
+import useArticleStatus from "../hooks/useArticleStatus";
 
 export default function Dashboard({ demo = false }) {
   const { user } = useAuth();
@@ -62,12 +64,24 @@ export default function Dashboard({ demo = false }) {
     useSavedArticles(demo ? null : user);
   const { categories, loadingCategories, setCategories, reorderCategories } =
     useCategories(user, feeds, loadingFeeds, demo);
-
+  const { statuses, toggleRead, markAllRead } = useArticleStatus(
+    demo ? null : user,
+  );
+  const applyReadStatus = (articles = []) =>
+    articles.map((article) => ({
+      ...article,
+      read: statuses[article.id] === "read",
+    }));
+  const currentArticles =
+    view === "all" ? allArticles : view === "feed" ? articles : savedArticles;
   const filteredFeeds = useMemo(() => {
     return selectedCategory
       ? feeds.filter((feed) => feed.category === selectedCategory)
       : feeds;
   }, [feeds, selectedCategory]);
+  const unreadCount = allArticles.filter(
+    (article) => statuses[article.id] !== "read",
+  ).length;
   const handleSelectFeed = useCallback(
     async (feed) => {
       setView("feed");
@@ -94,7 +108,7 @@ export default function Dashboard({ demo = false }) {
       <main className="grid h-[calc(100vh-64px)] grid-cols-[18rem_1fr]">
         <Sidebar
           view={view}
-          allItemsCount={allArticles.length}
+          unreadCount={unreadCount}
           savedCount={savedArticles.length}
           feeds={filteredFeeds}
           categories={categories}
@@ -112,41 +126,55 @@ export default function Dashboard({ demo = false }) {
             selectFeed(null);
           }}
         />
-
-        {view === "all" && (
-          <AllItems
-            articles={allArticles}
-            loading={loadingHome}
-            selectedArticle={selectedArticle}
-            isSaved={isSaved}
-            toggleSaved={toggleSaved}
-            onSelectArticle={setSelectedArticle}
+        <div className="flex flex-1 flex-col">
+          <ArticleToolbar
+            articles={currentArticles}
+            onMarkAllRead={markAllRead}
           />
-        )}
+          {view === "all" && (
+            <AllItems
+              articles={applyReadStatus(allArticles)}
+              loading={loadingHome}
+              selectedArticle={selectedArticle}
+              isSaved={isSaved}
+              toggleSaved={toggleSaved}
+              onSelectArticle={(article) => {
+                setSelectedArticle(article);
+                toggleRead(article);
+              }}
+            />
+          )}
 
-        {view === "feed" && (
-          <ArticleList
-            articles={articles}
-            loading={loadingArticles}
-            isSaved={isSaved}
-            toggleSaved={toggleSaved}
-            onSelectArticle={setSelectedArticle}
-            selectedArticle={selectedArticle}
-            selectedFeed={selectedFeed}
-            articleError={articleError}
-          />
-        )}
+          {view === "feed" && (
+            <ArticleList
+              articles={applyReadStatus(articles)}
+              loading={loadingArticles}
+              isSaved={isSaved}
+              toggleSaved={toggleSaved}
+              onSelectArticle={(article) => {
+                setSelectedArticle(article);
+                toggleRead(article);
+              }}
+              selectedArticle={selectedArticle}
+              selectedFeed={selectedFeed}
+              articleError={articleError}
+            />
+          )}
 
-        {view === "saved" && (
-          <ArticleSaved
-            articles={savedArticles}
-            loading={loadingSaved}
-            selectedArticle={selectedArticle}
-            onSelectArticle={setSelectedArticle}
-            onToggleSaved={toggleSaved}
-            isSaved={isSaved}
-          />
-        )}
+          {view === "saved" && (
+            <ArticleSaved
+              articles={applyReadStatus(savedArticles)}
+              loading={loadingSaved}
+              selectedArticle={selectedArticle}
+              onSelectArticle={(article) => {
+                setSelectedArticle(article);
+                toggleRead(article);
+              }}
+              onToggleSaved={toggleSaved}
+              isSaved={isSaved}
+            />
+          )}
+        </div>
       </main>
 
       {activeModal === "feed" && (

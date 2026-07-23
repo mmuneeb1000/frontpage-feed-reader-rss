@@ -31,7 +31,7 @@ export default function Sidebar({
   onShowSaved,
   onReorderCategories,
   savedCount,
-  allItemsCount,
+  unreadCount,
 }) {
   const [openCategories, setOpenCategories] = useState(new Set());
 
@@ -87,7 +87,7 @@ active:bg-gray-200
               className="flex h-5 w-5 items-center justify-center rounded-full 
             bg-blue-600 text-xs font-medium text-white"
             >
-              {allItemsCount}
+              {unreadCount}
             </span>
           </button>
 

@@ -11,7 +11,9 @@ export default function ArticleCard({
     <div
       onClick={() => onSelect?.(article)}
       className={`flex gap-4 border-b border-gray-200 p-5 transition ${
-        selected ? "bg-blue-50" : "hover:bg-gray-50"
+        article.read
+          ? "border-gray-200 bg-gray-50"
+          : "border-blue-200 bg-white shadow-sm"
       }`}
     >
       <div className="w-250">
@@ -41,7 +43,13 @@ export default function ArticleCard({
             onClick={(e) => e.stopPropagation()}
             className="hover:underline"
           >
-            <h3 className="line-clamp-2 text-lg font-semibold">
+            <h3
+              className={` line-clamp-2 text-lg font-semibold ${
+                article.read
+                  ? "font-normal text-gray-500"
+                  : "font-bold text-gray-900"
+              }`}
+            >
               {article.title}
             </h3>
           </a>
@@ -49,6 +57,11 @@ export default function ArticleCard({
           <p className="mt-3 line-clamp-3 text-sm text-gray-600">
             {article.description}
           </p>
+          {!article.read && (
+            <span className="rounded-full bg-blue-600 px-2 py-1 text-xs font-medium text-white">
+              New
+            </span>
+          )}
         </div>
       </div>
     </div>
