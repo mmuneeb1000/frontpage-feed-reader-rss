@@ -6,6 +6,8 @@ import useInfiniteScroll from "../hooks/useInfiniteScroll";
 export default function ArticleList({
   articles,
   loading,
+  isSaved,
+  toggleSaved,
   onSelectArticle,
   selectedArticle,
   articleError,
@@ -36,6 +38,8 @@ export default function ArticleList({
       {visibleItems.map((article) => (
         <ArticleCard
           key={article.id || article.link}
+          saved={isSaved(article)}
+          onToggleSaved={toggleSaved}
           article={article}
           selected={selectedArticle?.link === article.link}
           onSelect={onSelectArticle}

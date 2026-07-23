@@ -28,6 +28,7 @@ export default function Sidebar({
   handleDeleteFeed,
   handleEditFeed,
   onShowAll,
+  onShowSaved,
   onReorderCategories,
 }) {
   const [openCategories, setOpenCategories] = useState(new Set());
@@ -70,7 +71,7 @@ export default function Sidebar({
           <button
             onClick={onShowAll}
             className="flex w-full items-center justify-between rounded-lg bg-blue-50 
-        px-3 py-2 text-left font-semibold text-blue-700 chover:bg-blue-200"
+        px-3 py-2 text-left font-semibold text-blue-700 hover:bg-blue-200"
           >
             <span className="flex text-sm items-center gap-3">
               <FiHome />
@@ -81,6 +82,7 @@ export default function Sidebar({
           </button>
 
           <button
+            onClick={onShowSaved}
             className="mt-2 flex text-sm w-full items-center gap-3 
         rounded-lg px-3 py-2 text-left hover:bg-gray-100"
           >

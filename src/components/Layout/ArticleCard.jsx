@@ -1,6 +1,12 @@
 import { FiBookmark } from "react-icons/fi";
 
-export default function ArticleCard({ article, selected, onSelect }) {
+export default function ArticleCard({
+  article,
+  saved,
+  onToggleSaved,
+  selected,
+  onSelect,
+}) {
   return (
     <div
       onClick={() => onSelect?.(article)}
@@ -13,13 +19,11 @@ export default function ArticleCard({ article, selected, onSelect }) {
           <button
             onClick={(e) => {
               e.stopPropagation();
-              //   onToggleBookmark?.(article);
+              onToggleSaved(article);
             }}
             className="mt-1 rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-blue-600"
           >
-            <FiBookmark
-              className={article.saved ? "fill-current text-blue-600" : ""}
-            />
+            <FiBookmark className={saved ? "fill-current text-blue-600" : ""} />
           </button>
           <img src={article.favicon} alt="" className="h-4 w-4 shrink-0" />
 

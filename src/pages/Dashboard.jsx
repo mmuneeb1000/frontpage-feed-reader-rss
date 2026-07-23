@@ -2,15 +2,17 @@ import { useEffect, useState, useMemo, useCallback } from "react";
 import Header from "../components/Layout/Header";
 import FeedForm from "../components/Menu/FeedForm";
 import AllItems from "../components/AllItems";
+import ArticleList from "../components/ArticleList";
+import ArticleSaved from "../components/ArticleSaved";
 import Sidebar from "../components/Layout/Sidebar";
 import ImportOPML from "../components/Menu/ImportOPML";
-import ArticleList from "../components/ArticleList";
 import ImportJSON from "../components/Menu/ImportJSON";
 import { useAuth } from "../context/AuthContext";
 import { getArticles } from "../services/articleService";
 import useFeeds from "../hooks/useFeed";
 import useArticles from "../hooks/useArticle";
 import useCategories from "../hooks/useCategory";
+import useSavedArticles from "../hooks/useSavedArticles";
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -55,6 +57,9 @@ export default function Dashboard() {
     loadHome,
     clearArticles,
   } = useArticles();
+
+  const { savedArticles, loadingSaved, toggleSaved, isSaved } =
+    useSavedArticles(user);
   const { categories, loadingCategories, setCategories, reorderCategories } =
     useCategories(user, feeds, loadingFeeds);
 
@@ -94,24 +99,48 @@ export default function Dashboard() {
           onReorderCategories={reorderCategories}
           handleDeleteFeed={handleDelete}
           handleEditFeed={handleEdit}
-          onShowAll={() => setView("all")}
+          onShowAll={() => {
+            setView("all");
+            selectFeed(null);
+          }}
+          onShowSaved={() => {
+            setView("saved");
+            selectFeed(null);
+          }}
         />
 
-        {view === "all" ? (
+        {view === "all" && (
           <AllItems
             articles={allArticles}
             loading={loadingHome}
             selectedArticle={selectedArticle}
+            isSaved={isSaved}
+            toggleSaved={toggleSaved}
             onSelectArticle={setSelectedArticle}
           />
-        ) : (
+        )}
+
+        {view === "feed" && (
           <ArticleList
             articles={articles}
             loading={loadingArticles}
+            isSaved={isSaved}
+            toggleSaved={toggleSaved}
             onSelectArticle={setSelectedArticle}
             selectedArticle={selectedArticle}
             selectedFeed={selectedFeed}
             articleError={articleError}
+          />
+        )}
+
+        {view === "saved" && (
+          <ArticleSaved
+            articles={savedArticles}
+            loading={loadingSaved}
+            selectedArticle={selectedArticle}
+            onSelectArticle={setSelectedArticle}
+            onToggleSaved={toggleSaved}
+            isSaved={isSaved}
           />
         )}
       </main>

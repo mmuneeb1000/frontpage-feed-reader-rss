@@ -8,6 +8,8 @@ export default function AllItems({
   loading,
   selectedArticle,
   onSelectArticle,
+  isSaved,
+  toggleSaved,
 }) {
   const { visibleItems, loaderRef, hasMore } = useInfiniteScroll(articles);
   if (loading) {
@@ -28,6 +30,8 @@ export default function AllItems({
           article={article}
           selected={selectedArticle?.link === article.link}
           onSelect={onSelectArticle}
+          saved={isSaved(article)}
+          onToggleSaved={toggleSaved}
         />
       ))}
       {hasMore && (
