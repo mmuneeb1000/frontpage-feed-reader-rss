@@ -14,7 +14,7 @@ import useArticles from "../hooks/useArticle";
 import useCategories from "../hooks/useCategory";
 import useSavedArticles from "../hooks/useSavedArticles";
 
-export default function Dashboard() {
+export default function Dashboard({ demo = false }) {
   const { user } = useAuth();
 
   const [loading, setLoading] = useState(true);
@@ -40,7 +40,7 @@ export default function Dashboard() {
 
     handleEdit,
     selectFeed,
-  } = useFeeds(user);
+  } = useFeeds(user, demo);
   const {
     articles,
     allArticles,
@@ -59,9 +59,9 @@ export default function Dashboard() {
   } = useArticles();
 
   const { savedArticles, loadingSaved, toggleSaved, isSaved } =
-    useSavedArticles(user);
+    useSavedArticles(demo ? null : user);
   const { categories, loadingCategories, setCategories, reorderCategories } =
-    useCategories(user, feeds, loadingFeeds);
+    useCategories(user, feeds, loadingFeeds, demo);
 
   const filteredFeeds = useMemo(() => {
     return selectedCategory
@@ -84,6 +84,7 @@ export default function Dashboard() {
   return (
     <>
       <Header
+        demo={demo}
         onCreateFeed={() => setActiveModal("feed")}
         onImportOPML={() => setActiveModal("opml")}
         onImportJSON={() => setActiveModal("json")}

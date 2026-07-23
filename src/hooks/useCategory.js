@@ -7,13 +7,25 @@ import {
   updateCategory,
 } from "../services/categoryService";
 
-export default function useCategories(user, feeds, loadingFeeds) {
+export default function useCategories(user, feeds, loadingFeeds, demo) {
   const [categories, setCategories] = useState([]);
   const [loadingCategories, setLoadingCategories] = useState(true);
 
   async function syncCategories() {
     if (!user) return;
+    if (demo) {
+      const demoCategories = [
+        ...new Set(feeds.map((feed) => feed.category)),
+      ].map((category, index) => ({
+        id: `demo-${index}`,
+        category,
+        position: index,
+      }));
 
+      setCategories(demoCategories);
+      setLoadingCategories(false);
+      return;
+    }
     setLoadingCategories(true);
 
     const feedCategories = [
@@ -32,7 +44,6 @@ export default function useCategories(user, feeds, loadingFeeds) {
 
     const existing = new Set(current.map((c) => c.category));
 
-    // Add missing categories
     for (const category of feedCategories) {
       if (!existing.has(category)) {
         const { data: created } = await createCategory({

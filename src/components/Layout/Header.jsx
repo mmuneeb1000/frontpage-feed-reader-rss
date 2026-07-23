@@ -3,7 +3,12 @@ import { useState, useRef, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
 import AddFeedMenu from "../Menu/AddFeedMenu";
 
-export default function Header({ onCreateFeed, onImportOPML, onImportJSON }) {
+export default function Header({
+  demo = false,
+  onCreateFeed,
+  onImportOPML,
+  onImportJSON,
+}) {
   const { user, signOut } = useAuth();
   const { first_name, last_name, full_name } = user?.user_metadata ?? {};
   const [open, setOpen] = useState(false);
@@ -34,17 +39,18 @@ export default function Header({ onCreateFeed, onImportOPML, onImportJSON }) {
 
         <nav className="flex gap-4 justify-between items-center">
           <AddFeedMenu
+            demo={demo}
             onCreateFeed={onCreateFeed}
             onImportOPML={onImportOPML}
             onImportJSON={onImportJSON}
           />
           <ul className="flex items-center gap-4">
-            {!user ? (
+            {demo ? (
               <>
                 <li>
                   <Link
                     to="/login"
-                    className="rounded-md px-3 py-2 hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-600"
+                    className="rounded-md px-4 py-2 hover:bg-gray-100"
                   >
                     Login
                   </Link>
@@ -53,7 +59,27 @@ export default function Header({ onCreateFeed, onImportOPML, onImportJSON }) {
                 <li>
                   <Link
                     to="/register"
-                    className="rounded-md bg-green-600 px-4 py-2 text-white hover:bg-green-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-600"
+                    className="rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+                  >
+                    Create Account
+                  </Link>
+                </li>
+              </>
+            ) : !user ? (
+              <>
+                <li>
+                  <Link
+                    to="/login"
+                    className="rounded-md px-4 py-2 hover:bg-gray-100"
+                  >
+                    Login
+                  </Link>
+                </li>
+
+                <li>
+                  <Link
+                    to="/register"
+                    className="rounded-md bg-green-600 px-4 py-2 text-white hover:bg-green-700"
                   >
                     Register
                   </Link>
@@ -97,16 +123,6 @@ export default function Header({ onCreateFeed, onImportOPML, onImportJSON }) {
                         className="flex w-full items-center px-4 py-3 text-left text-sm text-gray-400"
                       >
                         Preferences
-                        <span className="ml-auto rounded bg-gray-100 px-2 py-0.5 text-xs">
-                          Soon
-                        </span>
-                      </button>
-
-                      <button
-                        disabled
-                        className="flex w-full items-center px-4 py-3 text-left text-sm text-gray-400"
-                      >
-                        Bookmarks
                         <span className="ml-auto rounded bg-gray-100 px-2 py-0.5 text-xs">
                           Soon
                         </span>

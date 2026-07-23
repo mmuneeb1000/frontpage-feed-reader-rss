@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import sampleFeeds from "../data/sample-feeds.json";
 import {
   getFeeds,
   createFeed,
@@ -7,16 +8,37 @@ import {
   clearFeeds,
 } from "../services/feedService";
 
-export default function useFeeds(user) {
+export default function useFeeds(user, demo = false) {
   const [feeds, setFeeds] = useState([]);
   const [loadingFeeds, setLoadingFeeds] = useState(true);
   const [activeModal, setActiveModal] = useState(null);
 
   const [selectedFeed, setSelectedFeed] = useState(null);
   const [editingFeed, setEditingFeed] = useState(null);
-
+  function getDemoFeeds() {
+    return sampleFeeds.categories.flatMap((category) =>
+      category.feeds.map((feed, index) => ({
+        id: `demo-${category.name}-${index}`,
+        title: feed.title,
+        description: feed.description ?? "",
+        link: feed.feedUrl,
+        siteUrl: feed.siteUrl,
+        category: category.name,
+        isDemo: true,
+      })),
+    );
+  }
   async function loadFeeds() {
-    if (!user) return;
+    if (demo) {
+      setFeeds(getDemoFeeds());
+      setLoadingFeeds(false);
+      return;
+    }
+    if (!user) {
+      setFeeds(getDemoFeeds());
+      setLoadingFeeds(false);
+      return;
+    }
 
     setLoadingFeeds(true);
 
@@ -30,6 +52,7 @@ export default function useFeeds(user) {
   }
 
   async function handleCreate(feed) {
+    if (demo) return;
     const { data, error } = await createFeed({
       ...feed,
       user_id: user.id,
@@ -45,6 +68,7 @@ export default function useFeeds(user) {
   }
 
   async function handleUpdate(updatedFeed) {
+    if (demo) return;
     const { data, error } = await updateFeed(editingFeed.id, updatedFeed);
 
     if (error) {
@@ -61,6 +85,7 @@ export default function useFeeds(user) {
   }
 
   async function handleDelete(id) {
+    if (demo) return;
     const { error } = await deleteFeed(id);
 
     if (error) {
@@ -77,6 +102,7 @@ export default function useFeeds(user) {
   }
 
   async function handleClear() {
+    if (demo) return;
     const { error } = await clearFeeds(user.id);
 
     if (error) {
