@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
-import AddFeedMenu from "../Menu/AddFeedMenu";
 
 export default function Header({
+  children,
   demo = false,
+  publicPage = false,
   onCreateFeed,
   onImportOPML,
   onImportJSON,
@@ -28,7 +29,7 @@ export default function Header({
     <header className="border-b border-gray-300 bg-white">
       <div className="flex items-center justify-between px-6 py-2">
         <Link
-          to={user ? "/dashboard" : "/login"}
+          to={user ? "/dashboard" : "/"}
           className="flex text-xl font-semibold"
         >
           <span className="w-8 flex">
@@ -38,12 +39,7 @@ export default function Header({
         </Link>
 
         <nav className="flex gap-4 justify-between items-center">
-          <AddFeedMenu
-            demo={demo}
-            onCreateFeed={onCreateFeed}
-            onImportOPML={onImportOPML}
-            onImportJSON={onImportJSON}
-          />
+          {children}
           <ul className="flex items-center gap-4">
             {demo ? (
               <>
@@ -79,7 +75,7 @@ export default function Header({
                 <li>
                   <Link
                     to="/register"
-                    className="rounded-md bg-green-600 px-4 py-2 text-white hover:bg-green-700"
+                    className="rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
                   >
                     Register
                   </Link>

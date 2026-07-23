@@ -62,13 +62,13 @@ export default function Login() {
             required
           />
 
-          <button className="w-full rounded-md bg-green-600 py-3 text-white hover:bg-green-700">
+          <button className="w-full rounded-md bg-blue-600 py-3 text-white hover:bg-blue-700">
             Login
           </button>
 
           <p className="text-center text-sm">
             Don't have an account?{" "}
-            <Link to="/register" className="text-green-600">
+            <Link to="/register" className="text-blue-600">
               Register
             </Link>
           </p>

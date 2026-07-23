@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo, useCallback } from "react";
-import Header from "../components/Layout/Header";
+import DashboardHeader from "../components/Layout/DashboardHeader";
 import FeedForm from "../components/Menu/FeedForm";
 import AllItems from "../components/AllItems";
 import ArticleList from "../components/ArticleList";
@@ -83,7 +83,7 @@ export default function Dashboard({ demo = false }) {
   }, [feeds]);
   return (
     <>
-      <Header
+      <DashboardHeader
         demo={demo}
         onCreateFeed={() => setActiveModal("feed")}
         onImportOPML={() => setActiveModal("opml")}

@@ -12,7 +12,6 @@ export default function useCategories(user, feeds, loadingFeeds, demo) {
   const [loadingCategories, setLoadingCategories] = useState(true);
 
   async function syncCategories() {
-    if (!user) return;
     if (demo) {
       const demoCategories = [
         ...new Set(feeds.map((feed) => feed.category)),
@@ -26,6 +25,7 @@ export default function useCategories(user, feeds, loadingFeeds, demo) {
       setLoadingCategories(false);
       return;
     }
+    if (!user) return;
     setLoadingCategories(true);
 
     const feedCategories = [
@@ -71,6 +71,7 @@ export default function useCategories(user, feeds, loadingFeeds, demo) {
   }
 
   async function reorderCategories(activeId, overId) {
+    if (demo) return;
     if (activeId === overId) return;
 
     const oldIndex = categories.findIndex((c) => c.id === activeId);
@@ -89,10 +90,12 @@ export default function useCategories(user, feeds, loadingFeeds, demo) {
     );
   }
   useEffect(() => {
-    if (!user || loadingFeeds) return;
+    if (loadingFeeds) return;
 
-    syncCategories();
-  }, [user, feeds, loadingFeeds]);
+    if (demo || user) {
+      syncCategories();
+    }
+  }, [demo, user, feeds, loadingFeeds]);
 
   return {
     categories,

@@ -54,7 +54,7 @@ export default function Register() {
           )}
 
           {message && (
-            <p className="rounded bg-green-100 p-3 text-green-700">{message}</p>
+            <p className="rounded bg-blue-100 p-3 text-blue-700">{message}</p>
           )}
           <input
             type="text"
@@ -93,13 +93,13 @@ export default function Register() {
             required
           />
 
-          <button className="w-full rounded-md bg-green-600 py-3 text-white hover:bg-green-700">
+          <button className="w-full rounded-md bg-blue-600 py-3 text-white hover:bg-blue-700">
             Register
           </button>
 
           <p className="text-center text-sm">
             Already have an account?
-            <Link to="/login" className="ml-4 text-green-600">
+            <Link to="/login" className="ml-4 text-blue-600">
               Login
             </Link>
           </p>
