@@ -30,7 +30,11 @@ export async function markArticleUnread(articleId, userId) {
   });
 }
 export async function markAllArticlesRead(articles, userId) {
-  const rows = articles.map((article) => ({
+  const uniqueArticles = [
+    ...new Map(articles.map((article) => [article.id, article])).values(),
+  ];
+
+  const rows = uniqueArticles.map((article) => ({
     user_id: userId,
     article_id: article.id,
     status: "read",
