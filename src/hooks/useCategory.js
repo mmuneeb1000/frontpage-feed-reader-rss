@@ -6,15 +6,22 @@ import {
   deleteCategory,
   updateCategory,
 } from "../services/categoryService";
+import { updateFeedsCategory } from "../services/feedService";
 
-export default function useCategories(user, feeds, loadingFeeds, demo) {
+export default function useCategories(
+  user,
+  feeds,
+  loadingFeeds,
+  setFeeds,
+  demo,
+) {
   const [categories, setCategories] = useState([]);
   const [loadingCategories, setLoadingCategories] = useState(true);
 
   async function syncCategories() {
     if (demo) {
       const demoCategories = [
-        ...new Set(feeds.map((feed) => feed.category)),
+        ...new Set(feeds.map((feed) => feed.category || "Uncategorized")),
       ].map((category, index) => ({
         id: `demo-${index}`,
         category,
@@ -25,16 +32,23 @@ export default function useCategories(user, feeds, loadingFeeds, demo) {
       setLoadingCategories(false);
       return;
     }
+
     if (!user) return;
+
     if (feeds.length === 0) {
       setCategories([]);
       setLoadingCategories(false);
       return;
     }
+
     setLoadingCategories(true);
 
     const feedCategories = [
-      ...new Set(feeds.map((feed) => feed.category || "Feed").filter(Boolean)),
+      ...new Set(
+        feeds
+          .map((feed) => feed.category?.trim() || "Uncategorized")
+          .filter(Boolean),
+      ),
     ];
 
     const { data, error } = await getCategories(user.id);
@@ -45,25 +59,39 @@ export default function useCategories(user, feeds, loadingFeeds, demo) {
       return;
     }
 
-    let current = data ?? [];
+    let current = (data ?? []).filter(Boolean);
 
-    const existing = new Set(current.map((c) => c.category));
+    // Remove duplicate categories from database result
+    const uniqueCategories = new Map();
 
+    current.forEach((item) => {
+      if (!uniqueCategories.has(item.category)) {
+        uniqueCategories.set(item.category, item);
+      }
+    });
+
+    current = Array.from(uniqueCategories.values());
+
+    const existing = new Set(current.map((item) => item.category));
+
+    // Create missing categories
     for (const category of feedCategories) {
       if (!existing.has(category)) {
-        const { data: created } = await createCategory({
+        const { data: created, error: createError } = await createCategory({
           user_id: user.id,
           category,
           position: current.length,
         });
 
-        current.push(created);
-      }
-    }
+        if (createError) {
+          console.error(createError);
+          continue;
+        }
 
-    for (const category of current) {
-      if (!feedCategories.includes(category.category)) {
-        await deleteCategory(category.id);
+        if (created) {
+          current.push(created);
+          existing.add(category);
+        }
       }
     }
 
@@ -75,7 +103,7 @@ export default function useCategories(user, feeds, loadingFeeds, demo) {
       return;
     }
 
-    setCategories((updated || []).sort((a, b) => a.position - b.position));
+    setCategories((updated ?? []).sort((a, b) => a.position - b.position));
 
     setLoadingCategories(false);
   }
@@ -99,6 +127,91 @@ export default function useCategories(user, feeds, loadingFeeds, demo) {
       ),
     );
   }
+  async function renameCategory(id, newName) {
+    const category = categories.find((c) => c.id === id);
+
+    if (!category) return;
+
+    const name = newName?.trim();
+
+    if (!name || name === category.category) return;
+
+    const oldName = category.category;
+
+    // Update feeds first
+    const { error: feedError } = await updateFeedsCategory(
+      user.id,
+      oldName,
+      name,
+    );
+
+    if (feedError) {
+      console.error(feedError);
+      return;
+    }
+
+    // Update category order
+    const { error: categoryError } = await updateCategory(id, {
+      category: name,
+    });
+
+    if (categoryError) {
+      console.error(categoryError);
+      return;
+    }
+
+    setFeeds((prev) =>
+      prev.map((feed) =>
+        feed.category === oldName
+          ? {
+              ...feed,
+              category: name,
+            }
+          : feed,
+      ),
+    );
+  }
+  async function removeCategory(id) {
+    const category = categories.find((item) => item.id === id);
+
+    if (!category) return;
+
+    const categoryName = category.category;
+
+    if (categoryName === "Uncategorized") {
+      return;
+    }
+
+    const { error: feedError } = await updateFeedsCategory(
+      user.id,
+      categoryName,
+      "Uncategorized",
+    );
+
+    if (feedError) {
+      console.error(feedError);
+      return;
+    }
+
+    const { error: categoryError } = await deleteCategory(id);
+
+    if (categoryError) {
+      console.error(categoryError);
+      return;
+    }
+    setFeeds((prev) =>
+      prev.map((feed) =>
+        feed.category === categoryName
+          ? {
+              ...feed,
+              category: "Uncategorized",
+            }
+          : feed,
+      ),
+    );
+
+    setCategories((prev) => prev.filter((item) => item.id !== id));
+  }
   useEffect(() => {
     if (loadingFeeds) return;
 
@@ -110,6 +223,8 @@ export default function useCategories(user, feeds, loadingFeeds, demo) {
   return {
     categories,
     loadingCategories,
+    renameCategory,
+    removeCategory,
     reorderCategories,
     setCategories,
     syncCategories,

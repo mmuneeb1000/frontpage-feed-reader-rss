@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
@@ -9,14 +10,17 @@ export default function SidebarCategory({
   feeds,
   selectedFeed,
   isOpen,
-  openMenu,
-  setOpenMenu,
   toggleCategory,
   onSelectFeed,
   handleEditFeed,
   handleDeleteFeed,
   getCategoryColor,
+  renameCategory,
+  removeCategory,
 }) {
+  const [openFeedMenu, setOpenFeedMenu] = useState(null);
+  const [openCategoryMenu, setOpenCategoryMenu] = useState(false);
+
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({
       id: category.id,
@@ -28,8 +32,8 @@ export default function SidebarCategory({
   };
 
   return (
-    <div ref={setNodeRef} style={style}>
-      <div className="flex w-full items-center rounded-lg px-3 py-2 hover:bg-gray-100">
+    <div ref={setNodeRef} style={style} className="relative">
+      <div className="flex items-center gap-2">
         <button
           {...attributes}
           {...listeners}
@@ -38,19 +42,65 @@ export default function SidebarCategory({
           onClick={(e) => e.stopPropagation()}
           className="cursor-grab touch-none rounded p-1 text-gray-400 hover:bg-gray-200"
         >
-          <LuGripVertical className="h-4 w-4" />
+          <LuGripVertical />
         </button>
 
         <button
           onClick={() => toggleCategory(category.category)}
-          className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-xs font-semibold uppercase text-neutral-900 hover:bg-gray-100"
+          className="flex flex-1 items-center gap-3 rounded-lg px-3 py-2 text-xs font-semibold uppercase text-neutral-900 hover:bg-gray-100"
         >
           <span
-            className={`h-2.5 w-2.5 rounded-full ${getCategoryColor(category.category)}`}
+            className={`h-2.5 w-2.5 rounded-full ${getCategoryColor(
+              category.category,
+            )}`}
           />
 
           <span className="flex-1 text-left">{category.category}</span>
         </button>
+
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            setOpenCategoryMenu((prev) => !prev);
+          }}
+          className="rounded p-2 text-gray-500 hover:bg-gray-100"
+        >
+          <FiMoreVertical />
+        </button>
+
+        {openCategoryMenu && (
+          <div
+            className="absolute right-0 top-10 z-50 w-40 overflow-hidden 
+          rounded-lg border border-gray-200 bg-white shadow-lg"
+          >
+            <button
+              onClick={() => {
+                setOpenCategoryMenu(false);
+
+                const newName = prompt("Rename category", category.category);
+
+                if (!newName) return;
+
+                renameCategory(category.id, newName);
+              }}
+              className="flex w-full items-center gap-3 px-4 py-2 text-left text-sm hover:bg-gray-100"
+            >
+              <FiEdit2 />
+              Rename
+            </button>
+
+            <button
+              onClick={() => {
+                setOpenCategoryMenu(false);
+                removeCategory(category.id);
+              }}
+              className="flex w-full items-center gap-3 px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50"
+            >
+              <FiTrash2 />
+              Delete
+            </button>
+          </div>
+        )}
       </div>
 
       {isOpen && (
@@ -71,7 +121,7 @@ export default function SidebarCategory({
                   className="h-4 w-4 shrink-0"
                 />
 
-                <span className="text-[13px] font-semibold truncate">
+                <span className="truncate text-[13px] font-semibold">
                   {feed.title}
                 </span>
               </button>
@@ -79,18 +129,18 @@ export default function SidebarCategory({
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  setOpenMenu(openMenu === feed.id ? null : feed.id);
+                  setOpenFeedMenu(openFeedMenu === feed.id ? null : feed.id);
                 }}
                 className="rounded p-2 text-gray-500 hover:bg-gray-100"
               >
                 <FiMoreVertical />
               </button>
 
-              {openMenu === feed.id && (
+              {openFeedMenu === feed.id && (
                 <div className="absolute right-0 top-10 z-50 w-40 overflow-hidden rounded-lg border border-gray-200 bg-white shadow-lg">
                   <button
                     onClick={() => {
-                      setOpenMenu(null);
+                      setOpenFeedMenu(null);
                       handleEditFeed(feed);
                     }}
                     className="flex w-full items-center gap-3 px-4 py-2 text-left text-sm hover:bg-gray-100"
@@ -101,7 +151,7 @@ export default function SidebarCategory({
 
                   <button
                     onClick={() => {
-                      setOpenMenu(null);
+                      setOpenFeedMenu(null);
                       handleDeleteFeed(feed.id);
                     }}
                     className="flex w-full items-center gap-3 px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50"

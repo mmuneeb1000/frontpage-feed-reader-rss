@@ -66,7 +66,11 @@ export default function useFeeds(user, demo = false) {
       return { error };
     }
 
-    setFeeds((prev) => [data, ...prev]);
+    setFeeds((prev) =>
+      prev.map((feed) =>
+        feed.category === oldName ? { ...feed, category: name } : feed,
+      ),
+    );
 
     return { data, error: null };
   }

@@ -27,3 +27,12 @@ export async function clearFeeds(userId) {
 export async function deleteFeed(id) {
   return await supabase.from("feeds").delete().eq("id", id);
 }
+export async function updateFeedsCategory(userId, oldCategory, newCategory) {
+  return supabase
+    .from("feeds")
+    .update({
+      category: newCategory,
+    })
+    .eq("user_id", userId)
+    .eq("category", oldCategory);
+}

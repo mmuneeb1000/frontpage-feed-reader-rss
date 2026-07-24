@@ -32,6 +32,8 @@ export default function Sidebar({
   onReorderCategories,
   savedCount,
   unreadCount,
+  renameCategory,
+  removeCategory,
 }) {
   const [openCategories, setOpenCategories] = useState(new Set());
 
@@ -140,6 +142,8 @@ active:bg-gray-200
                       handleEditFeed={handleEditFeed}
                       handleDeleteFeed={handleDeleteFeed}
                       getCategoryColor={getCategoryColor}
+                      renameCategory={renameCategory}
+                      removeCategory={removeCategory}
                     />
                   );
                 })}

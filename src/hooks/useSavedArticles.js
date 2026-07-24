@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getSavedArticles, toggleSavedArticle } from "../services/savedService";
 
-export default function useSavedArticles(user) {
+export default function useSavedArticles(user, setSelectedArticle) {
   const [savedArticles, setSavedArticles] = useState([]);
   const [loadingSaved, setLoadingSaved] = useState(true);
 
@@ -31,28 +31,27 @@ export default function useSavedArticles(user) {
 
     const exists = savedArticles.some((saved) => saved.link === article.link);
 
-    const previous = savedArticles;
-
     if (exists) {
       setSavedArticles((prev) =>
         prev.filter((saved) => saved.link !== article.link),
       );
+
+      setSelectedArticle((prev) =>
+        prev?.link === article.link ? { ...prev, saved: false } : prev,
+      );
     } else {
-      setSavedArticles((prev) => [
-        {
-          ...article,
-          user_id: user.id,
-          saved_at: new Date().toISOString(),
-        },
-        ...prev,
-      ]);
-    }
+      const savedArticle = {
+        ...article,
+        user_id: user.id,
+        saved_at: new Date().toISOString(),
+        saved: true,
+      };
 
-    const { error } = await toggleSavedArticle(article, user.id);
+      setSavedArticles((prev) => [savedArticle, ...prev]);
 
-    if (error) {
-      console.error(error);
-      setSavedArticles(previous);
+      setSelectedArticle((prev) =>
+        prev?.link === article.link ? { ...prev, saved: true } : prev,
+      );
     }
   }
 

@@ -6,6 +6,7 @@ import AllItems from "../components/AllItems";
 import ArticleList from "../components/ArticleList";
 import ArticleSaved from "../components/ArticleSaved";
 import Sidebar from "../components/Layout/Sidebar";
+import ReaderView from "../components/Reader/ReaderView";
 import ImportOPML from "../components/Menu/ImportOPML";
 import ImportJSON from "../components/Menu/ImportJSON";
 import { useAuth } from "../context/AuthContext";
@@ -30,13 +31,13 @@ export default function Dashboard({ demo = false }) {
     editingFeed,
     activeModal,
 
+    setFeeds,
     setEditingFeed,
     setActiveModal,
     handleCreate,
     handleUpdate,
     handleDelete,
     handleClear,
-
     handleImport,
     handleJsonImport,
 
@@ -61,9 +62,15 @@ export default function Dashboard({ demo = false }) {
   } = useArticles();
 
   const { savedArticles, loadingSaved, toggleSaved, isSaved } =
-    useSavedArticles(demo ? null : user);
-  const { categories, loadingCategories, setCategories, reorderCategories } =
-    useCategories(user, feeds, loadingFeeds, demo);
+    useSavedArticles(demo ? null : user, setSelectedArticle);
+  const {
+    categories,
+    loadingCategories,
+    setCategories,
+    reorderCategories,
+    renameCategory,
+    removeCategory,
+  } = useCategories(user, feeds, loadingFeeds, setFeeds, demo);
   const { statuses, toggleRead, markAllRead } = useArticleStatus(
     demo ? null : user,
   );
@@ -126,7 +133,7 @@ export default function Dashboard({ demo = false }) {
         handleClearFeeds={handleClear}
       />
 
-      <main className="grid h-[calc(100vh-64px)] grid-cols-[18rem_1fr]">
+      <main className="grid h-[calc(100vh-64px)] grid-cols-[18rem_1fr_26rem] overflow-hidden">
         <Sidebar
           view={view}
           unreadCount={unreadCount}
@@ -134,6 +141,8 @@ export default function Dashboard({ demo = false }) {
           feeds={filteredFeeds}
           categories={categories}
           selectedFeed={selectedFeed}
+          renameCategory={renameCategory}
+          removeCategory={removeCategory}
           onSelectFeed={handleSelectFeed}
           onReorderCategories={reorderCategories}
           handleDeleteFeed={handleDelete}
@@ -147,7 +156,7 @@ export default function Dashboard({ demo = false }) {
             selectFeed(null);
           }}
         />
-        <div className="flex flex-1 flex-col">
+        <div className="flex flex-1 flex-col overflow-y-auto">
           <ArticleToolbar
             title={currentToolbar.title}
             count={currentToolbar.count}
@@ -172,6 +181,7 @@ export default function Dashboard({ demo = false }) {
           {view === "feed" && (
             <ArticleList
               articles={applyReadStatus(articles)}
+              onSelectArticle={setSelectedArticle}
               loading={loadingArticles}
               isSaved={isSaved}
               toggleSaved={toggleSaved}
@@ -199,6 +209,12 @@ export default function Dashboard({ demo = false }) {
             />
           )}
         </div>
+        <ReaderView
+          article={selectedArticle}
+          onBack={() => setSelectedArticle(null)}
+          onToggleSaved={toggleSaved}
+          isSaved={isSaved}
+        />
       </main>
 
       {activeModal === "feed" && (
