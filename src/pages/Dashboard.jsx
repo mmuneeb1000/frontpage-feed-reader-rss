@@ -16,13 +16,13 @@ import useArticles from "../hooks/useArticle";
 import useCategories from "../hooks/useCategory";
 import useSavedArticles from "../hooks/useSavedArticles";
 import useArticleStatus from "../hooks/useArticleStatus";
+import useSearch from "../hooks/useSearch";
 
 export default function Dashboard({ demo = false }) {
   const { user } = useAuth();
-
   const [loading, setLoading] = useState(true);
-  const [selectedCategory, setSelectedCategory] = useState(null);
   const [view, setView] = useState("all");
+  const [selectedCategory, setSelectedCategory] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const {
@@ -103,23 +103,29 @@ export default function Dashboard({ demo = false }) {
       loadHome(feeds);
     }
   }, [feeds]);
+  const [search, setSearch] = useState("");
+  const searchedAllArticles = useSearch(allArticles, search);
+
+  const searchedArticles = useSearch(articles, search);
+
+  const searchedSavedArticles = useSearch(savedArticles, search);
   const toolbar = {
     all: {
       title: "All Items",
-      count: unreadCount,
-      articles: allArticles,
+      count: searchedAllArticles.length,
+      articles: searchedAllArticles,
       showMarkAllRead: true,
     },
     feed: {
       title: selectedFeed?.title ?? "Feed",
-      count: articles.length,
-      articles: articles,
+      count: searchedArticles.length,
+      articles: searchedArticles,
       showMarkAllRead: true,
     },
     saved: {
       title: "Saved",
-      count: savedArticles.length,
-      articles: savedArticles,
+      count: searchedSavedArticles.length,
+      articles: searchedSavedArticles,
       showMarkAllRead: true,
     },
   };
@@ -134,6 +140,8 @@ export default function Dashboard({ demo = false }) {
         onImportJSON={() => setActiveModal("json")}
         handleClearFeeds={handleClear}
         setSidebarOpen={setSidebarOpen}
+        value={search}
+        onChange={(value) => setSearch(value)}
       />
 
       <main className="grid grid-cols-[1fr] h-[calc(100vh-64px)] md:grid-cols-[18rem_1fr_26rem] overflow-hidden">
@@ -171,7 +179,7 @@ export default function Dashboard({ demo = false }) {
           />
           {view === "all" && (
             <AllItems
-              articles={applyReadStatus(allArticles)}
+              articles={applyReadStatus(searchedAllArticles)}
               loading={loadingHome}
               selectedArticle={selectedArticle}
               isSaved={isSaved}
@@ -185,7 +193,7 @@ export default function Dashboard({ demo = false }) {
 
           {view === "feed" && (
             <ArticleList
-              articles={applyReadStatus(articles)}
+              articles={applyReadStatus(searchedArticles)}
               onSelectArticle={setSelectedArticle}
               loading={loadingArticles}
               isSaved={isSaved}
@@ -202,7 +210,7 @@ export default function Dashboard({ demo = false }) {
 
           {view === "saved" && (
             <ArticleSaved
-              articles={applyReadStatus(savedArticles)}
+              articles={applyReadStatus(searchedSavedArticles)}
               loading={loadingSaved}
               selectedArticle={selectedArticle}
               onSelectArticle={(article) => {

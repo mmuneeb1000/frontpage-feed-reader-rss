@@ -82,7 +82,7 @@ export default function Sidebar({
   return (
     <aside
       className={`
-    fixed inset-y-0 left-0 z-50 bg-white border-r border-gray-300
+    fixed inset-y-0 left-0 z-50 w-full md:w-[18rem] bg-white border-r border-gray-300
     transform transition-transform duration-300 flex flex-col justify-between
     ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
     md:static md:translate-x-0

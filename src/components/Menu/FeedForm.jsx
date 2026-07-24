@@ -150,24 +150,6 @@ export default function FeedForm({ onSubmit, onClose, feed }) {
 
           <div>
             <label
-              htmlFor="feed-description"
-              className="mb-1 block text-sm font-medium text-gray-700"
-            >
-              Description
-            </label>
-
-            <textarea
-              id="feed-description"
-              name="description"
-              rows={3}
-              value={form.description}
-              onChange={handleChange}
-              className="w-full rounded border border-gray-300 px-4 py-2 focus:border-blue-600 focus:outline-none"
-            />
-          </div>
-
-          <div>
-            <label
               htmlFor="feed-category"
               className="mb-1 block text-sm font-medium text-gray-700"
             >
@@ -181,7 +163,26 @@ export default function FeedForm({ onSubmit, onClose, feed }) {
               value={form.category}
               onChange={handleChange}
               placeholder="Feed"
-              className="w-full rounded border border-gray-300 px-4 py-2 focus:border-blue-600 focus:outline-none"
+              className="w-full rounded border border-gray-300 
+                px-4 py-2 focus:border-blue-600 focus:outline-none"
+            />
+          </div>
+          <div>
+            <label
+              htmlFor="feed-description"
+              className="mt-2 mb-1 block text-sm font-medium text-gray-700"
+            >
+              Description (optional)
+            </label>
+
+            <textarea
+              id="feed-description"
+              name="description"
+              rows={3}
+              value={form.description}
+              onChange={handleChange}
+              className="w-full rounded border border-gray-300 
+              px-4 py-2 focus:border-blue-600 focus:outline-none"
             />
           </div>
 

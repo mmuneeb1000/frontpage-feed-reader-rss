@@ -37,7 +37,7 @@ export default function ArticleCard({
           </div>
         </div>
 
-        <div className="mx-8 flex flex-col">
+        <div className="ml-8 flex flex-col">
           <div className="flex gap-4 items-start">
             <button onClick={() => onSelect?.(article)} className="text-left">
               <h3

@@ -1,19 +1,32 @@
 import Header from "./Header";
 import AddFeedMenu from "../Menu/AddFeedMenu";
+import SearchBar from "../SearchBar";
 
-export default function DashboardHeader(props) {
+export default function DashboardHeader({
+  demo,
+  handleClearFeeds,
+  setSidebarOpen,
+  onCreateFeed,
+  onImportOPML,
+  onImportJSON,
+  value,
+  onChange,
+}) {
   return (
     <Header
-      demo={props.demo}
-      handleClearFeeds={props.handleClearFeeds}
-      setSidebarOpen={props.setSidebarOpen}
+      demo={demo}
+      handleClearFeeds={handleClearFeeds}
+      setSidebarOpen={setSidebarOpen}
+      actions={
+        <AddFeedMenu
+          demo={demo}
+          onCreateFeed={onCreateFeed}
+          onImportOPML={onImportOPML}
+          onImportJSON={onImportJSON}
+        />
+      }
     >
-      <AddFeedMenu
-        demo={props.demo}
-        onCreateFeed={props.onCreateFeed}
-        onImportOPML={props.onImportOPML}
-        onImportJSON={props.onImportJSON}
-      />
+      <SearchBar value={value} onChange={onChange} />
     </Header>
   );
 }
