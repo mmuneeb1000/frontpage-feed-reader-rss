@@ -17,7 +17,7 @@ export default function ArticleSaved({
   }
 
   return (
-    <section className="flex h-full flex-col">
+    <section>
       {articles.length === 0 ? (
         <div className="flex flex-1 items-center justify-center text-gray-500">
           No saved articles yet.
@@ -30,7 +30,7 @@ export default function ArticleSaved({
               article={article}
               saved={isSaved(article)}
               onToggleSaved={onToggleSaved}
-              onSelectArticle={onSelectArticle}
+              onSelect={onSelectArticle}
               selected={selectedArticle?.link === article.link}
             />
           ))}

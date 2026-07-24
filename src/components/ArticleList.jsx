@@ -30,7 +30,7 @@ export default function ArticleList({
   }
 
   return (
-    <section className="overflow-y-auto border-r">
+    <section className="overflow-y-auto border-r border-gray-300">
       {visibleItems.map((article) => (
         <ArticleCard
           key={article.id || article.link}

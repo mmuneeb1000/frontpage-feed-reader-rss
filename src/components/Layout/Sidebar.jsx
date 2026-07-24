@@ -8,6 +8,7 @@ import {
   FiBookmark,
   FiRss,
   FiPlus,
+  FiX,
   FiChevronDown,
   FiChevronRight,
   FiCheckCircle,
@@ -34,17 +35,19 @@ export default function Sidebar({
   unreadCount,
   renameCategory,
   removeCategory,
+  sidebarOpen,
+  setSidebarOpen,
 }) {
   const [openCategories, setOpenCategories] = useState(new Set());
 
   const [openMenu, setOpenMenu] = useState(null);
   const navButton = (active) => `
-flex w-full items-center justify-between gap-3 rounded-lg px-3 py-2 text-left text-sm
-transition-colors duration-150 bg-blue-50
-${active ? "bg-blue-100 font-semibold text-blue-700" : "hover:bg-gray-100 text-gray-700"}
-focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1
-active:bg-gray-200
-`;
+    flex w-full items-center justify-between gap-3 rounded-lg px-3 py-2 text-left text-sm
+    transition-colors duration-150 bg-blue-50
+    ${active ? "bg-blue-100 font-semibold text-blue-700" : "hover:bg-gray-100 text-gray-700"}
+    focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1
+    active:bg-gray-200
+    `;
   const feedsByCategory = useMemo(() => {
     return feeds.reduce((acc, feed) => {
       const key = feed.category || "Feed";
@@ -56,6 +59,7 @@ active:bg-gray-200
       return acc;
     }, {});
   }, [feeds]);
+
   function toggleCategory(category) {
     setOpenCategories((prev) => {
       const updated = new Set(prev);
@@ -76,9 +80,26 @@ active:bg-gray-200
   }
 
   return (
-    <aside className="flex justify-between h-full w-72 flex-col border-r border-gray-300 bg-gray-50">
+    <aside
+      className={`
+    fixed inset-y-0 left-0 z-50 bg-white border-r border-gray-300
+    transform transition-transform duration-300 flex flex-col justify-between
+    ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
+    md:static md:translate-x-0
+  `}
+    >
       <div>
         <nav className="space-y-2 py-6 mx-4 border-b border-b-gray-300">
+          <div className="flex items-center justify-between border-b p-4 md:hidden">
+            <h2 className="font-semibold">Feeds</h2>
+
+            <button
+              onClick={() => setSidebarOpen(false)}
+              className="rounded-lg p-2 hover:bg-gray-100"
+            >
+              <FiX />
+            </button>
+          </div>
           <button onClick={onShowAll} className={navButton(view === "all")}>
             <span className="flex text-sm items-center gap-3">
               <FiHome />
@@ -92,7 +113,6 @@ active:bg-gray-200
               {unreadCount}
             </span>
           </button>
-
           <button onClick={onShowSaved} className={navButton(view === "saved")}>
             <span className="flex text-sm items-center gap-3">
               <FiBookmark />

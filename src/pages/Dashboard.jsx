@@ -23,6 +23,7 @@ export default function Dashboard({ demo = false }) {
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [view, setView] = useState("all");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const {
     feeds,
@@ -43,7 +44,7 @@ export default function Dashboard({ demo = false }) {
 
     handleEdit,
     selectFeed,
-  } = useFeeds(user, demo);
+  } = useFeeds(user, demo, setSidebarOpen);
   const {
     articles,
     allArticles,
@@ -63,6 +64,7 @@ export default function Dashboard({ demo = false }) {
 
   const { savedArticles, loadingSaved, toggleSaved, isSaved } =
     useSavedArticles(demo ? null : user, setSelectedArticle);
+
   const {
     categories,
     loadingCategories,
@@ -118,7 +120,7 @@ export default function Dashboard({ demo = false }) {
       title: "Saved",
       count: savedArticles.length,
       articles: savedArticles,
-      showMarkAllRead: false,
+      showMarkAllRead: true,
     },
   };
 
@@ -131,9 +133,10 @@ export default function Dashboard({ demo = false }) {
         onImportOPML={() => setActiveModal("opml")}
         onImportJSON={() => setActiveModal("json")}
         handleClearFeeds={handleClear}
+        setSidebarOpen={setSidebarOpen}
       />
 
-      <main className="grid h-[calc(100vh-64px)] grid-cols-[18rem_1fr_26rem] overflow-hidden">
+      <main className="grid grid-cols-[1fr] h-[calc(100vh-64px)] md:grid-cols-[18rem_1fr_26rem] overflow-hidden">
         <Sidebar
           view={view}
           unreadCount={unreadCount}
@@ -141,12 +144,14 @@ export default function Dashboard({ demo = false }) {
           feeds={filteredFeeds}
           categories={categories}
           selectedFeed={selectedFeed}
+          sidebarOpen={sidebarOpen}
           renameCategory={renameCategory}
           removeCategory={removeCategory}
           onSelectFeed={handleSelectFeed}
           onReorderCategories={reorderCategories}
           handleDeleteFeed={handleDelete}
           handleEditFeed={handleEdit}
+          setSidebarOpen={setSidebarOpen}
           onShowAll={() => {
             setView("all");
             selectFeed(null);

@@ -1,12 +1,14 @@
 import { Link } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
+import { FiMenu } from "react-icons/fi";
 
 export default function Header({
   children,
   demo = false,
   publicPage = false,
   handleClearFeeds,
+  setSidebarOpen,
 }) {
   const { user, signOut } = useAuth();
   const { first_name, last_name, full_name } = user?.user_metadata ?? {};
@@ -35,6 +37,12 @@ export default function Header({
           </span>
           <div className="p-2">Frontpage</div>
         </Link>
+        <button
+          onClick={() => setSidebarOpen(true)}
+          className="rounded-lg p-2 hover:bg-gray-100 md:hidden"
+        >
+          <FiMenu size={22} />
+        </button>
 
         <nav className="flex gap-4 justify-between items-center">
           {children}

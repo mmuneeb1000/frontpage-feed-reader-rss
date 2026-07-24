@@ -8,7 +8,7 @@ import {
   clearFeeds,
 } from "../services/feedService";
 
-export default function useFeeds(user, demo = false) {
+export default function useFeeds(user, demo = false, setSidebarOpen) {
   const [feeds, setFeeds] = useState([]);
   const [loadingFeeds, setLoadingFeeds] = useState(true);
   const [activeModal, setActiveModal] = useState(null);
@@ -57,6 +57,7 @@ export default function useFeeds(user, demo = false) {
 
   async function handleCreate(feed) {
     if (demo) return;
+
     const { data, error } = await createFeed({
       ...feed,
       user_id: user.id,
@@ -66,11 +67,7 @@ export default function useFeeds(user, demo = false) {
       return { error };
     }
 
-    setFeeds((prev) =>
-      prev.map((feed) =>
-        feed.category === oldName ? { ...feed, category: name } : feed,
-      ),
-    );
+    setFeeds((prev) => [data, ...prev]);
 
     return { data, error: null };
   }
@@ -157,6 +154,7 @@ export default function useFeeds(user, demo = false) {
 
   function selectFeed(feed) {
     setSelectedFeed(feed);
+    setSidebarOpen(false);
   }
 
   useEffect(() => {

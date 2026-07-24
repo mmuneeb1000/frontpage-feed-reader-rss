@@ -3,7 +3,11 @@ import AddFeedMenu from "../Menu/AddFeedMenu";
 
 export default function DashboardHeader(props) {
   return (
-    <Header demo={props.demo} handleClearFeeds={props.handleClearFeeds}>
+    <Header
+      demo={props.demo}
+      handleClearFeeds={props.handleClearFeeds}
+      setSidebarOpen={props.setSidebarOpen}
+    >
       <AddFeedMenu
         demo={props.demo}
         onCreateFeed={props.onCreateFeed}

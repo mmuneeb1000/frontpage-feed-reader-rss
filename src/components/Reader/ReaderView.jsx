@@ -10,17 +10,21 @@ export default function ReaderView({
 }) {
   if (!article) {
     return (
-      <div className="flex h-full items-center justify-center text-neutral-500">
+      <div
+        className="flex h-full items-center justify-center 
+      p-6 text-center text-neutral-500"
+      >
         Select an article to read
       </div>
     );
   }
 
   return (
-    <article className="mx-auto max-w-4xl px-6 py-8 overflow-y-auto">
+    <article className="mx-auto px-4 py-5 md:px-6 md:py-6 overflow-y-auto">
       <button
         onClick={onBack}
-        className="mb-6 rounded-lg px-3 py-2 text-sm hover:bg-neutral-100 
+        className="mb-5 flex items-center gap-2 rounded-lg px-3 py-2 text-sm 
+        transition hover:bg-neutral-100 focus:outline-none 
         focus:ring-2 focus:ring-blue-500 active:scale-95"
       >
         ← Back

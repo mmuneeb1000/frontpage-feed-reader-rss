@@ -9,12 +9,13 @@ export default function ReaderContent({ article, image }) {
           onError={(e) => {
             e.currentTarget.style.display = "none";
           }}
-          className="mb-8 mt-8 max-h-[500px] w-full rounded-xl object-cover"
+          className="mb-6 mt-6 max-h-80 w-full rounded-xl object-cover 
+          md:mb-8 md:mt-8 md:max-h-[500px]"
         />
       )}
 
       <div
-        className="prose mt-8 max-w-none"
+        className="mt-2 prose prose-sm max-w-none md:prose-base"
         dangerouslySetInnerHTML={{
           __html: article.content || article.description || "",
         }}
