@@ -24,7 +24,6 @@ export default function FeedForm({ onSubmit, onClose, feed }) {
 
     const feedData = {
       ...form,
-
       category: form.category.trim() || "Feed",
     };
 
@@ -48,6 +47,7 @@ export default function FeedForm({ onSubmit, onClose, feed }) {
 
     onClose();
   }
+
   useEffect(() => {
     if (feed) {
       setForm({
@@ -69,72 +69,140 @@ export default function FeedForm({ onSubmit, onClose, feed }) {
   }, [feed]);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-      <form
-        onSubmit={handleSubmit}
-        className="w-200 space-y-3 rounded-xl border border-gray-500 p-6 bg-white"
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
+      <div
+        className="w-full max-w-lg rounded-xl bg-white p-6 shadow-xl"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="feed-form-title"
       >
-        <div className="flex items-center justify-between">
-          <h2>{feed ? "Edit Feed" : "Add Feed"}</h2>
+        <div className="mb-6 flex items-center justify-between">
+          <h2
+            id="feed-form-title"
+            className="text-xl font-semibold text-gray-900"
+          >
+            {feed ? "Edit Feed" : "Add Feed"}
+          </h2>
+
           <button
             type="button"
             onClick={onClose}
-            className="rounded-lg p-2 text-gray-500 transition hover:bg-gray-100 hover:text-black"
-            aria-label="Close"
+            aria-label="Close dialog"
+            className="rounded p-2 text-gray-500 hover:bg-gray-100"
           >
             ✕
           </button>
         </div>
-        <input
-          name="title"
-          placeholder="Title"
-          value={form.title}
-          onChange={handleChange}
-          className="w-full rounded border border-gray-500 p-3"
-          required
-        />
-        <input
-          name="link"
-          type="url"
-          placeholder="RSS URL"
-          value={form.link}
-          onChange={handleChange}
-          className="w-full font-mono rounded border border-gray-500 p-3"
-          required
-        />
-        {error && <p className="mx-2 text-sm text-red-500">{error}</p>}
-        <input
-          name="category"
-          placeholder="Category"
-          value={form.category}
-          onChange={handleChange}
-          className="w-full rounded border border-gray-500 p-3"
-        />
-        <textarea
-          name="description"
-          placeholder="Description"
-          rows="4"
-          value={form.description}
-          onChange={handleChange}
-          className="w-full rounded border border-gray-400 p-3"
-        />
-        <div className="flex justify-end gap-3">
-          <button
-            type="button"
-            onClick={onClose}
-            className="rounded border border-gray-400 px-5 py-3 hover:bg-gray-50"
-          >
-            Cancel
-          </button>
 
-          <button
-            type="submit"
-            className="rounded bg-blue-600 px-5 py-3 text-white hover:bg-blue-700"
-          >
-            {feed ? "Save Changes" : "Add Feed"}
-          </button>
-        </div>
-      </form>
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div>
+            <label
+              htmlFor="feed-title"
+              className="mb-1 block text-sm font-medium text-gray-700"
+            >
+              Feed Title
+            </label>
+
+            <input
+              id="feed-title"
+              name="title"
+              type="text"
+              value={form.title}
+              onChange={handleChange}
+              required
+              aria-required="true"
+              autoFocus
+              className="w-full rounded border border-gray-300 px-4 py-2 focus:border-blue-600 focus:outline-none"
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="feed-link"
+              className="mb-1 block text-sm font-medium text-gray-700"
+            >
+              Feed URL
+            </label>
+
+            <input
+              id="feed-link"
+              name="link"
+              type="url"
+              value={form.link}
+              onChange={handleChange}
+              required
+              aria-required="true"
+              aria-invalid={!!error}
+              aria-describedby={error ? "feed-link-error" : undefined}
+              className="w-full rounded border border-gray-300 px-4 py-2 focus:border-blue-600 focus:outline-none"
+            />
+
+            {error && (
+              <p
+                id="feed-link-error"
+                role="alert"
+                className="mt-2 text-sm text-red-600"
+              >
+                {error}
+              </p>
+            )}
+          </div>
+
+          <div>
+            <label
+              htmlFor="feed-description"
+              className="mb-1 block text-sm font-medium text-gray-700"
+            >
+              Description
+            </label>
+
+            <textarea
+              id="feed-description"
+              name="description"
+              rows={3}
+              value={form.description}
+              onChange={handleChange}
+              className="w-full rounded border border-gray-300 px-4 py-2 focus:border-blue-600 focus:outline-none"
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="feed-category"
+              className="mb-1 block text-sm font-medium text-gray-700"
+            >
+              Category
+            </label>
+
+            <input
+              id="feed-category"
+              name="category"
+              type="text"
+              value={form.category}
+              onChange={handleChange}
+              placeholder="Feed"
+              className="w-full rounded border border-gray-300 px-4 py-2 focus:border-blue-600 focus:outline-none"
+            />
+          </div>
+
+          <div className="flex justify-end gap-3">
+            <button
+              type="button"
+              onClick={onClose}
+              className="rounded border border-gray-300 px-5 py-3 hover:bg-gray-50"
+            >
+              Cancel
+            </button>
+
+            <button
+              type="submit"
+              className="rounded bg-blue-600 px-5 py-3 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2"
+            >
+              {feed ? "Save Changes" : "Add Feed"}
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }

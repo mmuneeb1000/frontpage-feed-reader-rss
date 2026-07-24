@@ -16,7 +16,7 @@ export default function ArticleCard({
           : "border-blue-200 bg-white shadow-sm"
       }`}
     >
-      <div className="w-250">
+      <div className="w-220">
         <div className="mt-2 flex items-center gap-2 text-sm text-gray-500">
           <button
             onClick={(e) => {
@@ -54,7 +54,7 @@ export default function ArticleCard({
             </h3>
           </a>
 
-          <p className="mt-3 line-clamp-3 text-sm text-gray-600">
+          <p className="mt-2 line-clamp-2 text-sm text-gray-600">
             {article.description}
           </p>
           {!article.read && (

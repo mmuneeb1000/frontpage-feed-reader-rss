@@ -9,9 +9,7 @@ export default function ArticleToolbar({
     <section className="sticky top-0 z-10 flex items-center justify-between border-b border-gray-300 px-4 py-3">
       <div className="flex gap-4 justify-between items-center bg-white px-2 py-1">
         <h1 className="text-2xl font-semibold">{title}</h1>
-        <p className="text-sm text-gray-500">
-          {count} {count === 1 ? "article" : "articles"}
-        </p>
+        <p className="text-sm text-gray-500">{count} unread</p>
       </div>
       {showMarkAllRead && (
         <button

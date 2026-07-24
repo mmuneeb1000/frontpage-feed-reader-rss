@@ -72,7 +72,7 @@ export default function ImportOPML({ onImport, onClose }) {
 
   return (
     <section className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-      <div className="rounded-xl border p-6 bg-white">
+      <div className="rounded-xl border border-gray-300 p-6 bg-white">
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold">Import OPML</h2>
           <button

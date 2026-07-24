@@ -99,7 +99,7 @@ active:bg-gray-200
 
             <span
               className="flex h-5 w-5 items-center justify-center rounded-full 
-            bg-blue-600 text-xs font-medium text-white"
+            bg-gray-500 text-xs font-medium text-white"
             >
               {savedCount}
             </span>

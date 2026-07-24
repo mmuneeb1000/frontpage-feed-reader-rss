@@ -1,87 +1,133 @@
 import { Link } from "react-router-dom";
 import Header from "../components/Layout/Header";
+import FloatingRSS from "../components/Layout/FloatingRSS";
 import {
   FiArrowRight,
   FiBookmark,
   FiGrid,
   FiLogIn,
-  FiRss,
   FiUpload,
+  FiRss,
 } from "react-icons/fi";
 
 export default function Landing() {
+  const features = [
+    {
+      icon: FiRss,
+      title: "RSS Aggregation",
+      description: "Subscribe to blogs, news sites and podcasts in one place.",
+    },
+    {
+      icon: FiUpload,
+      title: "Import OPML",
+      description: "Bring your existing subscriptions in seconds.",
+    },
+    {
+      icon: FiBookmark,
+      title: "Save Articles",
+      description: "Build your own reading list and revisit articles later.",
+    },
+    {
+      icon: FiGrid,
+      title: "Organize Feeds",
+      description:
+        "Group feeds into categories and reorder them however you like.",
+    },
+  ];
   return (
-    <main className="min-h-screen bg-neutral-50 text-neutral-900">
+    <main className="min-h-screen overflow-hidden bg-gradient-to-b from-blue-50 via-white to-neutral-50">
       <Header publicPage />
 
-      <section className="mx-auto flex max-w-7xl flex-col items-center px-6 py-24 text-center">
-        <div className="mb-4 rounded-full border border-blue-200 bg-blue-50 px-4 py-1 text-sm text-blue-700">
-          Modern RSS Reader
-        </div>
-
-        <h1 className="max-w-4xl text-5xl font-bold leading-tight">
-          Read everything from one clean dashboard.
-        </h1>
-
-        <p className="mt-6 max-w-2xl text-lg text-neutral-600">
-          Organize feeds, import OPML files, save articles, and stay updated
-          without algorithms deciding what you should read.
-        </p>
-
-        <div className="mt-10 flex flex-wrap justify-center gap-4">
-          <Link
-            to="/demo"
-            className="flex items-center gap-2 rounded-xl bg-blue-600 px-6 py-4 text-white transition hover:bg-blue-700"
+      <section className="relative mx-auto flex max-w-7xl flex-col items-center px-6 py-20">
+        <FloatingRSS />
+        <div className="relative z-10 text-center">
+          <div
+            className="mb-4
+            flex w-50 mx-auto
+            justify-center rounded-full
+            border border-blue-200
+            bg-blue-50
+            px-4 py-1
+            text-sm
+            text-blue-700
+            transition
+            hover:scale-105
+            hover:bg-blue-100"
           >
-            Try Demo
-            <FiArrowRight />
-          </Link>
+            Modern RSS Reader
+          </div>
 
-          <Link
-            to="/register"
-            className="rounded-xl border border-neutral-300 bg-white px-6 py-4 hover:bg-neutral-100"
-          >
-            Create Account
-          </Link>
+          <h1 className="max-w-4xl text-5xl font-bold leading-tight animate-fade-up">
+            Read everything from one clean dashboard.
+          </h1>
+
+          <p className="mt-6 max-w-2xl text-lg mx-auto  text-center text-neutral-600">
+            Organize feeds, import OPML files, save articles, and stay updated
+            without algorithms deciding what you should read.
+          </p>
+
+          <div className="mt-10 flex flex-wrap justify-center gap-4">
+            <Link
+              to="/demo"
+              className="group
+              flex items-center gap-2
+              rounded-xl bg-blue-600
+              px-6 py-3 text-white
+              transition-all duration-300
+              hover:-translate-y-1
+              hover:bg-blue-700
+              hover:shadow-xl hover:shadow-blue-200
+              active:translate-y-0
+              active:scale-95
+              focus:outline-none
+              focus:ring-4
+              focus:ring-blue-300"
+            >
+              Try Demo
+              <FiArrowRight className="transition-transform duration-300 group-hover:translate-x-1" />
+            </Link>
+
+            <Link
+              to="/register"
+              className="
+              rounded-xl
+              border border-neutral-300
+              bg-white
+              px-6 py-4
+              transition-all duration-300
+              hover:-translate-y-1
+              hover:border-blue-300
+              hover:bg-blue-50
+              hover:shadow-lg
+              active:scale-95
+              focus:outline-none
+              focus:ring-4
+              focus:ring-blue-200
+              "
+            >
+              Create Account
+            </Link>
+          </div>
+
+          <p className="mt-5 text-sm text-neutral-500">
+            No sign up required to explore the demo.
+          </p>
         </div>
-
-        <p className="mt-5 text-sm text-neutral-500">
-          No sign up required to explore the demo.
-        </p>
       </section>
 
       <section className="mx-auto grid max-w-6xl gap-6 px-6 pb-24 md:grid-cols-2 lg:grid-cols-4">
-        <div className="rounded-2xl border border-neutral-200 bg-white p-6">
-          <FiRss className="mb-4 text-2xl text-blue-600" />
-          <h3 className="mb-2 font-semibold">RSS Aggregation</h3>
-          <p className="text-sm text-neutral-600">
-            Subscribe to blogs, news sites and podcasts in one place.
-          </p>
-        </div>
+        {features.map(({ icon: Icon, title, description }) => (
+          <div
+            key={title}
+            className="rounded-2xl border border-neutral-200 bg-white p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-lg"
+          >
+            <Icon className="mb-4 text-2xl text-blue-600" />
 
-        <div className="rounded-2xl border border-neutral-200 bg-white p-6">
-          <FiUpload className="mb-4 text-2xl text-blue-600" />
-          <h3 className="mb-2 font-semibold">Import OPML</h3>
-          <p className="text-sm text-neutral-600">
-            Bring your existing subscriptions in seconds.
-          </p>
-        </div>
+            <h3 className="mb-2 font-semibold">{title}</h3>
 
-        <div className="rounded-2xl border border-neutral-200 bg-white p-6">
-          <FiBookmark className="mb-4 text-2xl text-blue-600" />
-          <h3 className="mb-2 font-semibold">Save Articles</h3>
-          <p className="text-sm text-neutral-600">
-            Build your own reading list and revisit articles later.
-          </p>
-        </div>
-
-        <div className="rounded-2xl border border-neutral-200 bg-white p-6">
-          <FiGrid className="mb-4 text-2xl text-blue-600" />
-          <h3 className="mb-2 font-semibold">Organize Feeds</h3>
-          <p className="text-sm text-neutral-600">
-            Group feeds into categories and reorder them however you like.
-          </p>
-        </div>
+            <p className="text-sm text-neutral-600">{description}</p>
+          </div>
+        ))}
       </section>
 
       <section className="border-t border-neutral-200 bg-white">
@@ -98,16 +144,45 @@ export default function Landing() {
           <div className="flex gap-4">
             <Link
               to="/demo"
-              className="rounded-lg bg-blue-600 px-6 py-3 text-white hover:bg-blue-700"
+              className="group
+              flex items-center gap-2
+              rounded-xl bg-blue-600
+              
+              px-6 py-3 text-white
+              transition-all duration-300
+              hover:-translate-y-1
+              hover:bg-blue-700
+              hover:shadow-xl hover:shadow-blue-200
+              active:translate-y-0
+              active:scale-95
+              focus:outline-none
+              focus:ring-4
+              focus:ring-blue-300"
             >
               Try Demo
+              <FiArrowRight className="transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
 
             <Link
               to="/login"
-              className="flex items-center gap-2 rounded-lg border border-neutral-300 px-6 py-3 hover:bg-neutral-100"
+              className="group
+              flex items-center gap-2
+              rounded-xl bg-white
+              px-6 py-3
+              border border-neutral-300
+              transition-all duration-300
+              hover:-translate-y-1
+              hover:bg-white
+              hover:border-blue-300
+              hover:bg-blue-50
+              hover:shadow-lg
+              active:translate-y-0
+              active:scale-95
+              focus:outline-none
+              focus:ring-4
+              focus:ring-blue-300"
             >
-              <FiLogIn />
+              <FiLogIn className="transition-transform duration-300 group-hover:-translate-x-1" />
               Login
             </Link>
           </div>
