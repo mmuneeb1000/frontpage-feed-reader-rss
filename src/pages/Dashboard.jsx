@@ -8,7 +8,6 @@ import ArticleSaved from "../components/ArticleSaved";
 import Sidebar from "../components/Layout/Sidebar";
 import ReaderView from "../components/Reader/ReaderView";
 import ImportOPML from "../components/Menu/ImportOPML";
-import ImportJSON from "../components/Menu/ImportJSON";
 import { useAuth } from "../context/AuthContext";
 import { getArticles } from "../services/articleService";
 import useFeeds from "../hooks/useFeed";
@@ -40,7 +39,6 @@ export default function Dashboard({ demo = false }) {
     handleDelete,
     handleClear,
     handleImport,
-    handleJsonImport,
 
     handleEdit,
     selectFeed,
@@ -137,7 +135,6 @@ export default function Dashboard({ demo = false }) {
         demo={demo}
         onCreateFeed={() => setActiveModal("feed")}
         onImportOPML={() => setActiveModal("opml")}
-        onImportJSON={() => setActiveModal("json")}
         handleClearFeeds={handleClear}
         setSidebarOpen={setSidebarOpen}
         value={search}
@@ -244,13 +241,6 @@ export default function Dashboard({ demo = false }) {
       {activeModal === "opml" && (
         <ImportOPML
           onImport={handleImport}
-          onClose={() => setActiveModal(null)}
-        />
-      )}
-
-      {activeModal === "json" && (
-        <ImportJSON
-          onImport={handleJsonImport}
           onClose={() => setActiveModal(null)}
         />
       )}

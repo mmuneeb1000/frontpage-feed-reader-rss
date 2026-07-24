@@ -8,7 +8,6 @@ export default function DashboardHeader({
   setSidebarOpen,
   onCreateFeed,
   onImportOPML,
-  onImportJSON,
   value,
   onChange,
 }) {
@@ -22,7 +21,6 @@ export default function DashboardHeader({
           demo={demo}
           onCreateFeed={onCreateFeed}
           onImportOPML={onImportOPML}
-          onImportJSON={onImportJSON}
         />
       }
     >

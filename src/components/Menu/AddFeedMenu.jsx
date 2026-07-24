@@ -1,12 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { FiChevronDown, FiPlus, FiUpload, FiFileText } from "react-icons/fi";
 
-export default function AddFeedMenu({
-  demo,
-  onCreateFeed,
-  onImportOPML,
-  onImportJSON,
-}) {
+export default function AddFeedMenu({ demo, onCreateFeed, onImportOPML }) {
   const [open, setOpen] = useState(false);
   const menuRef = useRef(null);
 
@@ -20,11 +15,6 @@ export default function AddFeedMenu({
       label: "Import OPML",
       icon: FiUpload,
       action: onImportOPML,
-    },
-    {
-      label: "Import JSON",
-      icon: FiFileText,
-      action: onImportJSON,
     },
   ];
 
