@@ -104,7 +104,7 @@ export default function SidebarCategory({
       </div>
 
       {isOpen && (
-        <div className="mt-1 space-y-1 px-2">
+        <div className=" space-y-1 px-2 mt-2">
           {feeds.map((feed) => (
             <div key={feed.id} className="relative flex items-center">
               <button

@@ -132,21 +132,6 @@ export default function useFeeds(user, demo = false, setSidebarOpen) {
     await loadFeeds();
   }
 
-  async function handleJsonImport(feeds) {
-    for (const feed of feeds) {
-      const { error } = await createFeed({
-        ...feed,
-        user_id: user.id,
-      });
-
-      if (error) {
-        console.error(error);
-      }
-    }
-
-    await loadFeeds();
-  }
-
   function handleEdit(feed) {
     setEditingFeed(feed);
     setActiveModal("feed");
@@ -181,7 +166,6 @@ export default function useFeeds(user, demo = false, setSidebarOpen) {
     handleClear,
 
     handleImport,
-    handleJsonImport,
     handleEdit,
   };
 }
