@@ -29,6 +29,13 @@ export default function useSavedArticles(user, setSelectedArticle) {
   async function toggleSaved(article) {
     if (!user) return;
 
+    const { error } = await toggleSavedArticle(article, user.id);
+
+    if (error) {
+      console.error(error);
+      return;
+    }
+
     const exists = savedArticles.some((saved) => saved.link === article.link);
 
     if (exists) {

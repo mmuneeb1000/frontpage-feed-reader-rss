@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { TbLayoutSidebarLeftExpand } from "react-icons/tb";
 import UserMenu from "./UserMenu";
+import Logo from "/favicon.svg";
 
 export default function Header({
   children,
@@ -28,8 +29,11 @@ export default function Header({
 
           <Link
             to={user ? "/dashboard" : "/"}
-            className="text-xl font-semibold"
+            className="flex items-center gap-3 text-xl font-semibold"
           >
+            <span>
+              <img className="w-8 h-8" src={Logo} />
+            </span>
             Frontpage
           </Link>
         </div>

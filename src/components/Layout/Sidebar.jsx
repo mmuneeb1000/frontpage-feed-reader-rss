@@ -87,7 +87,7 @@ export default function Sidebar({
     md:static md:w-[18rem] md:translate-x-0`}
     >
       <nav className="flex min-h-0 flex-1 flex-col">
-        <div className="border-b border-gray-300 p-4">
+        <div className="flex flex-col gap-3 border-b border-gray-300 p-4">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-lg font-semibold">Feeds</h2>
 
