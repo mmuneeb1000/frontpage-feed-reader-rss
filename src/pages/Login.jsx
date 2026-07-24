@@ -53,14 +53,22 @@ export default function Login() {
             required
           />
 
-          <input
-            type="password"
-            placeholder="Password"
-            value={form.password}
-            onChange={(e) => setForm({ ...form, password: e.target.value })}
-            className="w-full rounded-md border border-gray-300 p-3"
-            required
-          />
+          <div>
+            <input
+              type="password"
+              placeholder="Password"
+              value={form.password}
+              onChange={(e) => setForm({ ...form, password: e.target.value })}
+              className="w-full rounded-md border border-gray-300 p-3"
+              required
+            />
+            <Link
+              to="/forgot-password"
+              className="flex text-sm justify-end p-1 text-blue-600 hover:underline"
+            >
+              Forgot password?
+            </Link>
+          </div>
 
           <button className="w-full rounded-md bg-blue-600 py-3 text-white hover:bg-blue-700">
             Login

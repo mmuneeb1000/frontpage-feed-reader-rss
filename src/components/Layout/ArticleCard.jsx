@@ -38,7 +38,7 @@ export default function ArticleCard({
         </div>
 
         <div className="mx-8 flex flex-col">
-          <div className="flex gap-4 items-center">
+          <div className="flex gap-4 items-start">
             <button onClick={() => onSelect?.(article)} className="text-left">
               <h3
                 className={`line-clamp-2 text-lg font-semibold ${
@@ -55,10 +55,10 @@ export default function ArticleCard({
                 e.stopPropagation();
                 onToggleSaved(article);
               }}
-              className="mt-1 rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-blue-600"
+              className="mt-1 rounded text-gray-400 hover:bg-gray-100 hover:text-blue-600"
             >
               <FiBookmark
-                className={saved ? "fill-current text-blue-600" : ""}
+                className={`h-5 w-5 ${saved ? "fill-current text-blue-600" : ""}`}
               />
             </button>
           </div>
