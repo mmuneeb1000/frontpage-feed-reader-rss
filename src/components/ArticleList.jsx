@@ -1,5 +1,5 @@
 import { FiBookmark, FiExternalLink } from "react-icons/fi";
-import Toolbar from "./Layout/Toolbar";
+
 import ArticleCard from "./Layout/ArticleCard";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
 
@@ -31,10 +31,6 @@ export default function ArticleList({
 
   return (
     <section className="overflow-y-auto border-r">
-      <Toolbar
-        title={selectedFeed?.title || "Articles"}
-        count={articles.length}
-      />
       {visibleItems.map((article) => (
         <ArticleCard
           key={article.id || article.link}

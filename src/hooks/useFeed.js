@@ -131,19 +131,16 @@ export default function useFeeds(user, demo = false) {
     await loadFeeds();
   }
 
-  async function handleJsonImport(data) {
-    const feeds = data.categories.flatMap((category) =>
-      category.feeds.map((feed) => ({
-        user_id: user.id,
-        title: feed.title,
-        description: feed.description,
-        link: feed.feedUrl,
-        category: category.name,
-      })),
-    );
-
+  async function handleJsonImport(feeds) {
     for (const feed of feeds) {
-      await createFeed(feed);
+      const { error } = await createFeed({
+        ...feed,
+        user_id: user.id,
+      });
+
+      if (error) {
+        console.error(error);
+      }
     }
 
     await loadFeeds();

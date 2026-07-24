@@ -1,4 +1,3 @@
-import Toolbar from "./Layout/Toolbar";
 import ArticleCard from "./Layout/ArticleCard";
 
 export default function ArticleSaved({
@@ -19,8 +18,6 @@ export default function ArticleSaved({
 
   return (
     <section className="flex h-full flex-col">
-      <Toolbar title="Saved" count={articles.length} />
-
       {articles.length === 0 ? (
         <div className="flex flex-1 items-center justify-center text-gray-500">
           No saved articles yet.

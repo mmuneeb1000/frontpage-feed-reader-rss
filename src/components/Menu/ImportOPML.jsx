@@ -1,17 +1,27 @@
 import { XMLParser } from "fast-xml-parser";
+import { useState } from "react";
 
 export default function ImportOPML({ onImport, onClose }) {
   const parser = new XMLParser({
     ignoreAttributes: false,
     attributeNamePrefix: "",
   });
+  const [status, setStatus] = useState("idle");
+  const [progress, setProgress] = useState(0);
+  const [message, setMessage] = useState("");
 
   async function handleFile(e) {
     const file = e.target.files[0];
-
     if (!file) return;
 
+    setStatus("loading");
+    setProgress(10);
+    setMessage("Reading file...");
+
     const text = await file.text();
+
+    setProgress(35);
+    setMessage("Parsing OPML...");
 
     const xml = parser.parse(text);
 
@@ -46,8 +56,18 @@ export default function ImportOPML({ onImport, onClose }) {
 
     walk(outlines);
 
-    console.log(feeds);
-    onImport(feeds);
+    setProgress(70);
+    setMessage(`Importing ${feeds.length} feeds...`);
+
+    await onImport(feeds);
+
+    setProgress(100);
+    setMessage(`Successfully imported ${feeds.length} feeds.`);
+    setStatus("success");
+
+    setTimeout(() => {
+      onClose();
+    }, 1200);
   }
 
   return (
@@ -75,6 +95,23 @@ export default function ImportOPML({ onImport, onClose }) {
           onChange={handleFile}
           className="mt-4"
         />
+        {status !== "idle" && (
+          <div className="mt-5">
+            <div className="mb-2 flex justify-between text-sm">
+              <span>{message}</span>
+              <span>{progress}%</span>
+            </div>
+
+            <div className="h-2 overflow-hidden rounded-full bg-gray-200">
+              <div
+                className={`h-full transition-all duration-300 ${
+                  status === "success" ? "bg-green-500" : "bg-blue-600"
+                }`}
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );
