@@ -29,11 +29,6 @@ export default function useFeeds(user, demo = false) {
     );
   }
   async function loadFeeds() {
-    console.log({
-      demo,
-      user: user?.id,
-    });
-
     if (demo) {
       setFeeds(getDemoFeeds());
       setLoadingFeeds(false);

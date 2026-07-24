@@ -1,12 +1,26 @@
-export default function ArticleToolbar({ articles, onMarkAllRead }) {
+export default function ArticleToolbar({
+  title,
+  articles,
+  onMarkAllRead,
+  showMarkAllRead,
+  count,
+}) {
   return (
-    <div className="flex items-center justify-center border-b px-4 py-3">
-      <button
-        onClick={() => onMarkAllRead(articles)}
-        className="rounded-md px-3 py-2 text-sm hover:bg-gray-100 disabled:opacity-50"
-      >
-        Mark all as read
-      </button>
-    </div>
+    <section className="sticky top-0 z-10 flex items-center justify-between border-b px-4 py-3">
+      <div className="flex gap-4 justify-between items-center bg-white px-2 py-1">
+        <h1 className="text-2xl font-semibold">{title}</h1>
+        <p className="text-sm text-gray-500">
+          {count} {count === 1 ? "article" : "articles"}
+        </p>
+      </div>
+      {showMarkAllRead && (
+        <button
+          onClick={() => onMarkAllRead(articles)}
+          className="rounded-md px-2 border border-neutral-400 py-1 text-sm hover:bg-gray-100"
+        >
+          Mark all as read
+        </button>
+      )}
+    </section>
   );
 }

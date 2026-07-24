@@ -72,8 +72,7 @@ export default function Dashboard({ demo = false }) {
       ...article,
       read: statuses[article.id] === "read",
     }));
-  const currentArticles =
-    view === "all" ? allArticles : view === "feed" ? articles : savedArticles;
+
   const filteredFeeds = useMemo(() => {
     return selectedCategory
       ? feeds.filter((feed) => feed.category === selectedCategory)
@@ -95,6 +94,28 @@ export default function Dashboard({ demo = false }) {
       loadHome(feeds);
     }
   }, [feeds]);
+  const toolbar = {
+    all: {
+      title: "All Items",
+      count: unreadCount,
+      articles: allArticles,
+      showMarkAllRead: true,
+    },
+    feed: {
+      title: selectedFeed?.title ?? "Feed",
+      count: articles.length,
+      articles: articles,
+      showMarkAllRead: true,
+    },
+    saved: {
+      title: "Saved",
+      count: savedArticles.length,
+      articles: savedArticles,
+      showMarkAllRead: false,
+    },
+  };
+
+  const currentToolbar = toolbar[view];
   return (
     <>
       <DashboardHeader
@@ -128,8 +149,11 @@ export default function Dashboard({ demo = false }) {
         />
         <div className="flex flex-1 flex-col">
           <ArticleToolbar
-            articles={currentArticles}
+            title={currentToolbar.title}
+            count={currentToolbar.count}
+            articles={currentToolbar.articles}
             onMarkAllRead={markAllRead}
+            showMarkAllRead={currentToolbar.showMarkAllRead}
           />
           {view === "all" && (
             <AllItems
