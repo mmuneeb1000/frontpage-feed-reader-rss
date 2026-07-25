@@ -6,7 +6,7 @@ export default function SearchBar({
   placeholder = "Search articles...",
 }) {
   return (
-    <div className="relative w-full">
+    <div className="relative w-80">
       <FiSearch className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
 
       <input

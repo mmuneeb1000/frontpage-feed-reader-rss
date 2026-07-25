@@ -25,6 +25,7 @@ export default function DashboardHeader({
       demo={demo}
       handleClearFeeds={handleClearFeeds}
       setSidebarOpen={setSidebarOpen}
+      page={page}
       actions={
         <AddFeedMenu
           demo={demo}
@@ -33,25 +34,24 @@ export default function DashboardHeader({
         />
       }
     >
-      <div className="flex flex-col gap-4">
-        <nav className="flex items-center gap-1">
+      <nav className="flex items-center justify-between">
+        <div className="flex gap-4">
           {pages.map((item) => (
             <button
               key={item.id}
               onClick={() => onChangePage(item.id)}
               className={`rounded-lg px-3 py-2 text-sm font-medium transition ${
                 page === item.id
-                  ? "bg-blue-100 text-blue-700"
+                  ? "bg-gray-100 text-gray-900"
                   : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
               }`}
             >
               {item.label}
             </button>
           ))}
-        </nav>
-
+        </div>
         <SearchBar value={value} onChange={onChange} />
-      </div>
+      </nav>
     </Header>
   );
 }

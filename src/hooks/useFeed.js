@@ -57,7 +57,12 @@ export default function useFeeds(user, demo = false, setSidebarOpen) {
   }
 
   async function handleCreate(feed) {
-    if (demo) return;
+    if (demo) {
+      return {
+        data: null,
+        error: "Demo mode",
+      };
+    }
 
     const { data, error } = await createFeed({
       ...feed,
@@ -65,12 +70,20 @@ export default function useFeeds(user, demo = false, setSidebarOpen) {
     });
 
     if (error) {
-      return { error };
+      console.error("Failed to create feed:", error);
+
+      return {
+        data: null,
+        error,
+      };
     }
 
     setFeeds((prev) => [data, ...prev]);
 
-    return { data, error: null };
+    return {
+      data,
+      error: null,
+    };
   }
 
   async function handleUpdate(updatedFeed) {

@@ -120,10 +120,17 @@ export default function Dashboard({ demo = false }) {
     },
     [toggleRead],
   );
+  const digestArticles = useMemo(
+    () =>
+      [...allArticles].sort(
+        (a, b) => new Date(b.published) - new Date(a.published),
+      ),
+    [allArticles],
+  );
   useEffect(() => {
-    if (!feeds.length) return;
-
-    loadHome(feeds);
+    if (feeds.length) {
+      loadHome(feeds);
+    }
   }, [feeds, loadHome]);
   const [search, setSearch] = useState("");
   const searchedAllArticles = useSearch(allArticles, search);
@@ -170,7 +177,7 @@ export default function Dashboard({ demo = false }) {
       <main
         className={
           page === "feeds"
-            ? "grid h-[calc(100vh-64px)] grid-cols-[1fr] overflow-hidden md:grid-cols-[18rem_1fr_26rem]"
+            ? "grid h-[calc(100vh-66px)] grid-cols-1 md:grid-cols-[18rem_1fr] md:grid-rows-[1fr_auto] overflow-hidden lg:grid-cols-[18rem_1fr_26rem]"
             : "h-[calc(100vh-64px)] overflow-y-auto"
         }
       >
@@ -264,13 +271,15 @@ export default function Dashboard({ demo = false }) {
         {page === "discover" && (
           <Discover
             demo={demo}
-            user={user}
             feeds={feeds}
-            onImport={handleImport}
+            loadingFeeds={loadingFeeds}
+            handleCreate={handleCreate}
           />
         )}
 
-        {page === "digest" && <Digest demo={demo} user={user} />}
+        {page === "digest" && (
+          <Digest demo={demo} user={user} articles={digestArticles} />
+        )}
       </main>
 
       {activeModal === "feed" && (

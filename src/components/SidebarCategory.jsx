@@ -40,17 +40,18 @@ export default function SidebarCategory({
           title="Drag to reorder"
           aria-label="Drag to reorder category"
           onClick={(e) => e.stopPropagation()}
-          className="cursor-grab touch-none rounded p-1 text-gray-400 hover:bg-gray-200"
+          className="cursor-grab touch-none rounded p-2 text-gray-400 hover:bg-gray-200"
         >
           <LuGripVertical />
         </button>
 
         <button
           onClick={() => toggleCategory(category.category)}
-          className="flex flex-1 items-center gap-3 rounded-lg px-3 py-2 text-xs font-semibold uppercase text-neutral-900 hover:bg-gray-100"
+          className="flex flex-1 items-center gap-3 rounded-lg px-3 py-2 
+          text-xs font-semibold uppercase text-neutral-900 hover:bg-gray-100"
         >
           <span
-            className={`h-2.5 w-2.5 rounded-full ${getCategoryColor(
+            className={`h-2 w-2 rounded-full ${getCategoryColor(
               category.category,
             )}`}
           />
@@ -63,9 +64,11 @@ export default function SidebarCategory({
             e.stopPropagation();
             setOpenCategoryMenu((prev) => !prev);
           }}
-          className="rounded p-2 text-gray-500 hover:bg-gray-100"
+          title="Edit"
+          aria-label="Click to edit"
+          className="rounded p-2 text-gray-500 hover:bg-gray-300"
         >
-          <FiMoreVertical />
+          <FiMoreVertical className="text-white" />
         </button>
 
         {openCategoryMenu && (
@@ -83,7 +86,7 @@ export default function SidebarCategory({
 
                 renameCategory(category.id, newName);
               }}
-              className="flex w-full items-center gap-3 px-4 py-2 text-left text-sm hover:bg-gray-100"
+              className="flex w-full items-center gap-3 px-3 py-2 text-left text-sm hover:bg-gray-100"
             >
               <FiEdit2 />
               Rename
@@ -94,7 +97,7 @@ export default function SidebarCategory({
                 setOpenCategoryMenu(false);
                 removeCategory(category.id);
               }}
-              className="flex w-full items-center gap-3 px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50"
+              className="flex w-full items-center gap-3 px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50"
             >
               <FiTrash2 />
               Delete
@@ -104,26 +107,27 @@ export default function SidebarCategory({
       </div>
 
       {isOpen && (
-        <div className=" space-y-1 px-2 mt-2">
+        <div className="mt-2">
           {feeds.map((feed) => (
-            <div key={feed.id} className="relative flex items-center">
+            <div
+              key={feed.id}
+              className="relative flex items-center justify-between"
+            >
               <button
                 onClick={() => onSelectFeed(feed)}
-                className={`flex flex-1 items-center gap-3 rounded-lg px-3 py-2 text-left text-sm transition ${
+                className={`flex flex-1 items-center gap-2 rounded-lg px-3 py-2 text-left text-sm transition ${
                   selectedFeed?.id === feed.id
-                    ? "bg-blue-50 text-blue-700"
+                    ? " text-blue-700"
                     : "hover:bg-gray-100"
                 }`}
               >
                 <img
                   src={`https://www.google.com/s2/favicons?sz=32&domain_url=${feed.link}`}
                   alt=""
-                  className="h-4 w-4 shrink-0"
+                  className="h-3 w-3 shrink-0"
                 />
 
-                <span className="truncate text-[13px] font-semibold">
-                  {feed.title}
-                </span>
+                <span className="truncate text-[13px] ">{feed.title}</span>
               </button>
 
               <button
@@ -131,9 +135,9 @@ export default function SidebarCategory({
                   e.stopPropagation();
                   setOpenFeedMenu(openFeedMenu === feed.id ? null : feed.id);
                 }}
-                className="rounded p-2 text-gray-500 hover:bg-gray-100"
+                className="rounded p-2 text-gray-500 hover:bg-gray-300"
               >
-                <FiMoreVertical />
+                <FiMoreVertical className="text-white" />
               </button>
 
               {openFeedMenu === feed.id && (

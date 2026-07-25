@@ -76,6 +76,12 @@
           "description": "Curated stories on user experience, usability, and product design.",
           "format": "rss2",
           "notes": "Medium-based feed — may contain Medium-specific markup"
+        },
+        {
+          "title": "Figma Blog",
+          "feedUrl": "https://www.figma.com/blog/feed/atom.xml",
+          "siteUrl": "https://www.figma.com",
+          "description": "Product design, collaboration and design systems."
         }
       ]
     },

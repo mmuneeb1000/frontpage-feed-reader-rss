@@ -21,7 +21,10 @@ export default function ReaderView({
   }
 
   return (
-    <article className="border-l border-l-gray-300 mx-auto px-4 py-5 md:px-6 md:py-6 overflow-y-auto">
+    <article
+      className="border-l border-l-gray-300 mx-auto px-4 py-5 md:px-6 md:py-6 overflow-y-auto 
+    "
+    >
       <button
         onClick={onBack}
         className="mb-5 flex items-center gap-2 rounded-lg px-3 py-2 text-sm 

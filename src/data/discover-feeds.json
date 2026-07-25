@@ -98,7 +98,7 @@
       },
       {
         "title": "Anthropic News",
-        "feedUrl": "https://www.anthropic.com/news/rss.xml",
+        "feedUrl": "https://rsshub.bestblogs.dev/anthropic/news",
         "siteUrl": "https://www.anthropic.com",
         "description": "AI safety, research and company announcements."
       },
@@ -129,7 +129,7 @@
       },
       {
         "title": "Chrome for Developers",
-        "feedUrl": "https://developer.chrome.com/feeds/blog.xml",
+        "feedUrl": "https://developer.chrome.com/static/blog/feed.xml",
         "siteUrl": "https://developer.chrome.com",
         "description": "Chrome platform updates, APIs and performance."
       },
@@ -166,7 +166,7 @@
       },
       {
         "title": "Scientific American",
-        "feedUrl": "https://www.scientificamerican.com/feed/",
+        "feedUrl": "http://rss.sciam.com/sciam/space",
         "siteUrl": "https://www.scientificamerican.com",
         "description": "Science news, discoveries and expert analysis."
       },
@@ -190,8 +190,8 @@
     "description": "Business strategy, startups, leadership and global markets.",
     "feeds": [
       {
-        "title": "Harvard Business Review",
-        "feedUrl": "https://feeds.hbr.org/harvardbusiness",
+        "title": "Forbes",
+        "feedUrl": "https://www.forbes.com/business/feed/",
         "siteUrl": "https://hbr.org",
         "description": "Management, leadership and business strategy."
       },
@@ -314,7 +314,7 @@
       },
       {
         "title": "Figma Blog",
-        "feedUrl": "https://www.figma.com/blog/rss.xml",
+        "feedUrl": "https://www.figma.com/blog/feed/atom.xml",
         "siteUrl": "https://www.figma.com",
         "description": "Product design, collaboration and design systems."
       },

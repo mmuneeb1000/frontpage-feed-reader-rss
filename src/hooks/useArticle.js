@@ -1,10 +1,9 @@
-import { useState } from "react";
+import { useState, useCallback, useRef } from "react";
 import { getArticles } from "../services/articleService";
 
 export default function useArticles() {
   const [articles, setArticles] = useState([]);
   const [allArticles, setAllArticles] = useState([]);
-
   const [selectedArticle, setSelectedArticle] = useState(null);
 
   const [loadingArticles, setLoadingArticles] = useState(false);
@@ -12,31 +11,58 @@ export default function useArticles() {
 
   const [articleError, setArticleError] = useState("");
 
-  async function loadFeed(feed) {
+  const feedRequest = useRef(0);
+  const homeRequest = useRef(0);
+
+  const loadFeed = useCallback(async (feed) => {
+    if (!feed?.link) {
+      setArticles([]);
+      setSelectedArticle(null);
+      return;
+    }
+
+    const requestId = ++feedRequest.current;
+
     setLoadingArticles(true);
     setArticleError("");
 
-    const { data, error } = await getArticles(feed.link);
+    try {
+      const { data, error } = await getArticles(feed.link);
 
-    if (error) {
+      if (requestId !== feedRequest.current) return;
+
+      if (error) {
+        setArticles([]);
+        setSelectedArticle(null);
+        setArticleError(error);
+        return;
+      }
+
+      setArticles(data ?? []);
+      setSelectedArticle(data?.[0] ?? null);
+    } catch (error) {
+      if (requestId !== feedRequest.current) return;
+
+      console.error(error);
       setArticles([]);
       setSelectedArticle(null);
-      setArticleError(error);
-    } else {
-      setArticles(data);
-      setSelectedArticle(data[0] || null);
+      setArticleError("Failed to load feed.");
+    } finally {
+      if (requestId === feedRequest.current) {
+        setLoadingArticles(false);
+      }
     }
+  }, []);
 
-    setLoadingArticles(false);
-  }
-
-  async function loadHome(feeds) {
-    if (!feeds.length) {
+  const loadHome = useCallback(async (feeds) => {
+    if (!feeds?.length) {
       setAllArticles([]);
       setSelectedArticle(null);
       setLoadingHome(false);
       return;
     }
+
+    const requestId = ++homeRequest.current;
 
     setLoadingHome(true);
 
@@ -45,24 +71,36 @@ export default function useArticles() {
         feeds.slice(0, 5).map((feed) => getArticles(feed.link)),
       );
 
-      const articles = results
+      if (requestId !== homeRequest.current) return;
+
+      const merged = results
         .flatMap((result) => result.data ?? [])
         .sort((a, b) => new Date(b.published) - new Date(a.published));
 
-      setAllArticles(articles);
+      setAllArticles(merged);
     } catch (error) {
+      if (requestId !== homeRequest.current) return;
+
       console.error(error);
       setAllArticles([]);
     } finally {
-      setLoadingHome(false);
+      if (requestId === homeRequest.current) {
+        setLoadingHome(false);
+      }
     }
-  }
+  }, []);
 
-  function clearArticles() {
+  const clearArticles = useCallback(() => {
+    feedRequest.current++;
+    homeRequest.current++;
+
     setArticles([]);
+    setAllArticles([]);
     setSelectedArticle(null);
     setArticleError("");
-  }
+    setLoadingArticles(false);
+    setLoadingHome(false);
+  }, []);
 
   return {
     articles,

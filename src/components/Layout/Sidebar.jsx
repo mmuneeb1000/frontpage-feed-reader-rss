@@ -44,9 +44,9 @@ export default function Sidebar({
 
   const [openMenu, setOpenMenu] = useState(null);
   const navButton = (active) => `
-    flex w-full items-center justify-between gap-3 rounded-lg px-3 py-2 text-left text-sm
-    transition-colors duration-150 bg-blue-50
-    ${active ? "bg-blue-100 font-semibold text-blue-700" : "hover:bg-gray-100 text-gray-700"}
+    flex w-full items-center justify-between gap-3 rounded-lg px-3 py-2 
+    text-left text-sm transition-colors duration-150
+    ${active ? "bg-blue-50 font-semibold text-blue-700" : "hover:bg-gray-100 text-gray-700"}
     focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1
     active:bg-gray-200
     `;
@@ -83,19 +83,17 @@ export default function Sidebar({
 
   return (
     <aside
-      className={`fixed inset-y-0 left-0 z-50 flex h-full w-full transform flex-col
+      className={`fixed inset-y-0 left-0 z-50 flex h-full w-full sm:w-[18rem] transform flex-col
     border-r border-gray-300 bg-white transition-transform duration-300
     ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
-    md:static md:w-[18rem] md:translate-x-0`}
+    md:static  md:translate-x-0`}
     >
       <nav className="flex min-h-0 flex-1 flex-col">
         <div className="flex flex-col gap-3 border-b border-gray-300 p-4">
-          <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-lg font-semibold">Feeds</h2>
-
+          <div className="flex items-center justify-end">
             <button
               onClick={() => setSidebarOpen(false)}
-              className="rounded-lg p-2 hover:bg-gray-100 md:hidden"
+              className="mb-4 rounded-lg p-2 hover:bg-gray-100 md:hidden"
             >
               <FiX />
             </button>
@@ -107,7 +105,10 @@ export default function Sidebar({
               All Items
             </span>
 
-            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 text-xs font-medium text-white">
+            <span
+              className="flex h-5 w-5 items-center justify-center 
+               text-xs font-semibold text-blue-600"
+            >
               {unreadCount}
             </span>
           </button>
@@ -125,7 +126,10 @@ export default function Sidebar({
                 Saved
               </span>
 
-              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-gray-500 text-xs font-medium text-white">
+              <span
+                className="flex h-5 w-5 items-center justify-center 
+              text-xs font-semibold text-gray-600"
+              >
                 {savedCount}
               </span>
             </button>
@@ -139,7 +143,7 @@ export default function Sidebar({
             </h2>
           </div>
 
-          <div className="space-y-2">
+          <div className="flex flex-col">
             <DndContext
               collisionDetection={closestCenter}
               onDragEnd={handleDragEnd}
