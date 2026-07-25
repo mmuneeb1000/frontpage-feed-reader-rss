@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { TbLayoutSidebarLeftExpand } from "react-icons/tb";
 import UserMenu from "./UserMenu";
@@ -13,19 +13,29 @@ export default function Header({
 }) {
   const { user, signOut } = useAuth();
   const { full_name } = user?.user_metadata ?? {};
+
   const isDemo = demo && !user;
+  const base = isDemo ? "/demo" : "";
+
+  function navClass({ isActive }) {
+    return `rounded-lg px-3 py-2 text-sm transition ${
+      isActive
+        ? "bg-blue-100 font-medium text-blue-700"
+        : "text-gray-600 hover:bg-gray-100"
+    }`;
+  }
 
   return (
     <header className="border-b border-gray-200 bg-white">
-      <div className="flex h-16 items-center justify-between px-4">
-        <div className="flex items-center gap-3">
+      <div className="mx-auto flex h-16 items-center justify-between px-4">
+        <div className="flex items-center gap-4">
           {user && (
             <button
               onClick={() => setSidebarOpen(true)}
               className="rounded-lg p-2 transition hover:bg-gray-100 md:hidden"
               aria-label="Open sidebar"
             >
-              <TbLayoutSidebarLeftExpand size={22} />
+              <TbLayoutSidebarLeftExpand className="h-5 w-5" />
             </button>
           )}
 
@@ -33,10 +43,8 @@ export default function Header({
             to={user ? "/dashboard" : "/"}
             className="flex items-center gap-3 text-xl font-semibold"
           >
-            <span>
-              <img className="w-8 h-8" src={Logo} />
-            </span>
-            Frontpage
+            <img className="h-8 w-8" src={Logo} alt="Frontpage" />
+            <span>Frontpage</span>
           </Link>
         </div>
 
@@ -49,35 +57,32 @@ export default function Header({
         <div className="flex items-center gap-3">
           {user ? (
             <>
-              <div className="block">{actions}</div>
+              {actions}
 
               <UserMenu
                 user={user}
                 full_name={full_name}
                 signOut={signOut}
-                actions={actions}
                 demo={false}
                 handleClearFeeds={handleClearFeeds}
               />
             </>
           ) : (
-            <>
-              <div className="hidden items-center gap-3 md:flex">
-                <Link
-                  to="/login"
-                  className="rounded-md border border-gray-300 px-4 py-2 transition hover:bg-gray-100"
-                >
-                  Login
-                </Link>
+            <div className="hidden items-center gap-3 md:flex">
+              <Link
+                to="/login"
+                className="rounded-md border border-gray-300 px-4 py-2 transition hover:bg-gray-100"
+              >
+                Login
+              </Link>
 
-                <Link
-                  to="/register"
-                  className="rounded-md bg-blue-600 px-4 py-2 text-white transition hover:bg-blue-700"
-                >
-                  {demo ? "Create Account" : "Register"}
-                </Link>
-              </div>
-            </>
+              <Link
+                to="/register"
+                className="rounded-md bg-blue-600 px-4 py-2 text-white transition hover:bg-blue-700"
+              >
+                {demo ? "Create Account" : "Register"}
+              </Link>
+            </div>
           )}
         </div>
       </div>

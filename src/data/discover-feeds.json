@@ -1,0 +1,335 @@
+[
+  {
+    "id": "technology",
+    "name": "Technology",
+    "description": "Industry news, startups, gadgets and emerging technology.",
+    "feeds": [
+      {
+        "title": "Ars Technica",
+        "feedUrl": "https://feeds.arstechnica.com/arstechnica/index",
+        "siteUrl": "https://arstechnica.com",
+        "description": "Technology, science, computing and policy."
+      },
+      {
+        "title": "The Verge",
+        "feedUrl": "https://www.theverge.com/rss/index.xml",
+        "siteUrl": "https://www.theverge.com",
+        "description": "Technology news, products and culture."
+      },
+      {
+        "title": "TechCrunch",
+        "feedUrl": "https://techcrunch.com/feed/",
+        "siteUrl": "https://techcrunch.com",
+        "description": "Startups, venture capital and technology."
+      },
+      {
+        "title": "Engadget",
+        "feedUrl": "https://www.engadget.com/rss.xml",
+        "siteUrl": "https://www.engadget.com",
+        "description": "Consumer electronics and technology news."
+      },
+      {
+        "title": "WIRED",
+        "feedUrl": "https://www.wired.com/feed/rss",
+        "siteUrl": "https://www.wired.com",
+        "description": "Technology, science, business and culture."
+      }
+    ]
+  },
+  {
+    "id": "programming",
+    "name": "Programming",
+    "description": "Software engineering, programming languages and development practices.",
+    "feeds": [
+      {
+        "title": "Smashing Magazine",
+        "feedUrl": "https://www.smashingmagazine.com/feed/",
+        "siteUrl": "https://www.smashingmagazine.com",
+        "description": "Frontend development, CSS, UX and web design."
+      },
+      {
+        "title": "InfoQ",
+        "feedUrl": "https://feed.infoq.com/",
+        "siteUrl": "https://www.infoq.com",
+        "description": "Software architecture, engineering and DevOps."
+      },
+      {
+        "title": "DEV Community",
+        "feedUrl": "https://dev.to/feed",
+        "siteUrl": "https://dev.to",
+        "description": "Articles and tutorials from the developer community."
+      },
+      {
+        "title": "DZone",
+        "feedUrl": "https://feeds.dzone.com/home",
+        "siteUrl": "https://dzone.com",
+        "description": "Programming, cloud, Java, DevOps and software development."
+      },
+      {
+        "title": "The GitHub Blog",
+        "feedUrl": "https://github.blog/feed/",
+        "siteUrl": "https://github.blog",
+        "description": "Engineering, open source and developer productivity."
+      }
+    ]
+  },
+  {
+    "id": "artificial-intelligence",
+    "name": "Artificial Intelligence",
+    "description": "AI research, machine learning, generative AI and industry developments.",
+    "feeds": [
+      {
+        "title": "OpenAI News",
+        "feedUrl": "https://openai.com/news/rss.xml",
+        "siteUrl": "https://openai.com",
+        "description": "Announcements, research and product updates from OpenAI."
+      },
+      {
+        "title": "Google DeepMind",
+        "feedUrl": "https://deepmind.google/blog/rss.xml",
+        "siteUrl": "https://deepmind.google",
+        "description": "Research breakthroughs and AI innovations from Google DeepMind."
+      },
+      {
+        "title": "Hugging Face Blog",
+        "feedUrl": "https://huggingface.co/blog/feed.xml",
+        "siteUrl": "https://huggingface.co",
+        "description": "Open source AI models, tools and machine learning tutorials."
+      },
+      {
+        "title": "Anthropic News",
+        "feedUrl": "https://www.anthropic.com/news/rss.xml",
+        "siteUrl": "https://www.anthropic.com",
+        "description": "AI safety, research and company announcements."
+      },
+      {
+        "title": "MIT News - Artificial Intelligence",
+        "feedUrl": "https://news.mit.edu/rss/topic/artificial-intelligence2",
+        "siteUrl": "https://news.mit.edu",
+        "description": "Academic research and advances in artificial intelligence."
+      }
+    ]
+  },
+  {
+    "id": "web-development",
+    "name": "Web Development",
+    "description": "Frontend, backend, web standards and modern browser technologies.",
+    "feeds": [
+      {
+        "title": "web.dev",
+        "feedUrl": "https://web.dev/feed.xml",
+        "siteUrl": "https://web.dev",
+        "description": "Modern web development guidance from the Chrome team."
+      },
+      {
+        "title": "Mozilla Hacks",
+        "feedUrl": "https://hacks.mozilla.org/feed/",
+        "siteUrl": "https://hacks.mozilla.org",
+        "description": "Articles on web standards, JavaScript and browser APIs."
+      },
+      {
+        "title": "Chrome for Developers",
+        "feedUrl": "https://developer.chrome.com/feeds/blog.xml",
+        "siteUrl": "https://developer.chrome.com",
+        "description": "Chrome platform updates, APIs and performance."
+      },
+      {
+        "title": "Codrops",
+        "feedUrl": "https://tympanus.net/codrops/feed/",
+        "siteUrl": "https://tympanus.net/codrops",
+        "description": "Creative frontend techniques, UI inspiration and tutorials."
+      },
+      {
+        "title": "CSS-Tricks",
+        "feedUrl": "https://css-tricks.com/feed/",
+        "siteUrl": "https://css-tricks.com",
+        "description": "CSS, JavaScript and practical frontend development."
+      }
+    ]
+  },
+  {
+    "id": "science",
+    "name": "Science",
+    "description": "Scientific discoveries, research and space exploration.",
+    "feeds": [
+      {
+        "title": "ScienceDaily",
+        "feedUrl": "https://www.sciencedaily.com/rss/all.xml",
+        "siteUrl": "https://www.sciencedaily.com",
+        "description": "Daily coverage of scientific research across multiple disciplines."
+      },
+      {
+        "title": "Nature",
+        "feedUrl": "https://www.nature.com/nature.rss",
+        "siteUrl": "https://www.nature.com",
+        "description": "Research highlights and news from one of the world's leading scientific journals."
+      },
+      {
+        "title": "Scientific American",
+        "feedUrl": "https://www.scientificamerican.com/feed/",
+        "siteUrl": "https://www.scientificamerican.com",
+        "description": "Science news, discoveries and expert analysis."
+      },
+      {
+        "title": "NASA Breaking News",
+        "feedUrl": "https://www.nasa.gov/rss/dyn/breaking_news.rss",
+        "siteUrl": "https://www.nasa.gov",
+        "description": "Latest news from NASA covering space missions and discoveries."
+      },
+      {
+        "title": "ESA News",
+        "feedUrl": "https://www.esa.int/rssfeed/Our_Activities",
+        "siteUrl": "https://www.esa.int",
+        "description": "European Space Agency news and space exploration updates."
+      }
+    ]
+  },
+  {
+    "id": "business",
+    "name": "Business",
+    "description": "Business strategy, startups, leadership and global markets.",
+    "feeds": [
+      {
+        "title": "Harvard Business Review",
+        "feedUrl": "https://feeds.hbr.org/harvardbusiness",
+        "siteUrl": "https://hbr.org",
+        "description": "Management, leadership and business strategy."
+      },
+      {
+        "title": "MIT Sloan Management Review",
+        "feedUrl": "https://sloanreview.mit.edu/feed/",
+        "siteUrl": "https://sloanreview.mit.edu",
+        "description": "Research and insights on management and innovation."
+      },
+      {
+        "title": "Entrepreneur",
+        "feedUrl": "https://www.entrepreneur.com/latest.rss",
+        "siteUrl": "https://www.entrepreneur.com",
+        "description": "Entrepreneurship, startups and small business."
+      },
+      {
+        "title": "Fast Company",
+        "feedUrl": "https://www.fastcompany.com/rss",
+        "siteUrl": "https://www.fastcompany.com",
+        "description": "Innovation, business and workplace trends."
+      },
+      {
+        "title": "Inc.",
+        "feedUrl": "https://www.inc.com/rss/homepage.xml",
+        "siteUrl": "https://www.inc.com",
+        "description": "Startups, leadership and growing businesses."
+      }
+    ]
+  },
+  {
+    "id": "cybersecurity",
+    "name": "Cybersecurity",
+    "description": "Cybersecurity news, privacy, vulnerabilities and threat intelligence.",
+    "feeds": [
+      {
+        "title": "Krebs on Security",
+        "feedUrl": "https://krebsonsecurity.com/feed/",
+        "siteUrl": "https://krebsonsecurity.com",
+        "description": "Investigative reporting on cybersecurity, cybercrime and online safety."
+      },
+      {
+        "title": "The Hacker News",
+        "feedUrl": "https://feeds.feedburner.com/TheHackersNews",
+        "siteUrl": "https://thehackernews.com",
+        "description": "Daily cybersecurity news, vulnerabilities and malware analysis."
+      },
+      {
+        "title": "BleepingComputer",
+        "feedUrl": "https://www.bleepingcomputer.com/feed/",
+        "siteUrl": "https://www.bleepingcomputer.com",
+        "description": "Security news, ransomware, Windows and technology coverage."
+      },
+      {
+        "title": "SANS Internet Storm Center",
+        "feedUrl": "https://isc.sans.edu/rssfeed.xml",
+        "siteUrl": "https://isc.sans.edu",
+        "description": "Security alerts, incident analysis and threat intelligence."
+      },
+      {
+        "title": "Schneier on Security",
+        "feedUrl": "https://www.schneier.com/feed/",
+        "siteUrl": "https://www.schneier.com",
+        "description": "Expert commentary on security, cryptography and privacy."
+      }
+    ]
+  },
+  {
+    "id": "gaming",
+    "name": "Gaming",
+    "description": "Gaming news, reviews, industry updates and PC hardware.",
+    "feeds": [
+      {
+        "title": "IGN",
+        "feedUrl": "https://feeds.ign.com/ign/games-all",
+        "siteUrl": "https://www.ign.com",
+        "description": "Game reviews, previews, news and entertainment."
+      },
+      {
+        "title": "PC Gamer",
+        "feedUrl": "https://www.pcgamer.com/rss/",
+        "siteUrl": "https://www.pcgamer.com",
+        "description": "PC gaming news, reviews, hardware and features."
+      },
+      {
+        "title": "Rock Paper Shotgun",
+        "feedUrl": "https://www.rockpapershotgun.com/feed",
+        "siteUrl": "https://www.rockpapershotgun.com",
+        "description": "PC gaming news, reviews and in-depth features."
+      },
+      {
+        "title": "Polygon",
+        "feedUrl": "https://www.polygon.com/rss/index.xml",
+        "siteUrl": "https://www.polygon.com",
+        "description": "Gaming news, culture and reviews."
+      },
+      {
+        "title": "Eurogamer",
+        "feedUrl": "https://www.eurogamer.net/feed",
+        "siteUrl": "https://www.eurogamer.net",
+        "description": "Video game news, reviews and industry coverage."
+      }
+    ]
+  },
+  {
+    "id": "design",
+    "name": "Design",
+    "description": "UI, UX, branding and digital product design.",
+    "feeds": [
+      {
+        "title": "Nielsen Norman Group",
+        "feedUrl": "https://www.nngroup.com/feed/rss/",
+        "siteUrl": "https://www.nngroup.com",
+        "description": "Research-backed articles on user experience and usability."
+      },
+      {
+        "title": "UX Collective",
+        "feedUrl": "https://uxdesign.cc/feed",
+        "siteUrl": "https://uxdesign.cc",
+        "description": "Design thinking, UX practices and product design."
+      },
+      {
+        "title": "Figma Blog",
+        "feedUrl": "https://www.figma.com/blog/rss.xml",
+        "siteUrl": "https://www.figma.com",
+        "description": "Product design, collaboration and design systems."
+      },
+      {
+        "title": "Creative Bloq",
+        "feedUrl": "https://www.creativebloq.com/feed",
+        "siteUrl": "https://www.creativebloq.com",
+        "description": "Design inspiration, tutorials and creative industry news."
+      },
+      {
+        "title": "A List Apart",
+        "feedUrl": "https://alistapart.com/main/feed/",
+        "siteUrl": "https://alistapart.com",
+        "description": "Web design, accessibility, UX and content strategy."
+      }
+    ]
+  }
+]

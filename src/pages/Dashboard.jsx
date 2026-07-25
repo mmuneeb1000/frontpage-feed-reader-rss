@@ -9,7 +9,8 @@ import Sidebar from "../components/Layout/Sidebar";
 import ReaderView from "../components/Reader/ReaderView";
 import ImportOPML from "../components/Menu/ImportOPML";
 import { useAuth } from "../context/AuthContext";
-import { getArticles } from "../services/articleService";
+import Discover from "./Discover";
+import Digest from "./Digest";
 import useFeeds from "../hooks/useFeed";
 import useArticles from "../hooks/useArticle";
 import useCategories from "../hooks/useCategory";
@@ -19,7 +20,8 @@ import useSearch from "../hooks/useSearch";
 
 export default function Dashboard({ demo = false }) {
   const { user } = useAuth();
-  const [loading, setLoading] = useState(true);
+
+  const [page, setPage] = useState("feeds");
   const [view, setView] = useState("all");
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -57,7 +59,6 @@ export default function Dashboard({ demo = false }) {
 
     loadFeed,
     loadHome,
-    clearArticles,
   } = useArticles();
 
   const { savedArticles, loadingSaved, toggleSaved, isSaved } =
@@ -65,23 +66,25 @@ export default function Dashboard({ demo = false }) {
 
   const {
     categories,
-    loadingCategories,
-    setCategories,
+
     reorderCategories,
     renameCategory,
     removeCategory,
   } = useCategories(user, feeds, loadingFeeds, setFeeds, demo);
   const { statuses, toggleRead, markAllRead } = useArticleStatus(user);
-  const applyReadStatus = (articles = []) =>
-    articles.map((article) => ({
-      ...article,
-      read: statuses[article.id] === "read",
-    }));
+  const applyReadStatus = useCallback(
+    (articles = []) =>
+      articles.map((article) => ({
+        ...article,
+        read: statuses[article.id] === "read",
+      })),
+    [statuses],
+  );
 
   const filteredFeeds = useMemo(() => {
-    return selectedCategory
-      ? feeds.filter((feed) => feed.category === selectedCategory)
-      : feeds;
+    if (!selectedCategory) return feeds;
+
+    return feeds.filter((feed) => feed.category === selectedCategory);
   }, [feeds, selectedCategory]);
   const counts = useMemo(() => {
     const result = {
@@ -110,11 +113,18 @@ export default function Dashboard({ demo = false }) {
     },
     [selectFeed, loadFeed],
   );
+  const handleSelectArticle = useCallback(
+    (article) => {
+      setSelectedArticle(article);
+      toggleRead(article);
+    },
+    [toggleRead],
+  );
   useEffect(() => {
-    if (feeds.length) {
-      loadHome(feeds);
-    }
-  }, [feeds]);
+    if (!feeds.length) return;
+
+    loadHome(feeds);
+  }, [feeds, loadHome]);
   const [search, setSearch] = useState("");
   const searchedAllArticles = useSearch(allArticles, search);
 
@@ -147,6 +157,8 @@ export default function Dashboard({ demo = false }) {
     <>
       <DashboardHeader
         demo={demo}
+        page={page}
+        onChangePage={setPage}
         onCreateFeed={() => setActiveModal("feed")}
         onImportOPML={() => setActiveModal("opml")}
         handleClearFeeds={handleClear}
@@ -155,96 +167,110 @@ export default function Dashboard({ demo = false }) {
         onChange={(value) => setSearch(value)}
       />
 
-      <main className="grid grid-cols-[1fr] h-[calc(100vh-64px)] md:grid-cols-[18rem_1fr_26rem] overflow-hidden">
-        <Sidebar
-          demo={demo}
-          view={view}
-          unreadCount={counts.all}
-          savedCount={savedArticles.length}
-          feeds={filteredFeeds}
-          categories={categories}
-          selectedFeed={selectedFeed}
-          sidebarOpen={sidebarOpen}
-          renameCategory={renameCategory}
-          removeCategory={removeCategory}
-          onSelectFeed={handleSelectFeed}
-          onReorderCategories={reorderCategories}
-          handleDeleteFeed={handleDelete}
-          handleEditFeed={handleEdit}
-          setSidebarOpen={setSidebarOpen}
-          onShowAll={() => {
-            setView("all");
-            selectFeed(null);
-          }}
-          onShowSaved={() => {
-            setView("saved");
-            selectFeed(null);
-          }}
-        />
-        <div className="flex flex-1 flex-col overflow-y-auto">
-          <ArticleToolbar
-            demo={demo}
-            title={currentToolbar.title}
-            unreadCount={counts.all}
-            articles={currentToolbar.articles}
-            onMarkAllRead={markAllRead}
-            showMarkAllRead={currentToolbar.showMarkAllRead}
-          />
-          {view === "all" && (
-            <AllItems
+      <main
+        className={
+          page === "feeds"
+            ? "grid h-[calc(100vh-64px)] grid-cols-[1fr] overflow-hidden md:grid-cols-[18rem_1fr_26rem]"
+            : "h-[calc(100vh-64px)] overflow-y-auto"
+        }
+      >
+        {page === "feeds" && (
+          <>
+            <Sidebar
               demo={demo}
-              articles={applyReadStatus(searchedAllArticles)}
-              loading={loadingHome}
-              selectedArticle={selectedArticle}
-              isSaved={isSaved}
-              toggleSaved={toggleSaved}
-              onSelectArticle={(article) => {
-                setSelectedArticle(article);
-                toggleRead(article);
-              }}
-            />
-          )}
-
-          {view === "feed" && (
-            <ArticleList
-              demo={demo}
-              articles={applyReadStatus(searchedArticles)}
-              onSelectArticle={setSelectedArticle}
-              loading={loadingArticles}
-              isSaved={isSaved}
-              toggleSaved={toggleSaved}
-              onSelectArticle={(article) => {
-                setSelectedArticle(article);
-                toggleRead(article);
-              }}
-              selectedArticle={selectedArticle}
+              view={view}
+              unreadCount={counts.all}
+              savedCount={savedArticles.length}
+              feeds={filteredFeeds}
+              categories={categories}
               selectedFeed={selectedFeed}
-              articleError={articleError}
-            />
-          )}
-
-          {view === "saved" && (
-            <ArticleSaved
-              demo={demo}
-              articles={applyReadStatus(searchedSavedArticles)}
-              loading={loadingSaved}
-              selectedArticle={selectedArticle}
-              onSelectArticle={(article) => {
-                setSelectedArticle(article);
-                toggleRead(article);
+              sidebarOpen={sidebarOpen}
+              renameCategory={renameCategory}
+              removeCategory={removeCategory}
+              onSelectFeed={handleSelectFeed}
+              onReorderCategories={reorderCategories}
+              handleDeleteFeed={handleDelete}
+              handleEditFeed={handleEdit}
+              setSidebarOpen={setSidebarOpen}
+              onShowAll={() => {
+                setView("all");
+                selectFeed(null);
               }}
+              onShowSaved={() => {
+                setView("saved");
+                selectFeed(null);
+              }}
+            />
+
+            <div className="flex flex-1 flex-col overflow-y-auto">
+              <ArticleToolbar
+                demo={demo}
+                title={currentToolbar.title}
+                unreadCount={counts.all}
+                articles={currentToolbar.articles}
+                onMarkAllRead={markAllRead}
+                showMarkAllRead={currentToolbar.showMarkAllRead}
+              />
+
+              {view === "all" && (
+                <AllItems
+                  demo={demo}
+                  articles={applyReadStatus(searchedAllArticles)}
+                  loading={loadingHome}
+                  selectedArticle={selectedArticle}
+                  isSaved={isSaved}
+                  toggleSaved={toggleSaved}
+                  onSelectArticle={handleSelectArticle}
+                />
+              )}
+
+              {view === "feed" && (
+                <ArticleList
+                  demo={demo}
+                  articles={applyReadStatus(searchedArticles)}
+                  loading={loadingArticles}
+                  isSaved={isSaved}
+                  toggleSaved={toggleSaved}
+                  onSelectArticle={handleSelectArticle}
+                  selectedArticle={selectedArticle}
+                  selectedFeed={selectedFeed}
+                  articleError={articleError}
+                />
+              )}
+
+              {view === "saved" && (
+                <ArticleSaved
+                  demo={demo}
+                  articles={applyReadStatus(searchedSavedArticles)}
+                  loading={loadingSaved}
+                  selectedArticle={selectedArticle}
+                  onSelectArticle={handleSelectArticle}
+                  onToggleSaved={toggleSaved}
+                  isSaved={isSaved}
+                />
+              )}
+            </div>
+
+            <ReaderView
+              demo={demo}
+              article={selectedArticle}
+              onBack={() => setSelectedArticle(null)}
               onToggleSaved={toggleSaved}
               isSaved={isSaved}
             />
-          )}
-        </div>
-        <ReaderView
-          demo={demo}
-          article={selectedArticle}
-          onBack={() => setSelectedArticle(null)}
-          onToggleSaved={toggleSaved}
-          isSaved={isSaved}
-        />
+          </>
+        )}
+
+        {page === "discover" && (
+          <Discover
+            demo={demo}
+            user={user}
+            feeds={feeds}
+            onImport={handleImport}
+          />
+        )}
+
+        {page === "digest" && <Digest demo={demo} user={user} />}
       </main>
 
       {activeModal === "feed" && (
