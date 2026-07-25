@@ -61,7 +61,7 @@ export default function Dashboard({ demo = false }) {
   } = useArticles();
 
   const { savedArticles, loadingSaved, toggleSaved, isSaved } =
-    useSavedArticles(demo ? null : user, setSelectedArticle);
+    useSavedArticles(user, setSelectedArticle);
 
   const {
     categories,
@@ -71,9 +71,7 @@ export default function Dashboard({ demo = false }) {
     renameCategory,
     removeCategory,
   } = useCategories(user, feeds, loadingFeeds, setFeeds, demo);
-  const { statuses, toggleRead, markAllRead } = useArticleStatus(
-    demo ? null : user,
-  );
+  const { statuses, toggleRead, markAllRead } = useArticleStatus(user);
   const applyReadStatus = (articles = []) =>
     articles.map((article) => ({
       ...article,
@@ -85,9 +83,25 @@ export default function Dashboard({ demo = false }) {
       ? feeds.filter((feed) => feed.category === selectedCategory)
       : feeds;
   }, [feeds, selectedCategory]);
-  const unreadCount = allArticles.filter(
-    (article) => statuses[article.id] !== "read",
-  ).length;
+  const counts = useMemo(() => {
+    const result = {
+      all: 0,
+      saved: savedArticles.length,
+      categories: {},
+    };
+
+    allArticles.forEach((article) => {
+      if (statuses[article.id] === "read") return;
+
+      result.all++;
+
+      const category = article.category ?? "Uncategorized";
+
+      result.categories[category] = (result.categories[category] ?? 0) + 1;
+    });
+
+    return result;
+  }, [allArticles, savedArticles.length, statuses]);
   const handleSelectFeed = useCallback(
     async (feed) => {
       setView("feed");
@@ -143,8 +157,9 @@ export default function Dashboard({ demo = false }) {
 
       <main className="grid grid-cols-[1fr] h-[calc(100vh-64px)] md:grid-cols-[18rem_1fr_26rem] overflow-hidden">
         <Sidebar
+          demo={demo}
           view={view}
-          unreadCount={unreadCount}
+          unreadCount={counts.all}
           savedCount={savedArticles.length}
           feeds={filteredFeeds}
           categories={categories}
@@ -168,14 +183,16 @@ export default function Dashboard({ demo = false }) {
         />
         <div className="flex flex-1 flex-col overflow-y-auto">
           <ArticleToolbar
+            demo={demo}
             title={currentToolbar.title}
-            count={currentToolbar.count}
+            unreadCount={counts.all}
             articles={currentToolbar.articles}
             onMarkAllRead={markAllRead}
             showMarkAllRead={currentToolbar.showMarkAllRead}
           />
           {view === "all" && (
             <AllItems
+              demo={demo}
               articles={applyReadStatus(searchedAllArticles)}
               loading={loadingHome}
               selectedArticle={selectedArticle}
@@ -190,6 +207,7 @@ export default function Dashboard({ demo = false }) {
 
           {view === "feed" && (
             <ArticleList
+              demo={demo}
               articles={applyReadStatus(searchedArticles)}
               onSelectArticle={setSelectedArticle}
               loading={loadingArticles}
@@ -207,6 +225,7 @@ export default function Dashboard({ demo = false }) {
 
           {view === "saved" && (
             <ArticleSaved
+              demo={demo}
               articles={applyReadStatus(searchedSavedArticles)}
               loading={loadingSaved}
               selectedArticle={selectedArticle}
@@ -220,6 +239,7 @@ export default function Dashboard({ demo = false }) {
           )}
         </div>
         <ReaderView
+          demo={demo}
           article={selectedArticle}
           onBack={() => setSelectedArticle(null)}
           onToggleSaved={toggleSaved}

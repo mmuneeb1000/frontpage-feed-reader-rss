@@ -9,9 +9,11 @@ export default function Header({
   actions,
   demo = false,
   setSidebarOpen,
+  handleClearFeeds,
 }) {
   const { user, signOut } = useAuth();
   const { full_name } = user?.user_metadata ?? {};
+  const isDemo = demo && !user;
 
   return (
     <header className="border-b border-gray-200 bg-white">
@@ -54,6 +56,8 @@ export default function Header({
                 full_name={full_name}
                 signOut={signOut}
                 actions={actions}
+                demo={false}
+                handleClearFeeds={handleClearFeeds}
               />
             </>
           ) : (
@@ -61,7 +65,7 @@ export default function Header({
               <div className="hidden items-center gap-3 md:flex">
                 <Link
                   to="/login"
-                  className="rounded-md px-4 py-2 transition hover:bg-gray-100"
+                  className="rounded-md border border-gray-300 px-4 py-2 transition hover:bg-gray-100"
                 >
                   Login
                 </Link>
@@ -73,8 +77,6 @@ export default function Header({
                   {demo ? "Create Account" : "Register"}
                 </Link>
               </div>
-
-              <UserMenu demo={demo} />
             </>
           )}
         </div>

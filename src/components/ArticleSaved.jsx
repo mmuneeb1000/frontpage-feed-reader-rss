@@ -1,6 +1,9 @@
 import ArticleCard from "./Layout/ArticleCard";
+import LoadingState from "./Layout/LoadingState";
+import TryDemo from "./TryDemo";
 
 export default function ArticleSaved({
+  demo,
   articles,
   loading,
   selectedArticle,
@@ -10,16 +13,16 @@ export default function ArticleSaved({
 }) {
   if (loading) {
     return (
-      <main className="flex items-center justify-center">
-        Loading saved articles...
-      </main>
+      <section className="overflow-y-auto">
+        <LoadingState />
+      </section>
     );
   }
 
   return (
     <section>
       {articles.length === 0 ? (
-        <div className="flex flex-1 items-center justify-center text-gray-500">
+        <div className="h-[70vh] flex flex-1 items-center justify-center text-gray-500">
           No saved articles yet.
         </div>
       ) : (

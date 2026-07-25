@@ -3,6 +3,7 @@ import { Link, NavLink } from "react-router-dom";
 import { DndContext, closestCenter } from "@dnd-kit/core";
 import SidebarCategory from "../SidebarCategory";
 import { getCategoryColor } from "../../lib/categoryColor";
+import TryDemo from "../TryDemo";
 import {
   FiHome,
   FiBookmark,
@@ -21,6 +22,7 @@ import {
 } from "@dnd-kit/sortable";
 
 export default function Sidebar({
+  demo,
   view,
   feeds,
   categories,
@@ -109,17 +111,25 @@ export default function Sidebar({
               {unreadCount}
             </span>
           </button>
+          <TryDemo
+            demo={demo}
+            title="Save articles"
+            message="Create an account to keep your reading list synced."
+          >
+            <button
+              onClick={onShowSaved}
+              className={navButton(view === "saved")}
+            >
+              <span className="flex items-center gap-3 text-sm">
+                <FiBookmark />
+                Saved
+              </span>
 
-          <button onClick={onShowSaved} className={navButton(view === "saved")}>
-            <span className="flex items-center gap-3 text-sm">
-              <FiBookmark />
-              Saved
-            </span>
-
-            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-gray-500 text-xs font-medium text-white">
-              {savedCount}
-            </span>
-          </button>
+              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-gray-500 text-xs font-medium text-white">
+                {savedCount}
+              </span>
+            </button>
+          </TryDemo>
         </div>
 
         <div className="min-h-0 flex-1 overflow-y-auto px-4 py-6">

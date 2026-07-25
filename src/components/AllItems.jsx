@@ -1,9 +1,9 @@
-import { FiBookmark, FiExternalLink } from "react-icons/fi";
-
 import ArticleCard from "./Layout/ArticleCard";
+import LoadingState from "./Layout/LoadingState";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
 
 export default function AllItems({
+  demo,
   articles,
   loading,
   selectedArticle,
@@ -12,19 +12,25 @@ export default function AllItems({
   toggleSaved,
 }) {
   const { visibleItems, loaderRef, hasMore } = useInfiniteScroll(articles);
+
   if (loading) {
+    return <LoadingState />;
+  }
+
+  if (!articles.length) {
     return (
-      <section className="overflow-y-auto">
-        <p className="p-8 text-gray-500">Loading your feed...</p>
+      <section className="flex flex-1 items-center justify-center p-8">
+        <p className="text-sm text-gray-500">No articles found.</p>
       </section>
     );
   }
 
   return (
-    <section className="overflow-y-auto">
+    <section className="divide-y divide-gray-200">
       {visibleItems.map((article) => (
         <ArticleCard
-          key={article.id || article.link}
+          key={article.id ?? article.link}
+          demo={demo}
           article={article}
           selected={selectedArticle?.link === article.link}
           onSelect={onSelectArticle}
@@ -32,9 +38,10 @@ export default function AllItems({
           onToggleSaved={toggleSaved}
         />
       ))}
+
       {hasMore && (
-        <div ref={loaderRef} className="py-6 text-center text-sm text-gray-500">
-          Loading more...
+        <div ref={loaderRef} className="flex justify-center py-6">
+          <LoadingState />
         </div>
       )}
     </section>

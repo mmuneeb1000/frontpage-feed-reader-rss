@@ -1,6 +1,8 @@
 import { FiBookmark } from "react-icons/fi";
+import TryDemo from "../TryDemo";
 
 export default function ArticleCard({
+  demo,
   article,
   saved,
   onToggleSaved,
@@ -50,17 +52,23 @@ export default function ArticleCard({
                 {article.title}
               </h3>
             </button>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                onToggleSaved(article);
-              }}
-              className="mt-1 rounded text-gray-400 hover:bg-gray-100 hover:text-blue-600"
+            <TryDemo
+              demo={demo}
+              title="Bookmark articles"
+              message="Sign up to save articles for later."
             >
-              <FiBookmark
-                className={`h-5 w-5 ${saved ? "fill-current text-blue-600" : ""}`}
-              />
-            </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onToggleSaved(article);
+                }}
+                className="mt-1 rounded text-gray-400 hover:bg-gray-100 hover:text-blue-600"
+              >
+                <FiBookmark
+                  className={`h-5 w-5 ${saved ? "fill-current text-blue-600" : ""}`}
+                />
+              </button>
+            </TryDemo>
           </div>
 
           <p className="mt-2 line-clamp-2 text-sm text-gray-600">

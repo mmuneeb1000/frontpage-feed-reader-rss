@@ -31,8 +31,8 @@ export default function AddFeedMenu({ demo, onCreateFeed, onImportOPML }) {
   }, []);
 
   function handleSelect(action) {
-    setOpen(false);
     action?.();
+    setOpen(false);
   }
 
   return (

@@ -7,6 +7,7 @@ import {
   deleteFeed,
   clearFeeds,
 } from "../services/feedService";
+import { getArticles } from "../services/articleService";
 
 export default function useFeeds(user, demo = false, setSidebarOpen) {
   const [feeds, setFeeds] = useState([]);
@@ -122,14 +123,83 @@ export default function useFeeds(user, demo = false, setSidebarOpen) {
   }
 
   async function handleImport(importedFeeds) {
-    for (const feed of importedFeeds) {
-      await createFeed({
-        ...feed,
-        user_id: user.id,
-      });
+    if (demo) {
+      return {
+        imported: [],
+        skipped: [],
+        failed: [],
+      };
     }
 
-    await loadFeeds();
+    const imported = [];
+    const skipped = [];
+    const failed = [];
+
+    for (const feed of importedFeeds) {
+      try {
+        // Validate the feed first
+        const { data: articles, error: validationError } = await getArticles(
+          feed.link,
+        );
+
+        if (validationError) {
+          failed.push({
+            ...feed,
+            reason: validationError,
+          });
+
+          continue;
+        }
+
+        if (!articles || articles.length === 0) {
+          failed.push({
+            ...feed,
+            reason: "Feed contains no articles.",
+          });
+
+          continue;
+        }
+
+        // Only insert valid feeds
+        const { data, error } = await createFeed({
+          ...feed,
+          user_id: user.id,
+        });
+
+        if (error) {
+          if (error.code === "23505") {
+            skipped.push({
+              ...feed,
+              reason: "Feed already exists.",
+            });
+          } else {
+            failed.push({
+              ...feed,
+              reason: error.message,
+            });
+          }
+
+          continue;
+        }
+
+        imported.push(data);
+      } catch (err) {
+        failed.push({
+          ...feed,
+          reason: err.message || "Unknown error",
+        });
+      }
+    }
+
+    if (imported.length) {
+      await loadFeeds();
+    }
+
+    return {
+      imported,
+      skipped,
+      failed,
+    };
   }
 
   function handleEdit(feed) {

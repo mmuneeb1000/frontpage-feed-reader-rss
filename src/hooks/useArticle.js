@@ -8,7 +8,7 @@ export default function useArticles() {
   const [selectedArticle, setSelectedArticle] = useState(null);
 
   const [loadingArticles, setLoadingArticles] = useState(false);
-  const [loadingHome, setLoadingHome] = useState(true);
+  const [loadingHome, setLoadingHome] = useState(false);
 
   const [articleError, setArticleError] = useState("");
 
@@ -31,20 +31,28 @@ export default function useArticles() {
   }
 
   async function loadHome(feeds) {
+    if (!feeds.length) {
+      setAllArticles([]);
+      setSelectedArticle(null);
+      setLoadingHome(false);
+      return;
+    }
+
     setLoadingHome(true);
 
     try {
-      const selectedFeeds = feeds.slice(0, 5);
-
       const results = await Promise.all(
-        selectedFeeds.map((feed) => getArticles(feed.link)),
+        feeds.slice(0, 5).map((feed) => getArticles(feed.link)),
       );
 
       const articles = results
-        .flatMap((result) => result.data || [])
+        .flatMap((result) => result.data ?? [])
         .sort((a, b) => new Date(b.published) - new Date(a.published));
 
       setAllArticles(articles);
+    } catch (error) {
+      console.error(error);
+      setAllArticles([]);
     } finally {
       setLoadingHome(false);
     }

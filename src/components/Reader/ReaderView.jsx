@@ -3,6 +3,7 @@ import ReaderActions from "./ReaderActions";
 import ReaderContent from "./ReaderContent";
 
 export default function ReaderView({
+  demo,
   article,
   onBack,
   onToggleSaved,
@@ -11,7 +12,7 @@ export default function ReaderView({
   if (!article) {
     return (
       <div
-        className="flex h-full items-center justify-center 
+        className="flex h-full border-l border-l-gray-300 items-center justify-center 
       p-6 text-center text-neutral-500"
       >
         Select an article to read
@@ -20,7 +21,7 @@ export default function ReaderView({
   }
 
   return (
-    <article className="mx-auto px-4 py-5 md:px-6 md:py-6 overflow-y-auto">
+    <article className="border-l border-l-gray-300 mx-auto px-4 py-5 md:px-6 md:py-6 overflow-y-auto">
       <button
         onClick={onBack}
         className="mb-5 flex items-center gap-2 rounded-lg px-3 py-2 text-sm 
@@ -33,6 +34,7 @@ export default function ReaderView({
       <ReaderHeader article={article} />
 
       <ReaderActions
+        demo={demo}
         article={article}
         onToggleSaved={onToggleSaved}
         isSaved={isSaved}

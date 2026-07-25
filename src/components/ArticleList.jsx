@@ -1,9 +1,10 @@
 import { FiBookmark, FiExternalLink } from "react-icons/fi";
-
+import LoadingState from "./Layout/LoadingState";
 import ArticleCard from "./Layout/ArticleCard";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
 
 export default function ArticleList({
+  demo,
   articles,
   loading,
   isSaved,
@@ -16,8 +17,8 @@ export default function ArticleList({
   const { visibleItems, loaderRef, hasMore } = useInfiniteScroll(articles);
   if (loading) {
     return (
-      <section className="flex flex-1 items-center justify-center">
-        <p className="text-gray-500">Loading articles...</p>
+      <section className="overflow-y-auto">
+        <LoadingState />
       </section>
     );
   }
@@ -33,6 +34,7 @@ export default function ArticleList({
     <section className="overflow-y-auto border-r border-gray-300">
       {visibleItems.map((article) => (
         <ArticleCard
+          demo={demo}
           key={article.id || article.link}
           saved={isSaved(article)}
           onToggleSaved={toggleSaved}

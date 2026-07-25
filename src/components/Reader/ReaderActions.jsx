@@ -1,20 +1,32 @@
 import { FiBookmark, FiExternalLink } from "react-icons/fi";
+import TryDemo from "../TryDemo";
 
-export default function ReaderActions({ article, onToggleSaved, isSaved }) {
+export default function ReaderActions({
+  demo,
+  article,
+  onToggleSaved,
+  isSaved,
+}) {
   const saved = isSaved(article);
 
   return (
     <div className="mt-6 flex flex-col gap-3 md:flex-row">
-      <button
-        onClick={() => onToggleSaved(article)}
-        className={`flex items-center gap-2 rounded-lg md:w-auto border px-4 py-2 
+      <TryDemo
+        demo={demo}
+        title="Bookmark articles"
+        message="Sign up to save articles for later."
+      >
+        <button
+          onClick={() => onToggleSaved(article)}
+          className={`flex items-center gap-2 rounded-lg md:w-auto border border-gray-300 px-4 py-2 
           transition hover:bg-neutral-100 focus:ring-2 focus:ring-blue-500 active:scale-95 ${
             saved ? "border-blue-300 bg-blue-50 text-blue-700" : ""
           }`}
-      >
-        <FiBookmark className={saved ? "fill-current text-blue-600" : ""} />
-        {saved ? "Saved" : "Save"}
-      </button>
+        >
+          <FiBookmark className={saved ? "fill-current text-blue-600" : ""} />
+          {saved ? "Saved" : "Save"}
+        </button>
+      </TryDemo>
 
       <a
         href={article.link}

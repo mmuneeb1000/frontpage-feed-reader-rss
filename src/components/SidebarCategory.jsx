@@ -33,7 +33,7 @@ export default function SidebarCategory({
 
   return (
     <div ref={setNodeRef} style={style} className="relative">
-      <div className="flex items-center gap-2">
+      <div className="flex items-center">
         <button
           {...attributes}
           {...listeners}
