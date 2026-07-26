@@ -17,6 +17,7 @@ import useCategories from "../hooks/useCategory";
 import useSavedArticles from "../hooks/useSavedArticles";
 import useArticleStatus from "../hooks/useArticleStatus";
 import useSearch from "../hooks/useSearch";
+import BottomNavigation from "../components/BottomNavigation";
 
 export default function Dashboard({ demo = false }) {
   const { user } = useAuth();
@@ -177,7 +178,7 @@ export default function Dashboard({ demo = false }) {
       <main
         className={
           page === "feeds"
-            ? "grid h-[calc(100vh-66px)] grid-cols-1 md:grid-cols-[18rem_1fr] md:grid-rows-[1fr_auto] overflow-hidden lg:grid-cols-[18rem_1fr_26rem]"
+            ? "grid h-[calc(100vh-66px)] grid-cols-[1fr] md:grid-cols-[18rem_1fr] md:grid-rows-[1fr_auto] overflow-hidden lg:grid-cols-[18rem_1fr_26rem]"
             : "h-[calc(100vh-64px)] overflow-y-auto"
         }
       >
@@ -281,6 +282,7 @@ export default function Dashboard({ demo = false }) {
           <Digest demo={demo} user={user} articles={digestArticles} />
         )}
       </main>
+      <BottomNavigation page={page} onChangePage={setPage} />
 
       {activeModal === "feed" && (
         <FeedForm

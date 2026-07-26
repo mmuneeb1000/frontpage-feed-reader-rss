@@ -29,7 +29,7 @@ export default function ArticleCard({
           <div className="flex items-center gap-2 text-sm text-gray-500">
             <img src={article.favicon} alt="" className="h-4 w-4 shrink-0" />
 
-            <span className="truncate">
+            <span className="max-w-50 truncate">
               {article.feedTitle || article.feed_title}
             </span>
 
@@ -39,7 +39,7 @@ export default function ArticleCard({
           </div>
         </div>
 
-        <div className="ml-8 flex flex-col">
+        <div className="ml-4 flex min-w-0 flex-1 flex-col">
           <div className="flex gap-4 items-start">
             <button onClick={() => onSelect?.(article)} className="text-left">
               <h3
