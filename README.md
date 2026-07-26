@@ -7,6 +7,7 @@ A customizable content aggregator that pulls RSS and Atom feeds into a unified r
 ## Table of Contents
 
 - [Overview](#overview)
+- [Demo Mode](#demo-mode)
 - [Features](#features)
 - [Tech Stack](#tech-stack)
 - [Architecture](#architecture)
@@ -41,10 +42,21 @@ The project focuses on creating a polished reading experience while maintaining 
 
 ---
 
+# Demo Mode
+
+Frontpage includes a Demo Mode that allows visitors to explore the application without creating an account.
+
+Demo Mode provides a curated collection of RSS feeds, sample articles, and the complete reading experience, making it easy to evaluate the product immediately.
+
+Once a user signs in, Demo Mode is automatically disabled and the application switches to the user's personal subscriptions, saved articles, and reading history. This keeps demonstration data completely separate from user data.
+
+---
+
 # Features
 
 - User authentication
 - Feed management (Create, Edit, Delete)
+- Demo mode for guest users
 - RSS & Atom feed parsing
 - OPML import
 - JSON import
@@ -131,6 +143,8 @@ New users often start with an empty dashboard, making it difficult to experience
 
 Frontpage includes a dedicated **Discover** section where users can browse and subscribe to curated feeds across multiple categories. Users can also manually add feeds or import existing subscriptions using OPML or JSON.
 
+To reduce friction for first-time visitors, Frontpage includes a Demo Mode with curated sample feeds alongside manual feed creation and OPML/JSON import. This allows users to experience the application immediately before deciding to create an account.
+
 ### Why
 
 This provides both experienced RSS users and newcomers with a quick way to build a personalized reading experience without hunting for feed URLs.
@@ -142,6 +156,8 @@ This provides both experienced RSS users and newcomers with a quick way to build
 - Search across the discovery catalog
 
 ---
+
+## Digest & Reading Experience
 
 ### Problem
 
@@ -447,6 +463,16 @@ npm run server
 | `VITE_API_URL`           | Backend API URL               |
 | `PORT`                   | Express server port           |
 | `FRONTEND_URL`           | Frontend origin used for CORS |
+
+---
+
+## Author
+
+M.Muneeb
+
+- Frontend Mentor - https://www.frontendmentor.io/profile/mmuneeb1000
+- GitHub - https://github.com/mmuneeb1000
+- LinkedIn - https://www.linkedin.com/in/m-muneeb-a9984633b/
 
 ---
 
