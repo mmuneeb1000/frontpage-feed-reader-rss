@@ -33,6 +33,21 @@ A customizable content aggregator that pulls RSS and Atom feeds into a unified r
 
 ---
 
+## Screenshots
+
+<table>
+  <tr>
+    <td><img src="./screenshots/home.png" alt="Home" width="100%"></td>
+    <td><img src="./screenshots/login.png" alt="Login" width="100%"></td>
+    <td><img src="./screenshots/register.png" alt="Register" width="100%"></td>
+  </tr>
+  <tr>
+    <td><img src="./screenshots/demo.png" alt="Demo" width="100%"></td>
+    <td><img src="./screenshots/discover.png" alt="Discover" width="100%"></td>
+    <td><img src="./screenshots/digest.png" alt="Digest" width="100%"></td>
+  </tr>
+</table>
+
 # Overview
 
 Frontpage is a modern RSS reader that aggregates content from multiple RSS and Atom feeds into a single, clean reading experience.
