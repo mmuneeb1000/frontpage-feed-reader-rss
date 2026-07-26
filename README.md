@@ -1,18 +1,457 @@
-# React + Vite
+# Frontpage
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A customizable content aggregator that pulls RSS and Atom feeds into a unified reading dashboard. Frontpage allows users to subscribe to their favorite feeds, organize them into categories, save articles, track reading progress, and enjoy a distraction-free reading experience.
 
-Currently, two official plugins are available:
+**Live Demo:** https://frontpage-feed-reader-rss.netlify.app/
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Table of Contents
 
-## React Compiler
+- [Overview](#overview)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Architecture](#architecture)
+- [Design Decisions](#design-decisions)
+  - [Content Discovery & Onboarding](#content-discovery--onboarding)
+  - [Digest & Reading Experience](#digest--reading-experience)
+  - [Layout & Organization](#layout--organization)
+  - [Additional Design Decisions](#additional-design-decisions)
+- [Development Journey](#development-journey)
+  - [Initial Approach vs Final Architecture](#initial-approach-vs-final-architecture)
+  - [Major Refactors](#major-refactors)
+  - [Challenges](#challenges)
+  - [Development Timeline](#development-timeline)
+- [AI Collaboration Reflection](#ai-collaboration-reflection)
+- [Project Differentiators](#project-differentiators)
+- [Self Assessment](#self-assessment)
+- [Known Limitations](#known-limitations)
+- [Future Improvements](#future-improvements)
+- [Running Locally](#running-locally)
+- [Environment Variables](#environment-variables)
+- [Acknowledgments](#acknowledgments)
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+---
 
-Note: This will impact Vite dev & build performances.
+# Overview
 
-## Expanding the ESLint configuration
+Frontpage is a modern RSS reader that aggregates content from multiple RSS and Atom feeds into a single, clean reading experience.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Instead of visiting multiple websites individually, users can manage subscriptions, organize feeds into categories, save articles, mark articles as read, and browse content through a responsive reading interface.
+
+The project focuses on creating a polished reading experience while maintaining a scalable architecture that separates UI, business logic, backend services, and data persistence.
+
+---
+
+# Features
+
+- User authentication
+- Feed management (Create, Edit, Delete)
+- RSS & Atom feed parsing
+- OPML import
+- JSON import
+- Feed categorization
+- Unified article timeline
+- Dedicated reader view
+- Saved articles
+- Read / unread tracking
+- Automatic favicon generation
+- Pre-Defined Feeds
+- Responsive design
+- Loading skeletons
+- Rich HTML article rendering
+- Secure HTML sanitization
+- Feed validation
+- Error handling
+- Modular architecture
+
+---
+
+# Tech Stack
+
+| Layer             | Technology          |
+| ----------------- | ------------------- |
+| Frontend          | React 19 + Vite     |
+| Backend           | Node.js + Express   |
+| Database          | Supabase PostgreSQL |
+| Authentication    | Supabase Auth       |
+| Styling           | Tailwind CSS        |
+| RSS Parsing       | rss-parser          |
+| HTTP Client       | Axios               |
+| HTML Sanitization | DOMPurify           |
+| Icons             | React Icons         |
+| Frontend Hosting  | Netlify             |
+| Backend Hosting   | Render              |
+
+---
+
+# Architecture
+
+```text
+React Frontend
+│
+├── Pages
+├── Components
+├── Hooks
+├── Services
+│
+▼
+
+Express Backend
+│
+├── Controllers
+├── Routes
+├── RSS Service
+│
+▼
+
+RSS / Atom Feeds
+
+▼
+
+Supabase
+
+├── Authentication
+├── Feeds
+├── Saved Articles
+└── Read Status
+```
+
+The project follows a layered architecture that separates UI rendering from business logic and external services.
+
+---
+
+# Design Decisions
+
+## Content Discovery & Onboarding
+
+### Problem
+
+New users often start with an empty dashboard, making it difficult to experience the value of an RSS reader immediately.
+
+### Solution
+
+Frontpage includes a dedicated **Discover** section where users can browse and subscribe to curated feeds across multiple categories. Users can also manually add feeds or import existing subscriptions using OPML or JSON.
+
+### Why
+
+This provides both experienced RSS users and newcomers with a quick way to build a personalized reading experience without hunting for feed URLs.
+
+### Future Improvements
+
+- Personalized recommendations based on subscriptions
+- Trending feeds
+- Search across the discovery catalog
+
+---
+
+### Problem
+
+Following many feeds can make it difficult to identify important or recent content.
+
+### Solution
+
+Frontpage includes a **Daily Digest** that aggregates recent articles into a concise overview, giving users a quick snapshot of new content across all subscribed feeds before diving into individual articles.
+
+### Why
+
+The digest reduces information overload and helps users prioritize what to read first.
+
+### Future Improvements
+
+- AI-generated summaries
+- Topic clustering
+- Reading time estimates
+- Personalized digest ordering
+
+---
+
+## Layout & Organization
+
+### Problem
+
+Users browse content differently depending on screen size and reading habits.
+
+### Solution
+
+The application separates browsing and reading into reusable interface components.
+
+- Sidebar
+- Feed List
+- Article List
+- Reader
+- Search
+- Toolbar
+
+### Why
+
+This allows components to remain reusable while keeping the reading experience uncluttered.
+
+### Future Improvements
+
+- Density controls
+- Theme customization
+- Typography controls
+- Adjustable sidebar width
+
+---
+
+## Additional Design Decisions
+
+- Reader optimized for long-form content
+- DOMPurify sanitization before rendering HTML
+- Automatic image fallback
+- Persistent read status
+- Persistent saved articles
+- Responsive layouts
+- Skeleton loading components
+- Modular service architecture
+
+---
+
+# Development Journey
+
+## Initial Approach vs Final Architecture
+
+The project originally began as a basic RSS reader capable of displaying articles from manually entered feeds.
+
+As development progressed it evolved into a complete application featuring:
+
+- Authentication
+- Persistent subscriptions
+- Feed CRUD
+- Dedicated backend
+- OPML import
+- Saved articles
+- Read tracking
+- Responsive layouts
+- Modular hooks
+- Service layer abstraction
+
+Business logic gradually moved out of UI components into reusable services and custom hooks.
+
+---
+
+## Major Refactors
+
+Several architectural decisions changed during development.
+
+### RSS Backend
+
+Originally RSS parsing happened closer to the frontend.
+
+The project now uses a dedicated Express backend responsible for:
+
+- Feed validation
+- RSS parsing
+- Normalization
+- Error handling
+
+---
+
+### Component Architecture
+
+Large page components were gradually split into reusable components.
+
+Example:
+
+```text
+Dashboard
+
+├── DashboardHeader
+├── Sidebar
+├── FeedList
+├── ArticleList
+├── ReaderContent
+├── SearchBar
+└── AddFeedMenu
+```
+
+---
+
+### State Management
+
+Logic for:
+
+- Saved Articles
+- Read Status
+- Feed Loading
+
+was extracted into reusable custom hooks.
+
+---
+
+# Challenges
+
+The most technically challenging areas were:
+
+- RSS vs Atom differences
+- Missing metadata
+- Different image formats
+- HTML sanitization
+- Deployment configuration
+- Feed validation
+- Responsive reading layouts
+
+RSS feeds vary significantly across publishers which required extensive normalization before rendering.
+
+---
+
+## Development Timeline
+
+| Session | Focus             | Progress                                      |
+| ------- | ----------------- | --------------------------------------------- |
+| 1       | Foundation        | React setup, Supabase authentication, routing |
+| 2       | Feed Management   | CRUD operations, validation, categories       |
+| 3       | Backend           | Express API, RSS parsing, normalization       |
+| 4       | Reader Experience | Reader view, saved articles, read tracking    |
+| 5       | Polish            | Skeletons, imports, deployment, refactoring   |
+
+---
+
+# AI Collaboration Reflection
+
+## How AI Was Used
+
+AI was used as a development assistant for:
+
+- Architecture discussions
+- Debugging
+- Refactoring
+- Component organization
+- Backend troubleshooting
+- Deployment debugging
+- UX improvements
+
+## What Worked Well
+
+AI accelerated debugging and code reviews while helping identify opportunities for better separation of concerns.
+
+## What I Learned
+
+The project reinforced the importance of:
+
+- Modular architecture
+- Service abstraction
+- Custom hooks
+- API normalization
+- Clean component boundaries
+
+## Where I Pushed Back
+
+Not every suggestion was accepted.
+
+Recommendations were evaluated based on maintainability and consistency with the project's architecture.
+
+---
+
+# Project Differentiators
+
+## Dedicated Reading Experience
+
+Unlike many RSS readers that prioritize feed management, Frontpage focuses heavily on the reading experience.
+
+### Highlights
+
+- Rich HTML rendering
+- Responsive typography
+- Image fallback
+- Secure HTML sanitization
+- Persistent reading progress
+
+### Impact
+
+Reading articles feels closer to visiting the original publication while maintaining consistency across every feed.
+
+---
+
+## Strengths
+
+- Clean architecture
+- Modular components
+- Responsive UI
+- Reusable hooks
+- Strong separation of concerns
+- Robust RSS parsing
+- Scalable backend
+
+## Areas for Improvement
+
+- AI summaries
+- Offline support
+- Better search
+- Keyboard shortcuts
+- Reader customization
+
+---
+
+# Known Limitations
+
+- Feed quality depends on the publisher.
+- Some publishers limit automated requests.
+- Full article content is only available when included in the RSS feed.
+- Offline reading is not currently supported.
+- Feed discovery is currently manual.
+
+---
+
+# Future Improvements
+
+- AI generated daily digest
+- Feed recommendations
+- Discover page
+- Reading statistics
+- Keyboard shortcuts
+- OPML export
+- Offline caching
+- Themes
+- Reader customization
+- Reading time estimation
+- Smart collections
+- Tags
+- Full-text search
+
+---
+
+# Running Locally
+
+```bash
+# Clone repository
+git clone https://github.com/mmuneeb1000/frontpage-feed-reader-rss
+
+cd frontpage
+
+# Install frontend dependencies
+npm install
+
+# Install backend dependencies
+cd server
+npm install
+
+# Configure environment variables
+cp .env.example .env
+
+# Start frontend
+npm run dev
+
+# Start backend
+npm run server
+```
+
+---
+
+# Environment Variables
+
+| Variable                 | Description                   |
+| ------------------------ | ----------------------------- |
+| `VITE_SUPABASE_URL`      | Supabase project URL          |
+| `VITE_SUPABASE_ANON_KEY` | Supabase anonymous key        |
+| `VITE_API_URL`           | Backend API URL               |
+| `PORT`                   | Express server port           |
+| `FRONTEND_URL`           | Frontend origin used for CORS |
+
+---
+
+# Acknowledgments
+
+Built as part of the Frontend Mentor Product Challenge.
+
+The project uses publicly available RSS and Atom feeds for demonstration and testing purposes.

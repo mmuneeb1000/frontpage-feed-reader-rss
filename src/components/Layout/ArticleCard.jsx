@@ -12,13 +12,13 @@ export default function ArticleCard({
   return (
     <div
       onClick={() => onSelect?.(article)}
-      className={`flex gap-4 border-b border-gray-200 p-5 transition ${
+      className={`flex w-full gap-4 border-b border-gray-200 p-4 transition ${
         article.read
           ? "border-gray-200 bg-gray-50"
           : "border-blue-200 bg-white shadow-sm"
       }`}
     >
-      <div className="w-full">
+      <div>
         <div className="mb-2 flex gap-5 items-center">
           <span
             className={`h-3 w-3 rounded-full ${
