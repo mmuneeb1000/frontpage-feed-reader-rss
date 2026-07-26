@@ -82,6 +82,12 @@
           "feedUrl": "https://www.figma.com/blog/feed/atom.xml",
           "siteUrl": "https://www.figma.com",
           "description": "Product design, collaboration and design systems."
+        },
+        {
+          "title": "Creative Bloq",
+          "feedUrl": "https://www.creativebloq.com/feed",
+          "siteUrl": "https://www.creativebloq.com",
+          "description": "Design inspiration, tutorials and creative industry news."
         }
       ]
     },
