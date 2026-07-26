@@ -6,6 +6,7 @@ A customizable content aggregator that pulls RSS and Atom feeds into a unified r
 
 ## Table of Contents
 
+- [Screenshots](#screenshots)
 - [Overview](#overview)
 - [Demo Mode](#demo-mode)
 - [Features](#features)
@@ -78,8 +79,7 @@ Once a user signs in, Demo Mode is automatically disabled and the application sw
 - RSS & Atom feed parsing
 - Real-time article search
 - Feed categorization
-- OPML import
-- JSON import
+- OPML import with Error Handling
 - Dedicated reader view
 - Saved articles
 - Read / unread tracking
@@ -274,7 +274,7 @@ As development progressed it evolved into a complete application featuring:
 - Persistent subscriptions
 - Feed CRUD
 - Dedicated backend
-- OPML import
+- OPML import with error handling
 - Saved articles
 - Read tracking
 - Responsive layouts
