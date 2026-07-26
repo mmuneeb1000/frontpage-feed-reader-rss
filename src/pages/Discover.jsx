@@ -57,7 +57,7 @@ export default function Discover({
             <div
               key={category.id}
               className="relative overflow-hidden rounded-xl border border-blue-100/70 
-              bg-gradient-to-br from-white via-blue-50/40 to-sky-100/30 p-5 
+              bg-gradient-to-br from-white via-blue-50/40 to-sky-100/30 
               shadow-sm transition duration-200 hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-md"
             >
               <div
