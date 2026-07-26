@@ -52,24 +52,25 @@ Once a user signs in, Demo Mode is automatically disabled and the application sw
 
 ---
 
-# Features
+## Features
 
 - User authentication
-- Feed management (Create, Edit, Delete)
 - Demo mode for guest users
+- Discover page
+- Daily Digest
+- Feed management (Create, Edit, Delete)
 - RSS & Atom feed parsing
+- Real-time article search
+- Feed categorization
 - OPML import
 - JSON import
-- Feed categorization
-- Unified article timeline
 - Dedicated reader view
 - Saved articles
 - Read / unread tracking
 - Automatic favicon generation
-- Pre-Defined Feeds
+- Rich HTML article rendering
 - Responsive design
 - Loading skeletons
-- Rich HTML article rendering
 - Secure HTML sanitization
 - Feed validation
 - Error handling
@@ -209,6 +210,28 @@ This allows components to remain reusable while keeping the reading experience u
 - Adjustable sidebar width
 
 ---
+
+## Search Experience
+
+### Problem
+
+As subscriptions grow, browsing manually becomes inefficient. Users need a fast way to locate articles without navigating through every feed.
+
+### Solution
+
+Frontpage includes a real-time search bar that filters articles instantly as users type. Search works across the aggregated article list, making it easy to find content regardless of which feed it originated from.
+
+### Why
+
+A unified search experience complements the aggregated nature of the application and significantly reduces the time required to find previously seen or newly published articles.
+
+### Future Improvements
+
+- Search by author
+- Search by feed
+- Search by category
+- Date filtering
+- Search history
 
 ## Additional Design Decisions
 
@@ -376,6 +399,23 @@ Unlike many RSS readers that prioritize feed management, Frontpage focuses heavi
 ### Impact
 
 Reading articles feels closer to visiting the original publication while maintaining consistency across every feed.
+
+## Unified Search
+
+RSS readers often separate content by feed, making articles harder to rediscover. I wanted search to work across the entire reading experience.
+
+### How it enhances the product
+
+Users can instantly locate articles from any subscribed feed without remembering where they were originally published.
+
+### Implementation Highlights
+
+- Real-time filtering
+- Search across aggregated articles
+- Immediate results while typing
+- Integrated with the main reading dashboard
+
+Designing search around the aggregated article list creates a more natural browsing experience than restricting searches to individual feeds.
 
 ---
 
