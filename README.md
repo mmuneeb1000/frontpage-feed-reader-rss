@@ -12,9 +12,10 @@ A customizable content aggregator that pulls RSS and Atom feeds into a unified r
 - [Tech Stack](#tech-stack)
 - [Architecture](#architecture)
 - [Design Decisions](#design-decisions)
-  - [Content Discovery & Onboarding](#content-discovery--onboarding)
+  - [Content Discovery](#content-discovery--onboarding)
   - [Digest & Reading Experience](#digest--reading-experience)
   - [Layout & Organization](#layout--organization)
+  - [Search Experience](#search-experience)
   - [Additional Design Decisions](#additional-design-decisions)
 - [Development Journey](#development-journey)
   - [Initial Approach vs Final Architecture](#initial-approach-vs-final-architecture)
@@ -134,7 +135,7 @@ The project follows a layered architecture that separates UI rendering from busi
 
 # Design Decisions
 
-## Content Discovery & Onboarding
+## Content Discovery
 
 ### Problem
 
