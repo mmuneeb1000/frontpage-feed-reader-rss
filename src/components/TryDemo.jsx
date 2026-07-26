@@ -11,7 +11,7 @@ export default function TryDemo({
   }
 
   return (
-    <div className="group relative inline-flex ">
+    <div className="group relative  ">
       <div className="cursor-not-allowed opacity-60">{children}</div>
 
       <div

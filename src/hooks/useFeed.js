@@ -23,7 +23,7 @@ export default function useFeeds(user, demo = false, setSidebarOpen) {
         title: feed.title,
         description: feed.description ?? "",
         link: feed.feedUrl,
-        siteUrl: feed.siteUrl,
+        site_url: feed.siteUrl,
         category: category.name,
         isDemo: true,
       })),

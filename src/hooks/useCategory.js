@@ -150,7 +150,6 @@ export default function useCategories(
       return;
     }
 
-    // Update category order
     const { error: categoryError } = await updateCategory(id, {
       category: name,
     });

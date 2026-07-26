@@ -60,9 +60,9 @@ export default function Discover({
               bg-gradient-to-br from-white via-blue-50/40 to-sky-100/30 p-5 
               shadow-sm transition duration-200 hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-md"
             >
-              <button
+              <div
                 onClick={() => setOpenCategory(isOpen ? null : category.id)}
-                className="flex w-full items-center justify-between p-5 text-left transition "
+                className="flex flex-col gap-4 md:flex-row w-full items-center md:justify-between p-5 text-left transition "
               >
                 <div>
                   <h2 className="font-semibold text-lg">{category.name}</h2>
@@ -92,7 +92,7 @@ export default function Discover({
                     }`}
                   />
                 </div>
-              </button>
+              </div>
 
               {isOpen && (
                 <div className="border-t border-gray-200 p-6">
