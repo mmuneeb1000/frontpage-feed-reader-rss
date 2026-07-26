@@ -1,8 +1,4 @@
-import axios from "axios";
-import Parser from "rss-parser";
 import { getFeedArticles } from "../services/rssService.js";
-
-const parser = new Parser();
 
 export async function fetchArticles(req, res) {
   try {
@@ -14,7 +10,6 @@ export async function fetchArticles(req, res) {
       });
     }
 
-    // Validate URL format
     try {
       new URL(url);
     } catch {
@@ -23,33 +18,13 @@ export async function fetchArticles(req, res) {
       });
     }
 
-    // Check if URL is reachable
-    let data;
-
-    try {
-      const response = await axios.get(url, {
-        timeout: 10000,
-        maxRedirects: 5,
-        responseType: "text",
-      });
-
-      data = response.data;
-    } catch {
-      return res.status(400).json({
-        message: "Unable to access this feed URL.",
-      });
-    }
-
-    // Validate RSS/Atom
-    try {
-      await parser.parseString(data);
-    } catch {
-      return res.status(400).json({
-        message: "The URL is not a valid RSS or Atom feed.",
-      });
-    }
-
     const articles = await getFeedArticles(url);
+
+    if (!articles.length) {
+      return res.status(404).json({
+        message: "No articles found.",
+      });
+    }
 
     return res.json(articles);
   } catch (error) {
