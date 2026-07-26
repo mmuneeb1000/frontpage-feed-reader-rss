@@ -11,23 +11,22 @@ export default function ReaderActions({
 
   return (
     <div className="mt-6 flex flex-col gap-3 md:flex-row">
-      <TryDemo
-        demo={demo}
-        title="Bookmark articles"
-        message="Sign up to save articles for later."
-      >
-        <button
-          onClick={() => onToggleSaved(article)}
-          className={`flex items-center gap-2 rounded-lg border border-gray-300 px-4 py-2 
+      <div className="inline-flex gap-6 ">
+        <TryDemo
+          demo={demo}
+          title="Bookmark articles"
+          message="Sign up to save articles for later."
+        >
+          <button
+            onClick={() => onToggleSaved(article)}
+            className={`flex items-center gap-2 rounded-lg border border-gray-300 px-4 py-3 
           transition hover:bg-neutral-100 focus:ring-2 focus:ring-blue-500 active:scale-95 ${
             saved ? "border-blue-300 bg-blue-50 text-blue-700" : ""
           }`}
-        >
-          <FiBookmark className={saved ? "fill-current text-blue-600" : ""} />
-          {saved ? "Saved" : "Save"}
-        </button>
-      </TryDemo>
-      <div className="inline-flex">
+          >
+            <FiBookmark className={saved ? "fill-current text-blue-600" : ""} />
+          </button>
+        </TryDemo>
         <a
           href={article.link}
           target="_blank"

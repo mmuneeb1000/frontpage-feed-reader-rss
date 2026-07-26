@@ -20,7 +20,7 @@ export default function BottomNavigation({ page, onChangePage }) {
                   : "text-gray-500 hover:text-gray-900"
               }`}
             >
-              <Icon className="h-5 w-5" />
+              <Icon className="h-4 w-4" />
               <span>{label}</span>
             </button>
           </li>

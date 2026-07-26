@@ -34,7 +34,7 @@ export default function DashboardHeader({
         />
       }
     >
-      <nav className="flex items-center justify-between">
+      <nav className="flex items-center justify-center md:justify-between">
         <div className="flex gap-4 hidden md:flex">
           {pages.map((item) => (
             <button

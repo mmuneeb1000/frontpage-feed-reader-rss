@@ -1,7 +1,7 @@
 export default function ReaderHeader({ article }) {
   return (
     <header>
-      <h1 className="text-2xl font-bold leading-tight md:text-3xl">
+      <h1 className="text-xl font-bold leading-tight md:text-2xl">
         {article.title}
       </h1>
 

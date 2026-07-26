@@ -20,7 +20,7 @@ export default function ReaderContent({ article, image }) {
           alt={article?.title || ""}
           loading="lazy"
           onError={() => setShowImage(false)}
-          className="my-6 max-h-80 w-full rounded-xl object-cover md:my-8 md:max-h-[500px]"
+          className="my-4 max-h-80 w-full rounded-xl object-cover md:my-8 md:max-h-[500px]"
         />
       )}
 
