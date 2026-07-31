@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink } from "react-router";
 import Header from "./Header";
 import AddFeedMenu from "../Menu/AddFeedMenu";
 import SearchBar from "../SearchBar";
